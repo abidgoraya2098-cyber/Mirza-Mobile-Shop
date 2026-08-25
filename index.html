@@ -704,18 +704,41 @@
       </div>
 
       <!-- Modal Body -->
-      <div class="p-4 space-y-3.5 text-xs">
+      <div class="p-4 space-y-3 text-xs">
         
         <!-- Big Chrome Direct Action Button -->
-        <button id="btn-modal-direct-install" class="w-full py-4 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2 btn-press animate-pulse">
+        <button id="btn-modal-direct-install" class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2 btn-press animate-pulse">
           <span class="text-xl">📲</span>
           <span id="btn-modal-direct-install-text">گوگل کروم انسٹال پاپ اپ کھولیں</span>
         </button>
 
-        <!-- Direct prompt feedback note -->
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-700 text-xs font-semibold">
-          بٹن دبانے پر گوگل کروم کی انسٹالیشن ونڈو فورا نمودار ہو جائے گی، وہاں <strong>Install</strong> کا بٹن دبائیں۔
+        <!-- 3-Step Clear Visual Installation Guide (ہمیشہ فعال اور آسان رہنمائی) -->
+        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5 text-slate-800">
+          <div class="font-black text-xs text-indigo-900 flex items-center gap-1.5 border-b border-slate-200/80 pb-1.5">
+            <span>💡</span>
+            <span>کروم سے 5 سیکنڈ میں انسٹال کرنے کا طریقہ:</span>
+          </div>
+          <div class="space-y-2 text-[11px]">
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">1</span>
+              <span>کروم کے اوپر دائیں کونے میں <strong>3 ڈاٹس (⋮)</strong> کے بٹن پر کلک کریں۔</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">2</span>
+              <span>فہرست میں سے <strong>"Install app" (یا Add to Home screen)</strong> منتخب کریں۔</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">3</span>
+              <span><strong>"Install"</strong> دبائیں، ایپ فوراً موبائل ہوم سکرین پر انسٹال ہو جائے گی۔</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Copy Link Option (In case opened inside WhatsApp browser) -->
+        <button id="btn-copy-app-link" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition btn-press">
+          <span>📋</span>
+          <span>ایپ کا لنک کاپی کریں (Copy Link)</span>
+        </button>
 
       </div>
 
@@ -2912,6 +2935,17 @@
         document.getElementById('modal-install').classList.add('hidden');
       });
       document.getElementById('btn-modal-direct-install').addEventListener('click', triggerDirectChromeInstall);
+      
+      const copyLinkBtn = document.getElementById('btn-copy-app-link');
+      if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', () => {
+          playBeep('click');
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(window.location.href);
+          }
+          showToast('ایپ کا لنک کاپی ہو گیا! کروم میں کھولیں', '📋');
+        });
+      }
 
       // Closing Modal
       document.getElementById('btn-trigger-closing').addEventListener('click', openClosingModal);
