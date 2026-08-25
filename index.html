@@ -132,82 +132,77 @@
   <header class="sticky top-0 z-40 bg-slate-950 text-white shadow-xl border-b border-indigo-950/80">
     <div class="max-w-4xl mx-auto px-3 sm:px-5 py-2.5">
       
-      <!-- Top Row: Full Shop Name & Date on Right, Sales & Icon-Only Action Buttons on Left -->
-      <div class="flex items-center justify-between gap-2 sm:gap-3">
+      <!-- Top Row: Full Shop Title & Logo on Right, Sales Counter & Actions on Left -->
+      <div class="flex items-center justify-between gap-2">
         
-        <!-- Right side: Date Lineup Badge, Enhanced 3D Logo & Full Shop Title -->
-        <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-          
-          <!-- Unified Line-up Date Badge (دن، تاریخ اور مہینہ ایک قطار اور واضح لائن میں) -->
-          <div class="bg-slate-900 border border-slate-700/80 text-white rounded-xl py-1 px-2.5 flex flex-col items-center justify-center min-w-[48px] sm:min-w-[56px] shadow-inner shrink-0">
-            <span class="text-[10px] sm:text-[11px] font-black text-amber-400 leading-tight" id="header-date-day">آج</span>
-            <div class="flex items-center gap-1 leading-none my-0.5">
-              <span class="text-sm sm:text-base font-black font-mono text-white" id="header-date-num">--</span>
-              <span class="text-[9px] sm:text-[10px] font-bold text-slate-300" id="header-date-month">--</span>
-            </div>
-          </div>
+        <!-- Right side: Enhanced 3D Logo & Full Shop Title (مکمل اور واضح نام) -->
+        <div class="flex items-center gap-2.5 min-w-0">
+          <!-- 3D Brand Logo Icon Button -->
+          <button id="btn-open-logo-modal" title="مرزا شاپ 3D لوگو دیکھیں" class="relative p-0.5 rounded-xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-md transition hover:scale-105 btn-press shrink-0">
+            <img src="./assets/mirza_shop_logo.svg" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="w-10 h-10 sm:w-11 sm:h-11 rounded-[10px] bg-slate-900 object-cover border border-amber-300/40" />
+          </button>
 
-          <!-- Shop Title & Enhanced 3D Logo (بغیر سٹار کے واضح اور صاف) -->
-          <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <!-- Enhanced 3D Brand Logo Icon Button (بڑا اور انتہائی واضح) -->
-            <button id="btn-open-logo-modal" title="مرزا شاپ 3D لوگو دیکھیں" class="relative p-0.5 rounded-xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-md transition hover:scale-105 btn-press shrink-0">
-              <img src="./assets/mirza_shop_logo.svg" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] bg-slate-900 object-cover border border-amber-300/40" />
-            </button>
-
-            <!-- Full Shop Name in Ultra-Crisp High Contrast White -->
-            <div class="min-w-0">
-              <h1 class="text-sm sm:text-base md:text-lg font-black text-white leading-snug truncate tracking-tight">
-                مرزا موبائل اینڈ ڈائیپر شاپ
-              </h1>
-              <div class="flex items-center gap-2 text-[10px] sm:text-xs text-slate-400 font-bold mt-0.5">
-                <span class="flex items-center gap-1 text-emerald-400">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span id="header-live-time">00:00</span>
-                </span>
-                <span class="text-slate-600">•</span>
-                <span class="bg-slate-900 text-amber-300 border border-slate-700/80 px-1.5 py-0.2 rounded-md font-mono text-[10px]" id="header-tx-badge">0 سیلز</span>
-              </div>
+          <!-- Full Shop Name in Ultra-Crisp High Contrast White (نو کٹنگ - مکمل نام) -->
+          <div class="min-w-0">
+            <h1 class="text-base sm:text-lg md:text-xl font-black text-white leading-tight tracking-tight font-nastaliq">
+              مرزا موبائل اینڈ ڈائیپر شاپ
+            </h1>
+            <div class="flex items-center gap-1.5 text-[11px] text-slate-300 font-bold mt-0.5 flex-wrap">
+              <span class="text-amber-400 font-bold" id="header-date-day">آج</span>
+              <span class="font-mono text-white" id="header-date-num">--</span>
+              <span class="text-slate-300" id="header-date-month">--</span>
+              <span class="text-slate-600">•</span>
+              <span class="flex items-center gap-1 text-emerald-400 font-mono">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span id="header-live-time">00:00</span>
+              </span>
+              <span class="text-slate-600">•</span>
+              <span class="bg-slate-900 text-amber-300 border border-slate-700/80 px-1.5 py-0.2 rounded-md font-mono text-[10px]" id="header-tx-badge">0 سیلز</span>
             </div>
           </div>
         </div>
 
-        <!-- Left side: Today's Total & Icon-Style Buttons (نشان ٹائپ بٹن) -->
-        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          
-          <!-- Live Today Total Sales (نمایاں اور واضح سیل کاؤنٹر) -->
-          <div class="text-left bg-slate-900 border border-slate-700/80 px-2.5 py-1 sm:px-3 sm:py-1 rounded-xl shadow-inner shrink-0">
+        <!-- Left side: Today Total Sale & Sound/Settings Action Buttons -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- Live Today Total Sales -->
+          <div class="text-left bg-slate-900 border border-slate-700/80 px-2.5 py-1 rounded-xl shadow-inner shrink-0">
             <span class="text-[8px] sm:text-[9px] text-amber-400 block font-bold leading-none mb-0.5">آج کی کل سیل</span>
             <div class="flex items-baseline gap-1">
-              <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 font-mono">Rs.</span>
-              <span id="header-stat-today-total" class="text-base sm:text-xl font-black text-emerald-400 font-mono drop-shadow-xs">0</span>
+              <span class="text-[9px] font-bold text-slate-400 font-mono">Rs.</span>
+              <span id="header-stat-today-total" class="text-sm sm:text-lg font-black text-emerald-400 font-mono drop-shadow-xs">0</span>
             </div>
           </div>
 
-          <!-- Icon-Only Small Action Badges (خوبصورت نشان ٹائپ بٹن) -->
-          <div class="flex items-center gap-1">
-            
-            <!-- Sound Toggle Icon Button -->
-            <button id="btn-sound-toggle" title="آواز آن / آف" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
-              <span id="sound-icon">🔊</span>
-            </button>
-            
-            <!-- Direct Chrome Install Icon Button (نشان ٹائپ انسٹال) -->
-            <button id="btn-pwa-install" title="ایپ انسٹال کریں" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 border border-emerald-400/50 text-white flex items-center justify-center text-xs shadow-md transition btn-press animate-pulse">
-              <span>📲</span>
-            </button>
+          <!-- Sound Toggle Icon Button -->
+          <button id="btn-sound-toggle" title="آواز آن / آف" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
+            <span id="sound-icon">🔊</span>
+          </button>
 
-            <!-- Settings / Backup Icon Button -->
-            <button id="btn-open-backup" title="ترتیبات و بیک اپ" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
-              <span>⚙️</span>
-            </button>
-          </div>
-
+          <!-- Settings / Backup Icon Button -->
+          <button id="btn-open-backup" title="ترتیبات و بیک اپ" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
+            <span>⚙️</span>
+          </button>
         </div>
 
       </div>
 
+      <!-- High-Visibility Google Chrome 1-Click Install Banner (نمایاں کروم انسٹال بینر) -->
+      <div id="pwa-install-banner" class="mt-2 p-2 sm:p-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-2xl text-white shadow-lg flex items-center justify-between gap-2 border border-emerald-400/40">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="text-xl sm:text-2xl shrink-0 animate-bounce">📲</span>
+          <div class="min-w-0">
+            <h4 class="font-black text-xs sm:text-sm text-white leading-tight">مرزا شاپ موبائل ایپ انسٹال کریں</h4>
+            <p class="text-[10px] text-emerald-100 truncate">1 کلک میں موبائل ہوم اسکرین پر حاصل کریں</p>
+          </div>
+        </div>
+        <button id="btn-pwa-install" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
+          <span>⚡</span>
+          <span>ایپ انسٹال کریں</span>
+        </button>
+      </div>
+
       <!-- 2-PAGE GALLERY SLIDER TABS (ڈارک بیک گراؤنڈ پر سیٹ) -->
-      <div class="mt-1.5 flex items-center justify-between bg-slate-900 border border-slate-800 p-0.5 sm:p-1 rounded-xl gap-1">
+      <div class="mt-2 flex items-center justify-between bg-slate-900 border border-slate-800 p-0.5 sm:p-1 rounded-xl gap-1">
         
         <button id="nav-btn-prev" class="h-7 sm:h-8 w-7 sm:w-8 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-base font-black flex items-center justify-center btn-press shrink-0">
           ‹
@@ -215,15 +210,15 @@
 
         <div class="flex items-center gap-1 flex-1">
           <!-- Page 1 Tab -->
-          <button id="tab-page-1" class="flex-1 py-1 sm:py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg bg-white text-slate-950 shadow-sm transition flex items-center justify-center gap-1 btn-press">
+          <button id="tab-page-1" class="flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg bg-white text-slate-950 shadow-sm transition flex items-center justify-center gap-1 btn-press">
             <span>⚡</span>
-            <span>نیا اندراج</span>
+            <span>نیا اندراج (سیل کاؤنٹر)</span>
           </button>
 
           <!-- Page 2 Tab -->
-          <button id="tab-page-2" class="flex-1 py-1 sm:py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center justify-center gap-1 btn-press">
+          <button id="tab-page-2" class="flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center justify-center gap-1 btn-press">
             <span>📊</span>
-            <span>مکمل ریکارڈ</span>
+            <span>مکمل کھاتہ و ریکارڈ</span>
           </button>
         </div>
 
@@ -1459,19 +1454,16 @@
                            window.navigator.standalone === true ||
                            document.referrer.includes('android-app://');
       
+      const installBanner = document.getElementById('pwa-install-banner');
+      const installBtn = document.getElementById('btn-pwa-install');
+
       if (isStandalone) {
         isAppInstalled = true;
-      }
-
-      const installBtn = document.getElementById('btn-pwa-install');
-      if (installBtn) {
-        if (isAppInstalled) {
-          installBtn.style.display = 'none';
-          installBtn.classList.add('hidden');
-        } else {
-          installBtn.style.display = 'flex';
-          installBtn.classList.remove('hidden');
-        }
+        if (installBanner) installBanner.classList.add('hidden');
+        if (installBtn) installBtn.classList.add('hidden');
+      } else {
+        if (installBanner) installBanner.classList.remove('hidden');
+        if (installBtn) installBtn.classList.remove('hidden');
       }
     }
 
