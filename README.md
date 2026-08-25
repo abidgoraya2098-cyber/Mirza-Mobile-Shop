@@ -1,11 +1,45 @@
-<div align="center">
+# مرزا موبائل اینڈ ڈائیپر شاپ (Mirza Mobile & Diaper Shop)
+**پروگریسو ویب ایپ (PWA) برائے ڈیلی سیلز کاؤنٹر، روزانہ کلوزنگ، ماہانہ و سالانہ کھاتہ لیجر**
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+---
 
-  <h1>Built with AI Studio</h2>
+## 🌟 خصوصیات (Key Features)
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+1. **مکمل آف لائن سپورٹ (Offline PWA):** انٹرنیٹ کے بغیر بھی تمام ڈیٹا محفوظ رہتا ہے اور ایپ چلتی ہے۔
+2. **فاسٹ ون-ٹچ انٹری (1-Tap Entry):** ڈائیپر، موبائل، ایزی لوڈ اور نقد کے لیے فوری اندراج۔
+3. **ڈیلی کلوزنگ و رسید (Daily Closing & Receipts):** روزانہ کی کلوزنگ، پرنٹ ایبل رسید، اور موبائل گیلری میں ہائی ریزولوشن PNG تصویر محفوظ کرنے کی سہولت۔
+4. **ماہانہ اور سالانہ رپورٹس:** منتخب ماہ اور سال کے مکمل کھاتے اور خلاصہ رسیدیں۔
+5. **ڈیٹا بیک اپ و ری اسٹور:** ایک کلک پر بیک اپ فائل ڈاؤن لوڈ اور ری اسٹور۔
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+---
 
-</div>
+## 🚀 ورسل اور گٹ ہب پر بغیر کسی خرابی کے ڈپلائے کرنے کا طریقہ (Vercel Deployment)
+
+یہ کوڈ ورسل (Vercel)، نیٹلی فائی (Netlify)، کلاؤڈ فلیئر (Cloudflare Pages) اور لوکل مشین پر 100% ٹیسٹ شدہ اور خودکار کنفیگرڈ ہے۔
+
+### 1. گٹ ہب (GitHub) پر ریپازٹری بنانا:
+1. اپنے گٹ ہب اکاؤنٹ پر اس کوڈ کی ریپازٹری پش کریں۔
+2. تمام فائلیں بشمول `vercel.json` اور `public/` فولڈر محفوظ رہیں گی۔
+
+### 2. ورسل (Vercel) پر ڈپلائے کرنا:
+- **Framework Preset:** `Vite`
+- **Build Command:** `npm run build` (یا `vite build`)
+- **Output Directory:** `dist`
+- **Root Directory:** `./`
+
+> **نوٹ:** `vercel.json` فائل پروجیکٹ میں پہلے سے شامل ہے جس کی وجہ سے ورسل پر کوئی 404 ایرر نہیں آئے گا اور تمام یو آر ایلز (`/manifest.json`, `/sw.js`, `/assets/*`) بالکل درست کام کریں گے۔
+
+---
+
+## 🛠️ لوکل چلانے کے لیے (Local Development)
+
+```bash
+# پیکجز انسٹال کریں
+npm install
+
+# ڈیولپمنٹ سرور چلائیں
+npm run dev
+
+# پروڈکشن بلڈ تیار کریں
+npm run build
+```

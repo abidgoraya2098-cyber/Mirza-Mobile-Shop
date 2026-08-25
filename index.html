@@ -1,0 +1,2980 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl" class="h-full bg-slate-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>مرزا موبائل اینڈ ڈائیپر شاپ - Mirza Shop</title>
+  <meta name="description" content="مرزا موبائل اینڈ ڈائیپر شاپ - سیلز، کلوزنگ و کھاتہ لیجر ایپ" />
+  <meta name="theme-color" content="#4f46e5" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/icon-192.png" />
+
+  <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- html2canvas Library for Receipt Photo Capture -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans Arabic"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+            urdu: ['"Noto Nastaliq Urdu"', '"Noto Sans Arabic"', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Noto Sans Arabic", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .font-nastaliq {
+      font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', serif;
+      line-height: 1.8;
+    }
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 6px;
+    }
+    .btn-press:active {
+      transform: scale(0.96);
+      transition: transform 0.05s ease-in-out;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* 2-Page Carousel Slider */
+    .slider-track {
+      display: flex;
+      width: 200%;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      touch-action: pan-y pinch-zoom;
+    }
+    .slide-page {
+      width: 50%;
+      flex-shrink: 0;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #print-receipt-modal, #print-receipt-modal * {
+        visibility: visible;
+      }
+      #print-receipt-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 12px;
+        background: white;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- 1. FIXED / STICKY HEADER (پریمیم گہرا اور واضح ٹاپ بار - لائن اپ تاریخ و واضح لوگو) -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-40 bg-slate-950 text-white shadow-xl border-b border-indigo-950/80">
+    <div class="max-w-4xl mx-auto px-3 sm:px-5 py-2.5">
+      
+      <!-- Top Row: Full Shop Name & Date on Right, Sales & Icon-Only Action Buttons on Left -->
+      <div class="flex items-center justify-between gap-2 sm:gap-3">
+        
+        <!-- Right side: Date Lineup Badge, Enhanced 3D Logo & Full Shop Title -->
+        <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+          
+          <!-- Unified Line-up Date Badge (دن، تاریخ اور مہینہ ایک قطار اور واضح لائن میں) -->
+          <div class="bg-slate-900 border border-slate-700/80 text-white rounded-xl py-1 px-2.5 flex flex-col items-center justify-center min-w-[48px] sm:min-w-[56px] shadow-inner shrink-0">
+            <span class="text-[10px] sm:text-[11px] font-black text-amber-400 leading-tight" id="header-date-day">آج</span>
+            <div class="flex items-center gap-1 leading-none my-0.5">
+              <span class="text-sm sm:text-base font-black font-mono text-white" id="header-date-num">--</span>
+              <span class="text-[9px] sm:text-[10px] font-bold text-slate-300" id="header-date-month">--</span>
+            </div>
+          </div>
+
+          <!-- Shop Title & Enhanced 3D Logo (بغیر سٹار کے واضح اور صاف) -->
+          <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <!-- Enhanced 3D Brand Logo Icon Button (بڑا اور انتہائی واضح) -->
+            <button id="btn-open-logo-modal" title="مرزا شاپ 3D لوگو دیکھیں" class="relative p-0.5 rounded-xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-md transition hover:scale-105 btn-press shrink-0">
+              <img src="/assets/mirza_shop_logo.svg" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] bg-slate-900 object-cover border border-amber-300/40" />
+            </button>
+
+            <!-- Full Shop Name in Ultra-Crisp High Contrast White -->
+            <div class="min-w-0">
+              <h1 class="text-sm sm:text-base md:text-lg font-black text-white leading-snug truncate tracking-tight">
+                مرزا موبائل اینڈ ڈائیپر شاپ
+              </h1>
+              <div class="flex items-center gap-2 text-[10px] sm:text-xs text-slate-400 font-bold mt-0.5">
+                <span class="flex items-center gap-1 text-emerald-400">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span id="header-live-time">00:00</span>
+                </span>
+                <span class="text-slate-600">•</span>
+                <span class="bg-slate-900 text-amber-300 border border-slate-700/80 px-1.5 py-0.2 rounded-md font-mono text-[10px]" id="header-tx-badge">0 سیلز</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Left side: Today's Total & Icon-Style Buttons (نشان ٹائپ بٹن) -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          
+          <!-- Live Today Total Sales (نمایاں اور واضح سیل کاؤنٹر) -->
+          <div class="text-left bg-slate-900 border border-slate-700/80 px-2.5 py-1 sm:px-3 sm:py-1 rounded-xl shadow-inner shrink-0">
+            <span class="text-[8px] sm:text-[9px] text-amber-400 block font-bold leading-none mb-0.5">آج کی کل سیل</span>
+            <div class="flex items-baseline gap-1">
+              <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 font-mono">Rs.</span>
+              <span id="header-stat-today-total" class="text-base sm:text-xl font-black text-emerald-400 font-mono drop-shadow-xs">0</span>
+            </div>
+          </div>
+
+          <!-- Icon-Only Small Action Badges (خوبصورت نشان ٹائپ بٹن) -->
+          <div class="flex items-center gap-1">
+            
+            <!-- Sound Toggle Icon Button -->
+            <button id="btn-sound-toggle" title="آواز آن / آف" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
+              <span id="sound-icon">🔊</span>
+            </button>
+            
+            <!-- Direct Chrome Install Icon Button (نشان ٹائپ انسٹال) -->
+            <button id="btn-pwa-install" title="ایپ انسٹال کریں" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 border border-emerald-400/50 text-white flex items-center justify-center text-xs shadow-md transition btn-press animate-pulse">
+              <span>📲</span>
+            </button>
+
+            <!-- Settings / Backup Icon Button -->
+            <button id="btn-open-backup" title="ترتیبات و بیک اپ" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
+              <span>⚙️</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 2-PAGE GALLERY SLIDER TABS (ڈارک بیک گراؤنڈ پر سیٹ) -->
+      <div class="mt-1.5 flex items-center justify-between bg-slate-900 border border-slate-800 p-0.5 sm:p-1 rounded-xl gap-1">
+        
+        <button id="nav-btn-prev" class="h-7 sm:h-8 w-7 sm:w-8 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-base font-black flex items-center justify-center btn-press shrink-0">
+          ‹
+        </button>
+
+        <div class="flex items-center gap-1 flex-1">
+          <!-- Page 1 Tab -->
+          <button id="tab-page-1" class="flex-1 py-1 sm:py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg bg-white text-slate-950 shadow-sm transition flex items-center justify-center gap-1 btn-press">
+            <span>⚡</span>
+            <span>نیا اندراج</span>
+          </button>
+
+          <!-- Page 2 Tab -->
+          <button id="tab-page-2" class="flex-1 py-1 sm:py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center justify-center gap-1 btn-press">
+            <span>📊</span>
+            <span>مکمل ریکارڈ</span>
+          </button>
+        </div>
+
+        <button id="nav-btn-next" class="h-7 sm:h-8 w-7 sm:w-8 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition text-base font-black flex items-center justify-center btn-press shrink-0">
+          ›
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. SLIDING CAROUSEL CONTAINER (سکرین میں مکمل فٹ - کوئی اوور فلو نہیں)     -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 max-w-4xl w-full mx-auto overflow-hidden relative" id="carousel-viewport">
+    
+    <div class="slider-track" id="slider-track" style="transform: translateX(0%);">
+      
+      <!-- ======================================================== -->
+      <!-- PAGE 1 (صفحہ ۱): نیا اندراج، 8 بڑے بٹن اور کی پیڈ       -->
+      <!-- ======================================================== -->
+      <div class="slide-page p-3 sm:p-5 flex flex-col gap-3.5 max-w-full" id="page-entry">
+        
+        <!-- Main Entry Card -->
+        <div class="bg-white rounded-3xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col gap-3">
+          
+          <!-- Amount Entry Display Screen -->
+          <div>
+            <div class="flex items-center justify-between mb-1 px-1">
+              <label class="text-xs font-bold text-slate-500">
+                رقم درج کریں:
+              </label>
+              <span id="amount-in-words" class="text-xs font-black text-indigo-600">صفر روپے</span>
+            </div>
+
+            <!-- Amount Input Field / Click Trigger -->
+            <div class="flex items-center bg-slate-50 rounded-2xl p-2.5 sm:p-3.5 border-2 border-slate-200 focus-within:border-indigo-500 focus-within:bg-white transition shadow-inner">
+              <span class="text-xl sm:text-2xl font-bold text-slate-400 ml-2 font-mono">Rs.</span>
+              
+              <input
+                id="input-amount"
+                type="text"
+                inputmode="none"
+                readonly
+                placeholder="0"
+                value=""
+                class="w-full text-3xl sm:text-4xl font-black bg-transparent text-slate-900 outline-none placeholder:text-slate-300 font-mono tracking-tight cursor-pointer"
+                dir="ltr"
+              />
+
+              <div class="mr-auto flex items-center gap-1.5 shrink-0">
+                <!-- Toggle Keypad Button -->
+                <button id="btn-toggle-keypad" title="کی پیڈ" class="h-11 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl text-xs flex items-center gap-1 transition btn-press">
+                  <span class="text-base">⌨️</span>
+                  <span id="keypad-toggle-label" class="hidden sm:inline">بورڈ</span>
+                </button>
+
+                <!-- Backspace -->
+                <button id="btn-backspace" title="ایک ہندسہ مٹائیں" class="w-11 h-11 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl flex items-center justify-center text-base transition btn-press">
+                  ⌫
+                </button>
+
+                <!-- Clear -->
+                <button id="btn-clear-amount" title="صاف کریں" class="w-11 h-11 bg-rose-100 hover:bg-rose-200 text-rose-600 font-black rounded-xl flex items-center justify-center text-sm transition btn-press">
+                  C
+                </button>
+              </div>
+            </div>
+
+            <!-- Optional Note -->
+            <div class="mt-2 flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200 text-xs">
+              <span class="font-bold text-slate-400 shrink-0">نوٹ:</span>
+              <input
+                id="input-note"
+                type="text"
+                placeholder="اختیاری تفصیل (مثال: پیمپرز، ہینڈز فری...)"
+                class="w-full bg-transparent text-slate-700 outline-none placeholder:text-slate-400 font-medium"
+              />
+            </div>
+          </div>
+
+          <!-- Quick Presets (+50, +100, +200, +500, +1000, +2000, +5000) - بڑے اور آرام دہ بٹن -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs border-b border-slate-100 pt-1">
+            <span class="text-[11px] text-slate-400 font-bold whitespace-nowrap ml-1 shrink-0">فوری:</span>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="50">+50</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="100">+100</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="200">+200</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="500">+500</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="1000">+1000</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="2000">+2000</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="5000">+5000</button>
+          </div>
+
+          <!-- COLLAPSIBLE NUMPAD (بڑے بٹن) -->
+          <div id="collapsible-numpad" class="hidden bg-slate-50 p-2.5 rounded-2xl border border-slate-200 transition-all">
+            <div class="flex items-center justify-between mb-2 px-1 text-xs">
+              <span class="font-bold text-slate-600 flex items-center gap-1">
+                <span>⌨️</span>
+                <span>ٹائپنگ بورڈ</span>
+              </span>
+              <button id="btn-hide-keypad" class="text-indigo-600 hover:text-indigo-800 font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-slate-200 btn-press">
+                بند کریں ✕
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto">
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="1">1</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="2">2</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="3">3</button>
+
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="4">4</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="5">5</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="6">6</button>
+
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="7">7</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="8">8</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="9">9</button>
+
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="00">00</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="0">0</button>
+              <button class="numpad-btn bg-indigo-600 border border-indigo-600 hover:bg-indigo-500 text-white btn-press rounded-2xl text-sm font-black py-3 shadow-xs transition" data-key="done">✓ مکمل</button>
+            </div>
+          </div>
+
+          <!-- 8 BIG CATEGORY BUTTONS (بڑے اور خوبصورت بٹن - مختصر الفاظ) -->
+          <div>
+            <div class="mb-2 px-1">
+              <span class="text-xs font-bold text-slate-500">
+                سیل درج کرنے کے لیے کیٹیگری دبائیں:
+              </span>
+            </div>
+
+            <!-- 8 Categories Grid (2 Columns on mobile, 4 Columns on desktop) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              
+              <!-- 1. Diapers -->
+              <button data-cat="diapers" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">👶</span>
+                <span class="font-black text-rose-950 text-sm sm:text-base">پیمپر</span>
+              </button>
+
+              <!-- 2. Computer -->
+              <button data-cat="computer" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">💻</span>
+                <span class="font-black text-blue-950 text-sm sm:text-base">کمپیوٹر</span>
+              </button>
+
+              <!-- 3. Mobile Accessories -->
+              <button data-cat="accessories" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">🎧</span>
+                <span class="font-black text-emerald-950 text-sm sm:text-base">اسیسریز</span>
+              </button>
+
+              <!-- 4. Devices -->
+              <button data-cat="devices" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">📱</span>
+                <span class="font-black text-violet-950 text-sm sm:text-base">ڈیوائسز</span>
+              </button>
+
+              <!-- 5. JazzCash -->
+              <button data-cat="jazzcash" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">💳</span>
+                <span class="font-black text-amber-950 text-sm sm:text-base">جاز کیش</span>
+              </button>
+
+              <!-- 6. Easypaisa -->
+              <button data-cat="easypaisa" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">💸</span>
+                <span class="font-black text-teal-950 text-sm sm:text-base">ایزی پیسہ</span>
+              </button>
+
+              <!-- 7. Easyload -->
+              <button data-cat="easyload" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">⚡</span>
+                <span class="font-black text-fuchsia-950 text-sm sm:text-base">ایزی لوڈ</span>
+              </button>
+
+              <!-- 8. Other -->
+              <button data-cat="other" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl">⚙️</span>
+                <span class="font-black text-slate-900 text-sm sm:text-base">دیگر</span>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Link to Page 2 & Quick Undo Button -->
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+            <!-- Undo Last Sale Button (active when transactions exist) -->
+            <button id="btn-undo-last-tx" class="hidden px-3 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-xl text-xs font-bold items-center gap-1.5 shadow-2xs transition btn-press">
+              <span>↩️</span>
+              <span>آخری انٹری ڈیلیٹ</span>
+            </button>
+            <div class="mr-auto"></div>
+            <button id="btn-goto-page-2" class="px-4 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-black flex items-center gap-1.5 shadow-sm transition btn-press">
+              <span>ریکارڈز دیکھیں</span>
+              <span>➔</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Recent Sales mini card with Delete Buttons -->
+        <div class="bg-white rounded-3xl p-3.5 sm:p-4 border border-slate-200/90 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <span>🕒</span>
+              <span>آج کے تازہ ترین اندراجات</span>
+            </span>
+            <span id="page1-recent-count" class="text-[11px] bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-full font-bold">0 انٹریز</span>
+          </div>
+          <div id="page1-mini-tx-list" class="space-y-1.5 text-xs">
+            <div class="text-center text-slate-400 py-3 text-xs">
+              آج ابھی تک کوئی سیل درج نہیں ہوئی۔
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PAGE 2 (صفحہ ۲): روزانہ، ماہانہ اور سالانہ کھاتہ         -->
+      <!-- ======================================================== -->
+      <div class="slide-page p-3 sm:p-5 flex flex-col gap-3.5 overflow-y-auto max-h-[calc(100vh-130px)] no-scrollbar max-w-full" id="page-summary">
+        
+        <!-- Tab Navigation for Page 2 (مختصر، صاف ستھرے اور بڑے بٹن) -->
+        <div class="flex items-center bg-slate-200/80 p-1 rounded-2xl gap-1">
+          <button id="subtab-daily" class="flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm bg-white text-indigo-700 shadow-xs transition btn-press">
+            📅 روزانہ
+          </button>
+          <button id="subtab-monthly" class="flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition btn-press">
+            📊 ماہانہ
+          </button>
+          <button id="subtab-yearly" class="flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition btn-press">
+            📈 سالانہ
+          </button>
+        </div>
+
+        <!-- 1. DAILY SECTION (روزانہ کھاتہ) -->
+        <div id="view-daily-section" class="flex flex-col gap-3.5">
+          
+          <!-- Live Summary Card -->
+          <div class="bg-white rounded-3xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-1.5">
+                <span class="w-2.5 h-5 bg-indigo-600 rounded-full"></span>
+                <span>آج کی لائیو سیلز</span>
+              </h2>
+              <button id="btn-goto-page-1" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold flex items-center gap-1 transition btn-press">
+                <span>⬅</span>
+                <span>نیا اندراج</span>
+              </button>
+            </div>
+
+            <!-- Total Sales Today Big Callout -->
+            <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="text-xs font-bold text-slate-500 block mb-0.5">آج کا میزان:</span>
+                <div class="flex items-baseline gap-1">
+                  <span class="text-xs font-bold text-slate-400 font-mono">Rs.</span>
+                  <span id="stat-today-total" class="text-2xl sm:text-3xl font-black text-slate-900 font-mono">0</span>
+                </div>
+              </div>
+              <div class="text-left">
+                <span class="text-[10px] text-slate-400 block font-bold">ٹاپ کیٹیگری:</span>
+                <span id="stat-top-category" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200 inline-block">
+                  کوئی نہیں
+                </span>
+              </div>
+            </div>
+
+            <!-- 8 Categories Subtotals Breakdown -->
+            <div>
+              <span class="text-xs font-bold text-slate-500 block px-1 mb-1.5">
+                تمام کیٹیگریز کی تفصیل:
+              </span>
+              <div id="subtotals-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+
+            <!-- Daily Closing, Receipt & CSV Actions -->
+            <div class="pt-2 border-t border-slate-100 flex flex-col sm:flex-row gap-2">
+              <button id="btn-trigger-closing" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white py-3.5 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-sm transition btn-press">
+                <span>🔒</span>
+                <span>ڈیلی کلوزنگ کریں</span>
+              </button>
+              <button id="btn-view-today-receipt" class="py-3 px-3.5 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-900 rounded-2xl font-black text-xs flex items-center justify-center gap-1.5 shadow-xs transition btn-press">
+                <span>🧾</span>
+                <span>آج کی رسید / تصویر</span>
+              </button>
+              <button id="btn-export-today-csv" class="py-3 px-3.5 bg-slate-800 hover:bg-black text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition btn-press">
+                <span>📥</span>
+                <span>ایکسل فائل</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Today's Full Transactions Log -->
+          <div class="bg-white rounded-3xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                <span>🕒</span>
+                <span>آج کی تمام سیلز</span>
+              </h3>
+              <span id="recent-count-tag" class="text-xs text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full font-bold">
+                0 ریکارڈز
+              </span>
+            </div>
+
+            <div id="recent-transactions-list" class="space-y-1.5 max-h-60 overflow-y-auto pr-0.5">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 2. MONTHLY SECTION (ماہانہ کھاتہ) -->
+        <div id="view-monthly-section" class="hidden flex-col gap-3.5">
+          <div class="bg-white rounded-3xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                  <span class="w-2 h-5 bg-indigo-500 rounded-full"></span>
+                  <span>ماہانہ کھاتہ و کلوزنگز</span>
+                </h3>
+              </div>
+
+              <!-- Month Select, Receipt & Export -->
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <select id="select-ledger-month" class="text-xs font-bold bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-2.5 py-2 outline-none focus:border-indigo-500">
+                  <!-- Dynamically populated -->
+                </select>
+                <button id="btn-view-monthly-receipt" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black flex items-center gap-1 shadow-xs transition btn-press">
+                  <span>🧾</span>
+                  <span>ماہانہ رسید / تصویر</span>
+                </button>
+                <button id="btn-export-excel-filtered" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-xs transition btn-press">
+                  <span>📥</span>
+                  <span>ایکسل</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Monthly Stats Grid -->
+            <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-100">
+              <div class="p-2.5 bg-indigo-50/80 border border-indigo-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-indigo-700 block mb-0.5">ماہانہ سیل</span>
+                <span class="text-xs sm:text-lg font-black text-indigo-950 font-mono" id="stat-month-total">Rs. 0</span>
+              </div>
+              <div class="p-2.5 bg-emerald-50/80 border border-emerald-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-emerald-700 block mb-0.5">کام کے دن</span>
+                <span class="text-xs sm:text-lg font-black text-emerald-950 font-mono" id="stat-month-days">0 دن</span>
+              </div>
+              <div class="p-2.5 bg-amber-50/80 border border-amber-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-amber-700 block mb-0.5">روزانہ اوسط</span>
+                <span class="text-xs sm:text-lg font-black text-amber-950 font-mono" id="stat-month-avg">Rs. 0</span>
+              </div>
+            </div>
+
+            <!-- Monthly Progress Bars -->
+            <div class="space-y-1.5 pt-1">
+              <span class="text-[11px] font-bold text-slate-400 block">
+                کیٹیگری وائز ماہانہ سیل:
+              </span>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2" id="month-category-bars">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <!-- Closed Days History List -->
+            <div class="pt-2">
+              <div class="flex items-center justify-between mb-2 px-1">
+                <span class="text-xs font-bold text-slate-800">محفوظ شدہ دن:</span>
+                <span id="closed-days-count" class="text-[10px] text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full font-bold">0 ریکارڈز</span>
+              </div>
+
+              <div id="closed-days-list" class="space-y-2 max-h-72 overflow-y-auto pr-0.5">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. YEARLY SECTION (سالانہ کھاتہ) -->
+        <div id="view-yearly-section" class="hidden flex-col gap-3.5">
+          <div class="bg-white rounded-3xl p-3.5 sm:p-5 border border-slate-200/90 shadow-sm space-y-3.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                  <span class="w-2 h-5 bg-purple-600 rounded-full"></span>
+                  <span>سالانہ کھاتہ و تجزیہ</span>
+                </h3>
+              </div>
+
+              <!-- Year Select, Receipt & Export -->
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <select id="select-ledger-year" class="text-xs font-bold bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-2.5 py-2 outline-none focus:border-indigo-500">
+                  <!-- Dynamically populated -->
+                </select>
+                <button id="btn-view-yearly-receipt" class="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-black flex items-center gap-1 shadow-xs transition btn-press">
+                  <span>🧾</span>
+                  <span>سالانہ رسید / تصویر</span>
+                </button>
+                <button id="btn-export-yearly-csv" class="px-3 py-2 bg-slate-800 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-xs transition btn-press">
+                  <span>📥</span>
+                  <span>ایکسل</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Yearly Stats Grid -->
+            <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-100">
+              <div class="p-2.5 bg-purple-50/80 border border-purple-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-purple-700 block mb-0.5">سال کی کل سیل</span>
+                <span class="text-xs sm:text-lg font-black text-purple-950 font-mono" id="stat-year-total">Rs. 0</span>
+              </div>
+              <div class="p-2.5 bg-emerald-50/80 border border-emerald-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-emerald-700 block mb-0.5">کل کام کے دن</span>
+                <span class="text-xs sm:text-lg font-black text-emerald-950 font-mono" id="stat-year-days">0 دن</span>
+              </div>
+              <div class="p-2.5 bg-blue-50/80 border border-blue-100 rounded-2xl text-center sm:text-right">
+                <span class="text-[10px] font-bold text-blue-700 block mb-0.5">ماہانہ اوسط</span>
+                <span class="text-xs sm:text-lg font-black text-blue-950 font-mono" id="stat-year-avg">Rs. 0</span>
+              </div>
+            </div>
+
+            <!-- 12 Months Breakdown -->
+            <div class="pt-1">
+              <span class="text-[11px] font-bold text-slate-400 block mb-2">
+                12 مہینوں کی تفصیل:
+              </span>
+              <div class="space-y-1.5" id="yearly-months-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 3. MODAL: GOOGLE CHROME / PWA INSTALL POPUP                               -->
+  <!-- ========================================================================= -->
+  <div id="modal-install" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Modal Header with App Icon -->
+      <div class="bg-slate-950 text-white p-4 flex items-center justify-between border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <img src="/assets/icon-192.png" alt="Icon" class="w-11 h-11 rounded-2xl border border-amber-300/40 shadow-sm shrink-0" />
+          <div class="min-w-0">
+            <h3 class="font-black text-sm sm:text-base text-white leading-snug">مرزا موبائل اینڈ ڈائیپر شاپ</h3>
+            <p class="text-[11px] text-amber-300">Mirza Shop • آفیشل کروم ایپ انسٹال</p>
+          </div>
+        </div>
+        <button id="btn-close-install-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 space-y-3.5 text-xs">
+        
+        <!-- Big Chrome Direct Action Button -->
+        <button id="btn-modal-direct-install" class="w-full py-4 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2 btn-press animate-pulse">
+          <span class="text-xl">📲</span>
+          <span id="btn-modal-direct-install-text">گوگل کروم انسٹال پاپ اپ کھولیں</span>
+        </button>
+
+        <!-- Direct prompt feedback note -->
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-center text-slate-700 text-xs font-semibold">
+          بٹن دبانے پر گوگل کروم کی انسٹالیشن ونڈو فورا نمودار ہو جائے گی، وہاں <strong>Install</strong> کا بٹن دبائیں۔
+        </div>
+
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
+        <button id="btn-dismiss-install-modal" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition">
+          بند کریں
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. MODAL: DAY CLOSING BREAKDOWN                                           -->
+  <!-- ========================================================================= -->
+  <div id="modal-closing" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 bg-rose-600 rounded-xl flex items-center justify-center text-base">
+            🔒
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white">ڈیلی کلوزنگ</h3>
+            <p class="text-[11px] text-slate-400" id="closing-modal-date">تاریخ: --</p>
+          </div>
+        </div>
+        <button id="btn-close-closing-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <div class="p-4 overflow-y-auto space-y-3 text-xs sm:text-sm">
+        <div class="p-3 bg-indigo-50 border border-indigo-100 rounded-2xl flex items-center justify-between">
+          <div>
+            <span class="text-xs text-indigo-700 block font-bold">کل سیلز:</span>
+            <span class="text-2xl font-black text-indigo-950 font-mono" id="closing-grand-total">Rs. 0</span>
+          </div>
+          <div class="text-left">
+            <span class="text-xs text-slate-500 block font-medium">اندراجات:</span>
+            <span class="font-bold text-slate-800 text-base" id="closing-tx-count">0</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-700 text-xs mb-1.5">کیٹیگریز تفصیل:</h4>
+          <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-xs">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-slate-50 text-slate-600 border-b border-slate-100 font-bold">
+                <tr>
+                  <th class="p-2">کیٹیگری</th>
+                  <th class="p-2 text-center">تعداد</th>
+                  <th class="p-2 text-left">رقم</th>
+                </tr>
+              </thead>
+              <tbody id="closing-categories-tbody" class="divide-y divide-slate-100">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">
+            نوٹ (اختیاری):
+          </label>
+          <input
+            id="input-closing-notes"
+            type="text"
+            placeholder="مثال: کیش دراز 15,000 ہے..."
+            class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-indigo-500"
+          />
+        </div>
+
+        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs flex items-center gap-2">
+          <span class="text-base">⚠️</span>
+          <span>کلوزنگ کے بعد آج کا کاؤنٹر صفر ہو جائے گا اور ڈیٹا محفوظ ہو جائے گا۔</span>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button id="btn-cancel-closing" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition">
+          منسوخ
+        </button>
+        <button id="btn-confirm-closing" class="px-5 py-2.5 rounded-xl text-xs font-black bg-rose-600 hover:bg-rose-500 text-white shadow-sm transition flex items-center gap-1.5 btn-press">
+          <span>✓</span>
+          <span>کلوزنگ مکمل کریں</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 5. MODAL: BACKUP & SETTINGS (مستقل ڈیٹا و لائف ٹائم پروٹیکشن)               -->
+  <!-- ========================================================================= -->
+  <div id="modal-backup" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">⚙️</span>
+          <div>
+            <h3 class="font-bold text-sm sm:text-base text-white leading-tight">ڈیٹا بیک اپ و ترتیبات</h3>
+            <p class="text-[10px] text-slate-400">مرزا موبائل اینڈ ڈائیپر شاپ</p>
+          </div>
+        </div>
+        <button id="btn-close-backup-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs max-h-[80vh] overflow-y-auto">
+        
+        <!-- Persistent Storage Guarantee Card -->
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-1">
+          <div class="flex items-center gap-1.5 text-emerald-900 font-black text-xs">
+            <span class="text-base">🛡️</span>
+            <span>لائف ٹائم محفوظ ڈیٹا (Persistent Storage)</span>
+          </div>
+          <p class="text-[11px] text-emerald-800 leading-relaxed">
+            آپ کا تمام ریکارڈ (سیلز، کلوزنگز، کھاتہ) موبائل کی محفوظ انٹرنل میموری میں خودکار طور پر محفوظ ہے۔ کروم کی کیشے یا ہسٹری صاف کرنے سے بھی ڈیٹا ختم نہیں ہوگا!
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <!-- WhatsApp / Share Backup -->
+          <button id="btn-share-whatsapp-backup" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold flex items-center justify-between transition shadow-xs btn-press">
+            <span class="flex items-center gap-2">
+              <span class="text-base">💬</span>
+              <span>واٹس ایپ پر بیک اپ بھیجیں / شیئر</span>
+            </span>
+            <span class="text-[10px] bg-emerald-700/80 px-2 py-0.5 rounded-lg text-emerald-100 font-bold">WhatsApp</span>
+          </button>
+
+          <!-- Download JSON Backup -->
+          <button id="btn-export-json" class="w-full p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl font-bold text-slate-800 flex items-center justify-between transition btn-press">
+            <span class="flex items-center gap-2">
+              <span>💾</span>
+              <span>مکمل بیک اپ ڈاؤن لوڈ (JSON)</span>
+            </span>
+            <span class="text-[10px] text-slate-500 font-mono">.json</span>
+          </button>
+
+          <!-- Export All CSV -->
+          <button id="btn-export-csv-all" class="w-full p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl font-bold text-slate-800 flex items-center justify-between transition btn-press">
+            <span class="flex items-center gap-2">
+              <span>📊</span>
+              <span>تمام کلوزنگز ایکسل شیٹ (CSV)</span>
+            </span>
+            <span class="text-[10px] text-slate-500 font-mono">.csv</span>
+          </button>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <h4 class="font-bold text-slate-700">بیک اپ بحال کریں (Restore):</h4>
+          <input type="file" id="input-restore-file" accept=".json" class="hidden" />
+          <button id="btn-trigger-restore" class="w-full p-3 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 rounded-2xl font-bold flex items-center justify-center gap-1.5 transition btn-press">
+            <span>📂</span>
+            <span>بیک اپ فائل سے ڈیٹا بحال کریں</span>
+          </button>
+        </div>
+
+        <div class="pt-1 text-center text-[10px] text-slate-400">
+          مرزا موبائل اینڈ ڈائیپر شاپ • محفوظ آف لائن لیجر
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MODAL: PRINT / SAVE RECEIPT (روزانہ، ماہانہ، سالانہ رسید و تصویر محفوظ کریں) -->
+  <!-- ========================================================================= -->
+  <div id="print-receipt-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Top Modal Header bar (No print) -->
+      <div class="bg-slate-950 text-white p-3.5 flex items-center justify-between border-b border-slate-800 no-print">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🧾</span>
+          <div>
+            <h3 class="font-bold text-xs sm:text-sm text-white" id="modal-receipt-heading">رسید و رپورٹ کارڈ</h3>
+            <p class="text-[10px] text-amber-300">پرنٹ کریں یا موبائل گیلری میں محفوظ کریں</p>
+          </div>
+        </div>
+        <button id="btn-close-receipt" class="text-slate-400 hover:text-white p-1 text-lg font-bold">✕</button>
+      </div>
+
+      <!-- Printable & Photographable Card Section (Captured into High-Res PNG) -->
+      <div class="p-3 overflow-y-auto">
+        <div id="receipt-printable-card" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3 font-sans text-slate-900">
+          
+          <!-- Receipt Header -->
+          <div class="text-center border-b border-dashed border-slate-300 pb-3 space-y-1">
+            <div class="flex items-center justify-center gap-2 mb-1">
+              <img src="/assets/mirza_shop_logo.svg" alt="Logo" class="w-8 h-8 rounded-lg bg-slate-950 object-cover border border-amber-400" />
+              <h2 class="font-nastaliq text-base sm:text-lg font-black text-slate-950 leading-tight">مرزا موبائل اینڈ ڈائیپر شاپ</h2>
+            </div>
+            <div class="inline-block px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-800 font-bold text-[11px]" id="receipt-report-badge">
+              ڈیلی کلوزنگ رپورٹ
+            </div>
+            <p class="text-[10px] text-slate-500 font-mono" id="receipt-date-time">--</p>
+          </div>
+
+          <!-- Quick Stats Highlights (For Monthly/Yearly) -->
+          <div id="receipt-extra-stats" class="grid grid-cols-2 gap-1.5 text-center text-[10px] hidden">
+            <div class="p-1.5 bg-slate-50 rounded-xl border border-slate-100">
+              <span class="text-slate-500 block">کام کے دن:</span>
+              <span class="font-bold text-slate-900 text-xs font-mono" id="receipt-stat-days">0</span>
+            </div>
+            <div class="p-1.5 bg-slate-50 rounded-xl border border-slate-100">
+              <span class="text-slate-500 block">اوسط سیل:</span>
+              <span class="font-bold text-slate-900 text-xs font-mono" id="receipt-stat-avg">Rs. 0</span>
+            </div>
+          </div>
+
+          <!-- Category or Months Breakdown Rows -->
+          <div class="space-y-1 text-xs" id="receipt-content-rows">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Grand Total Row -->
+          <div class="border-t-2 border-b-2 border-slate-900 py-2.5 flex items-center justify-between font-black text-sm">
+            <span class="text-slate-900">کل میزان (Grand Total):</span>
+            <span class="text-indigo-950 font-mono text-lg" id="receipt-grand-total">Rs. 0</span>
+          </div>
+
+          <!-- Optional Notes / Remarks -->
+          <div id="receipt-notes-box" class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 hidden">
+            <span class="font-bold block text-[10px] text-slate-500">تفصیل / نوٹ:</span>
+            <span id="receipt-notes-text">--</span>
+          </div>
+
+          <!-- Verified Digital Stamp -->
+          <div class="text-center pt-2 border-t border-slate-100 space-y-0.5">
+            <p class="text-[10px] font-bold text-emerald-700">✓ ڈیجیٹل تصدیق شدہ کھاتہ</p>
+            <p class="text-[9px] text-slate-400 font-mono">Mirza Mobile & Diaper Shop • Official Ledger</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Buttons Footer (No Print) -->
+      <div class="p-3 bg-slate-50 border-t border-slate-200 space-y-2 no-print">
+        
+        <!-- Row 1: Save Image (Gallery) & WhatsApp -->
+        <div class="flex items-center gap-2">
+          <!-- Save Image Button (موبائل گیلری میں تصویر محفوظ کریں) -->
+          <button id="btn-save-receipt-image" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black rounded-2xl text-xs shadow-md transition flex items-center justify-center gap-1.5 btn-press">
+            <span class="text-base">🖼️</span>
+            <span>تصویر محفوظ کریں (گیلری)</span>
+          </button>
+          
+          <!-- WhatsApp Share -->
+          <button id="btn-share-receipt-whatsapp" class="px-3.5 py-3 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-2xl text-xs transition flex items-center justify-center gap-1 btn-press">
+            <span>💬</span>
+            <span class="hidden xs:inline">شیئر</span>
+          </button>
+        </div>
+
+        <!-- Row 2: Print & Close -->
+        <div class="flex items-center gap-2">
+          <button id="btn-print-receipt" class="flex-1 py-2.5 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1 btn-press">
+            <span>🖨️</span>
+            <span>پرنٹ کریں</span>
+          </button>
+          <button id="btn-dismiss-receipt" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition btn-press">
+            بند کریں
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. MODAL: DELETE TRANSACTION CONFIRMATION                                 -->
+  <!-- ========================================================================= -->
+  <div id="modal-delete-confirm" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Header -->
+      <div class="bg-rose-600 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🗑️</span>
+          <h3 class="font-bold text-sm sm:text-base text-white">اندراج ڈیلیٹ کریں</h3>
+        </div>
+        <button id="btn-close-delete-modal" class="text-rose-200 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-4 space-y-3.5 text-xs sm:text-sm">
+        <p class="text-slate-700 font-bold text-center">
+          کیا آپ واقعی یہ اندراج حذف (Delete) کرنا چاہتے ہیں؟
+        </p>
+
+        <!-- Selected Transaction Details Card -->
+        <div class="p-3 bg-rose-50/70 border border-rose-200/80 rounded-2xl space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2" id="delete-modal-cat-badge">
+              <span class="text-2xl" id="delete-modal-icon">👶</span>
+              <span class="font-black text-slate-900 text-sm" id="delete-modal-cat-name">پیمپر</span>
+            </div>
+            <span class="font-mono font-black text-base text-rose-700" id="delete-modal-amount">Rs. 0</span>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-rose-100">
+            <span>وقت: <span id="delete-modal-time" class="font-mono font-bold text-slate-700">--</span></span>
+            <span id="delete-modal-note-box" class="truncate max-w-[140px] text-slate-600">--</span>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-400 text-center">
+          ⚠️ ڈیلیٹ کرنے پر آج کے ٹوٹل اور کھاتہ سے یہ رقم کم ہو جائے گی۔
+        </p>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+        <button id="btn-cancel-delete" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-2xl text-xs transition btn-press">
+          منسوخ کریں
+        </button>
+        <button id="btn-confirm-delete-action" class="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white font-black rounded-2xl text-xs shadow-sm transition flex items-center justify-center gap-1.5 btn-press">
+          <span>🗑️</span>
+          <span>ہاں، ڈیلیٹ کریں</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 8. MODAL: 3D BRAND LOGO SHOWCASE & DOWNLOAD                               -->
+  <!-- ========================================================================= -->
+  <div id="modal-logo-showcase" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 hidden">
+    <div class="bg-slate-900 border border-slate-700/80 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white p-4 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">✨</span>
+          <div>
+            <h3 class="font-black text-sm sm:text-base text-amber-300">مرزا موبائل اینڈ ڈائپر شاپ</h3>
+            <p class="text-[10px] text-slate-400">پریمیم تھری ڈی برانڈ لوگو (3D Vector Master)</p>
+          </div>
+        </div>
+        <button id="btn-close-logo-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <!-- Body / Logo Display Area -->
+      <div class="p-4 sm:p-6 flex flex-col items-center justify-center space-y-4">
+        
+        <!-- Big 3D Logo Showcase Container -->
+        <div class="w-full max-w-[340px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-amber-500/30 bg-slate-950 relative group">
+          <img src="/assets/mirza_shop_logo.svg" alt="مرزا موبائل اینڈ ڈائپر شاپ تھری ڈی لوگو" class="w-full h-full object-contain filter drop-shadow-2xl transition duration-300 group-hover:scale-105" />
+          <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-xs px-2.5 py-1 rounded-xl text-[10px] font-mono text-amber-300 border border-amber-500/30">
+            HD 800×800
+          </div>
+        </div>
+
+        <!-- Description Box -->
+        <div class="w-full bg-slate-800/80 border border-slate-700 rounded-2xl p-3 text-xs text-slate-300 space-y-1.5">
+          <div class="flex items-center justify-between text-amber-400 font-bold">
+            <span>🔹 لوگو کے خاص عناصر:</span>
+            <span class="text-[11px] text-emerald-400">✓ تصدیق شدہ</span>
+          </div>
+          <ul class="text-[11px] text-slate-300 space-y-1 list-disc list-inside pr-1">
+            <li><strong>کثیر الاضلاعی فریم:</strong> رائل بلیو ٹیکسٹائل اور پالش گولڈ میٹل کا امتزاج۔</li>
+            <li><strong>خوبصورت خطاطی:</strong> ابھرا ہوا سنہری اردو متن مع انگریزی سب ٹائٹل۔</li>
+            <li><strong>مرکزی عناصر:</strong> نرم کاٹن ڈائیپر، جدید سمارٹ فون اور فولڈڈ میپ لوکیشن پن۔</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="p-3.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-2">
+        <button id="btn-dismiss-logo-modal" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-2xl text-xs transition btn-press">
+          بند کریں
+        </button>
+        <a href="/assets/mirza_shop_logo.svg" download="Mirza_Shop_3D_Logo.svg" class="flex-1 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black rounded-2xl text-xs shadow-md transition flex items-center justify-center gap-1.5 btn-press">
+          <span>💾</span>
+          <span>لوگو ڈاؤن لوڈ کریں</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2 transition-all transform duration-200 opacity-0 pointer-events-none translate-y-4">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">کامیابی!</span>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    /**
+     * Mirza Mobile & Diaper Shop - Native PWA & Indestructible Persistent Storage Engine
+     */
+
+    // Capture Chrome PWA Install Prompt Immediately at Top-Level
+    let deferredPrompt = null;
+    let isAppInstalled = false;
+
+    // Register Service Worker immediately
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => {
+          console.log('SW Registered successfully:', reg.scope);
+        })
+        .catch(err => {
+          console.warn('SW Registration:', err);
+        });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      checkAppInstallStatus();
+      console.log('Google Chrome PWA prompt ready for instant install');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      isAppInstalled = true;
+      deferredPrompt = null;
+      checkAppInstallStatus();
+      const modal = document.getElementById('modal-install');
+      if (modal) modal.classList.add('hidden');
+      showToast('مرزا شاپ ہوم سکرین پر انسٹال ہو گئی!', '📲');
+    });
+
+    // --- 1. CATEGORIES DEFINITION ---
+    const CATEGORIES = {
+      diapers: { id: 'diapers', nameUr: 'پیمپر', nameEn: 'Diapers', icon: '👶', bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200', badge: 'bg-rose-100 text-rose-800' },
+      computer: { id: 'computer', nameUr: 'کمپیوٹر', nameEn: 'Computer', icon: '💻', bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-800' },
+      accessories: { id: 'accessories', nameUr: 'اسیسریز', nameEn: 'Accessories', icon: '🎧', bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
+      devices: { id: 'devices', nameUr: 'ڈیوائسز', nameEn: 'Devices', icon: '📱', bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-800' },
+      jazzcash: { id: 'jazzcash', nameUr: 'جاز کیش', nameEn: 'JazzCash', icon: '💳', bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200', badge: 'bg-amber-100 text-amber-800' },
+      easypaisa: { id: 'easypaisa', nameUr: 'ایزی پیسہ', nameEn: 'Easypaisa', icon: '💸', bg: 'bg-teal-50', text: 'text-teal-900', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-800' },
+      easyload: { id: 'easyload', nameUr: 'ایزی لوڈ', nameEn: 'Easyload', icon: '⚡', bg: 'bg-fuchsia-50', text: 'text-fuchsia-900', border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800' },
+      other: { id: 'other', nameUr: 'دیگر', nameEn: 'Other', icon: '⚙️', bg: 'bg-slate-100', text: 'text-slate-800', border: 'border-slate-200', badge: 'bg-slate-200 text-slate-800' }
+    };
+
+    // --- 2. INDEXED DB & PERSISTENT DUAL-LAYER STORAGE ENGINE ---
+    const DB_NAME = 'MirzaShop_DB';
+    const DB_VERSION = 1;
+    let db = null;
+
+    // Request Persistent Storage from Chrome (Guarantees data survives browser cache clearance)
+    async function ensurePersistentStorage() {
+      try {
+        if (navigator.storage && navigator.storage.persist) {
+          const isPersisted = await navigator.storage.persisted();
+          if (!isPersisted) {
+            const granted = await navigator.storage.persist();
+            console.log('Persistent Storage Granted by Chrome:', granted);
+          }
+        }
+      } catch (err) {
+        console.warn('Storage persist check:', err);
+      }
+    }
+
+    function initDB() {
+      return new Promise((resolve) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = (e) => {
+          const database = e.target.result;
+          if (!database.objectStoreNames.contains('active_transactions')) {
+            const txStore = database.createObjectStore('active_transactions', { keyPath: 'id' });
+            txStore.createIndex('timestamp', 'timestamp', { unique: false });
+          }
+          if (!database.objectStoreNames.contains('closings')) {
+            const closingStore = database.createObjectStore('closings', { keyPath: 'id' });
+            closingStore.createIndex('date', 'date', { unique: false });
+            closingStore.createIndex('month', 'month', { unique: false });
+          }
+        };
+        request.onsuccess = (e) => {
+          db = e.target.result;
+          resolve(db);
+        };
+        request.onerror = () => resolve(null);
+      });
+    }
+
+    // Emergency snapshot safeguard
+    function saveEmergencySnapshot() {
+      try {
+        const snapshot = {
+          timestamp: Date.now(),
+          savedAt: new Date().toISOString(),
+          activeTransactions: activeTransactions || [],
+          closings: closingsList || []
+        };
+        localStorage.setItem('mirza_emergency_snapshot', JSON.stringify(snapshot));
+        localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions || []));
+        localStorage.setItem('mirza_closings', JSON.stringify(closingsList || []));
+      } catch (e) {
+        console.warn('Snapshot error:', e);
+      }
+    }
+
+    async function dbAdd(storeName, item) {
+      fallbackAdd(storeName, item);
+      saveEmergencySnapshot();
+
+      if (!db) return true;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(storeName, 'readwrite');
+          const store = tx.objectStore(storeName);
+          store.put(item);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    async function dbGetAll(storeName) {
+      let items = [];
+      if (db) {
+        items = await new Promise((resolve) => {
+          try {
+            const tx = db.transaction(storeName, 'readonly');
+            const store = tx.objectStore(storeName);
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result || []);
+            req.onerror = () => resolve([]);
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      }
+      if (!items || items.length === 0) {
+        items = fallbackGetAll(storeName);
+      }
+      return items || [];
+    }
+
+    async function dbDelete(storeName, id) {
+      fallbackDelete(storeName, id);
+      saveEmergencySnapshot();
+
+      if (!db) return true;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(storeName, 'readwrite');
+          const store = tx.objectStore(storeName);
+          store.delete(id);
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    async function dbClear(storeName) {
+      fallbackClear(storeName);
+      saveEmergencySnapshot();
+
+      if (!db) return true;
+      return new Promise((resolve) => {
+        try {
+          const tx = db.transaction(storeName, 'readwrite');
+          const store = tx.objectStore(storeName);
+          store.clear();
+          tx.oncomplete = () => resolve(true);
+          tx.onerror = () => resolve(false);
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
+    // Synchronous LocalStorage Mirrored Fallbacks
+    function fallbackAdd(storeName, item) {
+      try {
+        const items = fallbackGetAll(storeName);
+        const idx = items.findIndex(x => x.id === item.id);
+        if (idx >= 0) items[idx] = item; else items.push(item);
+        localStorage.setItem(`mirza_${storeName}`, JSON.stringify(items));
+      } catch (e) {}
+      return true;
+    }
+
+    function fallbackGetAll(storeName) {
+      try {
+        return JSON.parse(localStorage.getItem(`mirza_${storeName}`) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function fallbackDelete(storeName, id) {
+      try {
+        const items = fallbackGetAll(storeName).filter(x => x.id !== id);
+        localStorage.setItem(`mirza_${storeName}`, JSON.stringify(items));
+      } catch (e) {}
+      return true;
+    }
+
+    function fallbackClear(storeName) {
+      try {
+        localStorage.removeItem(`mirza_${storeName}`);
+      } catch (e) {}
+      return true;
+    }
+
+    // --- 3. STATE ---
+    let activeTransactions = [];
+    let closingsList = [];
+    let isSoundEnabled = localStorage.getItem('mirza_sound') !== 'false';
+    let currentPageIndex = 0; // 0 = Page 1, 1 = Page 2
+    let page2ActiveSubtab = 'daily'; // 'daily', 'monthly', 'yearly'
+    let pendingDeleteTxId = null;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(type = 'click') {
+      if (!isSoundEnabled) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'sale') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === 'close') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+      } catch (e) {}
+    }
+
+    // --- 4. DATES ---
+    const URDU_MONTHS = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'];
+    const URDU_DAYS = ['اتوار', 'پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ'];
+
+    function getTodayDateStr() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function getMonthStr(dateObj = new Date()) {
+      return `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function formatTime12(dateObj) {
+      let hrs = dateObj.getHours();
+      const mins = String(dateObj.getMinutes()).padStart(2, '0');
+      const ampm = hrs >= 12 ? 'شام' : 'صبح';
+      hrs = hrs % 12 || 12;
+      return `${hrs}:${mins} ${ampm}`;
+    }
+
+    function formatUrduDate(dateStr) {
+      try {
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+          const d = new Date(parts[0], parts[1] - 1, parts[2]);
+          return `${parts[2]} ${URDU_MONTHS[d.getMonth()]} ${parts[0]}`;
+        }
+      } catch {}
+      return dateStr;
+    }
+
+    function updateLiveDateTime() {
+      const now = new Date();
+      const dayEl = document.getElementById('header-date-day');
+      const numEl = document.getElementById('header-date-num');
+      const monthEl = document.getElementById('header-date-month');
+      const timeEl = document.getElementById('header-live-time');
+
+      if (dayEl) dayEl.textContent = URDU_DAYS[now.getDay()];
+      if (numEl) numEl.textContent = now.getDate();
+      if (monthEl) monthEl.textContent = URDU_MONTHS[now.getMonth()];
+      if (timeEl) timeEl.textContent = formatTime12(now);
+    }
+
+    function numberToUrduWords(num) {
+      if (!num || isNaN(num) || num <= 0) return 'صفر روپے';
+      if (num >= 10000000) return `${(num / 10000000).toFixed(2)} کروڑ روپے`;
+      if (num >= 100000) return `${(num / 100000).toFixed(2)} لاکھ روپے`;
+      if (num >= 1000) return `${(num / 1000).toFixed(1)} ہزار روپے`;
+      return `${num} روپے`;
+    }
+
+    // --- 5. PWA & DIRECT CHROME INSTALLATION ---
+    function checkAppInstallStatus() {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                           window.navigator.standalone === true ||
+                           document.referrer.includes('android-app://');
+      
+      if (isStandalone) {
+        isAppInstalled = true;
+      }
+
+      const installBtn = document.getElementById('btn-pwa-install');
+      if (installBtn) {
+        if (isAppInstalled) {
+          installBtn.style.display = 'none';
+          installBtn.classList.add('hidden');
+        } else {
+          installBtn.style.display = 'flex';
+          installBtn.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Direct Instant One-Click Chrome Pop-up Install
+    function triggerDirectChromeInstall() {
+      playBeep('click');
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(({ outcome }) => {
+          if (outcome === 'accepted') {
+            isAppInstalled = true;
+            checkAppInstallStatus();
+            const modal = document.getElementById('modal-install');
+            if (modal) modal.classList.add('hidden');
+            showToast('مرزا شاپ انسٹال ہو گئی!', '📲');
+          }
+          deferredPrompt = null;
+          checkAppInstallStatus();
+        });
+      } else {
+        openInstallModal();
+      }
+    }
+
+    function openInstallModal() {
+      playBeep('click');
+      const modal = document.getElementById('modal-install');
+      const btnText = document.getElementById('btn-modal-direct-install-text');
+      
+      if (deferredPrompt) {
+        if (btnText) btnText.textContent = 'ابھی ایپ انسٹال کریں';
+      } else {
+        if (btnText) btnText.textContent = 'کروم مینو (3 ڈاٹس) سے انسٹال کریں';
+      }
+
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    // --- 6. PAGE NAVIGATION ---
+    function setPage(index) {
+      currentPageIndex = Math.max(0, Math.min(1, index));
+      const track = document.getElementById('slider-track');
+      const tab1 = document.getElementById('tab-page-1');
+      const tab2 = document.getElementById('tab-page-2');
+
+      const translateVal = currentPageIndex === 0 ? '0%' : '50%';
+      track.style.transform = `translateX(${translateVal})`;
+
+      if (currentPageIndex === 0) {
+        tab1.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-xs transition flex items-center justify-center gap-1.5 btn-press';
+        tab2.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 btn-press';
+      } else {
+        tab2.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-xs transition flex items-center justify-center gap-1.5 btn-press';
+        tab1.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 btn-press';
+        renderLedgerView();
+        renderYearlyView();
+      }
+    }
+
+    function switchPage2Subtab(subtab) {
+      page2ActiveSubtab = subtab;
+      const tabDaily = document.getElementById('subtab-daily');
+      const tabMonthly = document.getElementById('subtab-monthly');
+      const tabYearly = document.getElementById('subtab-yearly');
+
+      const viewDaily = document.getElementById('view-daily-section');
+      const viewMonthly = document.getElementById('view-monthly-section');
+      const viewYearly = document.getElementById('view-yearly-section');
+
+      // Reset classes
+      [tabDaily, tabMonthly, tabYearly].forEach(t => {
+        t.className = 'flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition btn-press';
+      });
+      [viewDaily, viewMonthly, viewYearly].forEach(v => {
+        v.classList.add('hidden');
+        v.classList.remove('flex');
+      });
+
+      if (subtab === 'daily') {
+        tabDaily.className = 'flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm bg-white text-indigo-700 shadow-xs transition btn-press';
+        viewDaily.classList.remove('hidden');
+        viewDaily.classList.add('flex');
+      } else if (subtab === 'monthly') {
+        tabMonthly.className = 'flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm bg-white text-indigo-700 shadow-xs transition btn-press';
+        viewMonthly.classList.remove('hidden');
+        viewMonthly.classList.add('flex');
+        renderLedgerView();
+      } else if (subtab === 'yearly') {
+        tabYearly.className = 'flex-1 py-2 sm:py-2.5 px-2 rounded-xl font-black text-xs sm:text-sm bg-white text-purple-700 shadow-xs transition btn-press';
+        viewYearly.classList.remove('hidden');
+        viewYearly.classList.add('flex');
+        renderYearlyView();
+      }
+    }
+
+    function initSwipeGestures() {
+      const carousel = document.getElementById('carousel-viewport');
+      let startX = 0;
+      let startY = 0;
+      let diffX = 0;
+      let isSwiping = false;
+
+      carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isSwiping = true;
+      }, { passive: true });
+
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isSwiping) return;
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        diffX = currentX - startX;
+        const diffY = currentY - startY;
+
+        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 20) {
+          isSwiping = false;
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', () => {
+        if (!isSwiping) return;
+        isSwiping = false;
+        if (diffX < -50) {
+          setPage(1);
+          playBeep('click');
+        } else if (diffX > 50) {
+          setPage(0);
+          playBeep('click');
+        }
+        diffX = 0;
+      });
+    }
+
+    // --- 7. CALCULATIONS & DASHBOARD ---
+    function calculateSubtotals(transactions) {
+      const subtotals = {};
+      const counts = {};
+      let total = 0;
+
+      Object.keys(CATEGORIES).forEach(key => {
+        subtotals[key] = 0;
+        counts[key] = 0;
+      });
+
+      transactions.forEach(t => {
+        const amt = Number(t.amount) || 0;
+        const cat = t.category || 'other';
+        subtotals[cat] = (subtotals[cat] || 0) + amt;
+        counts[cat] = (counts[cat] || 0) + 1;
+        total += amt;
+      });
+
+      let maxCat = 'کوئی نہیں';
+      let maxAmt = 0;
+      Object.keys(subtotals).forEach(cat => {
+        if (subtotals[cat] > maxAmt) {
+          maxAmt = subtotals[cat];
+          maxCat = `${CATEGORIES[cat].nameUr} (Rs. ${maxAmt.toLocaleString()})`;
+        }
+      });
+
+      return { subtotals, counts, total, maxCat };
+    }
+
+    function renderSubtotalsGrid(stats) {
+      const grid = document.getElementById('subtotals-grid');
+      if (!grid) return;
+
+      grid.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = stats.subtotals[key] || 0;
+        const count = stats.counts[key] || 0;
+        const hasSales = amt > 0;
+
+        return `
+          <div class="p-2.5 rounded-2xl border ${hasSales ? cat.border + ' ' + cat.bg : 'border-slate-100 bg-slate-50'} flex justify-between items-center transition shadow-2xs">
+            <div class="flex items-center gap-1.5">
+              <span class="text-lg">${cat.icon}</span>
+              <div>
+                <span class="font-black block ${hasSales ? cat.text : 'text-slate-700'} text-xs">${cat.nameUr}</span>
+                <span class="text-[10px] text-slate-400">${count} انٹریز</span>
+              </div>
+            </div>
+            <span class="font-mono font-black text-xs ${hasSales ? cat.text : 'text-slate-400'}">
+              ${amt.toLocaleString()}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRecentTransactions() {
+      const container = document.getElementById('recent-transactions-list');
+      const countTag = document.getElementById('recent-count-tag');
+      const page1List = document.getElementById('page1-mini-tx-list');
+      const page1Count = document.getElementById('page1-recent-count');
+      const undoBtn = document.getElementById('btn-undo-last-tx');
+
+      const reversed = [...activeTransactions].sort((a, b) => b.timestamp - a.timestamp);
+      
+      if (countTag) countTag.textContent = `${reversed.length} ریکارڈز`;
+      if (page1Count) page1Count.textContent = `${reversed.length} انٹریز`;
+      const badge = document.getElementById('header-tx-badge');
+      if (badge) badge.textContent = `${reversed.length} سیلز`;
+
+      // Show or hide Undo Last Entry button on Page 1
+      if (undoBtn) {
+        if (reversed.length > 0) {
+          undoBtn.classList.remove('hidden');
+          undoBtn.classList.add('flex');
+        } else {
+          undoBtn.classList.add('hidden');
+          undoBtn.classList.remove('flex');
+        }
+      }
+
+      if (page1List) {
+        if (reversed.length === 0) {
+          page1List.innerHTML = `<div class="text-center text-slate-400 py-3 text-xs">آج ابھی تک کوئی سیل درج نہیں ہوئی۔</div>`;
+        } else {
+          page1List.innerHTML = reversed.slice(0, 4).map(t => {
+            const cat = CATEGORIES[t.category] || CATEGORIES.other;
+            return `
+              <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100 hover:bg-white transition shadow-2xs">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">${cat.icon}</span>
+                  <div>
+                    <span class="font-bold text-slate-800 text-xs block">${cat.nameUr}</span>
+                    ${t.note ? `<span class="text-[10px] text-slate-400 truncate max-w-[120px] block">(${escapeHtml(t.note)})</span>` : ''}
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="font-mono font-bold text-slate-900 text-xs">Rs. ${Number(t.amount).toLocaleString()}</span>
+                  <button onclick="openDeleteModal('${t.id}')" title="یہ انٹری ڈیلیٹ کریں" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition btn-press">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      if (!container) return;
+      if (reversed.length === 0) {
+        container.innerHTML = `<div class="py-6 text-center text-slate-400 text-xs">آج ابھی تک کوئی سیل درج نہیں ہوئی۔</div>`;
+        return;
+      }
+
+      container.innerHTML = reversed.map(t => {
+        const cat = CATEGORIES[t.category] || CATEGORIES.other;
+        const timeStr = formatTime12(new Date(t.timestamp));
+
+        return `
+          <div class="flex items-center justify-between p-2.5 rounded-2xl border border-slate-100 bg-slate-50/80 hover:bg-white hover:border-slate-200 transition shadow-2xs">
+            <div class="flex items-center gap-2.5">
+              <span class="text-base p-1.5 rounded-xl ${cat.bg} border ${cat.border}">${cat.icon}</span>
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-xs text-slate-800">${cat.nameUr}</span>
+                  <span class="text-[10px] text-slate-400 font-mono">(${timeStr})</span>
+                </div>
+                ${t.note ? `<p class="text-[11px] text-slate-500 truncate max-w-[150px] sm:max-w-xs">${escapeHtml(t.note)}</p>` : ''}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-xs sm:text-sm text-slate-900">
+                Rs. ${Number(t.amount).toLocaleString()}
+              </span>
+              <button onclick="openDeleteModal('${t.id}')" title="حذف کریں" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center gap-1 transition btn-press">
+                <span>🗑️</span>
+                <span>ڈیلیٹ</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function refreshTodayDashboard() {
+      const stats = calculateSubtotals(activeTransactions);
+      const formattedTotal = stats.total.toLocaleString();
+
+      document.getElementById('stat-today-total').textContent = formattedTotal;
+      document.getElementById('header-stat-today-total').textContent = formattedTotal;
+      document.getElementById('stat-top-category').textContent = stats.maxCat;
+
+      renderSubtotalsGrid(stats);
+      renderRecentTransactions();
+    }
+
+    async function logSale(categoryId) {
+      const input = document.getElementById('input-amount');
+      const noteInput = document.getElementById('input-note');
+      const amountVal = parseFloat(input.value.replace(/,/g, ''));
+
+      if (isNaN(amountVal) || amountVal <= 0) {
+        showToast('پہلے رقم درج کریں!', '⚠️');
+        toggleNumpad(true);
+        return;
+      }
+
+      const tx = {
+        id: 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+        amount: amountVal,
+        category: categoryId,
+        note: (noteInput.value || '').trim(),
+        timestamp: Date.now(),
+        date: getTodayDateStr()
+      };
+
+      activeTransactions.push(tx);
+      await dbAdd('active_transactions', tx);
+
+      playBeep('sale');
+      showToast(`${CATEGORIES[categoryId].nameUr}: Rs. ${amountVal.toLocaleString()} درج`, '✓');
+
+      input.value = '';
+      noteInput.value = '';
+      document.getElementById('amount-in-words').textContent = 'صفر روپے';
+
+      refreshTodayDashboard();
+    }
+
+    function openDeleteModal(txId) {
+      const tx = activeTransactions.find(x => x.id === txId);
+      if (!tx) return;
+
+      pendingDeleteTxId = txId;
+      playBeep('click');
+
+      const cat = CATEGORIES[tx.category] || CATEGORIES.other;
+      const timeStr = formatTime12(new Date(tx.timestamp));
+
+      document.getElementById('delete-modal-icon').textContent = cat.icon;
+      document.getElementById('delete-modal-cat-name').textContent = cat.nameUr;
+      document.getElementById('delete-modal-amount').textContent = `Rs. ${Number(tx.amount).toLocaleString()}`;
+      document.getElementById('delete-modal-time').textContent = timeStr;
+      
+      const noteBox = document.getElementById('delete-modal-note-box');
+      if (tx.note) {
+        noteBox.textContent = `نوٹ: ${tx.note}`;
+        noteBox.classList.remove('hidden');
+      } else {
+        noteBox.textContent = 'کوئی نوٹ نہیں';
+      }
+
+      const modal = document.getElementById('modal-delete-confirm');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    async function confirmDeleteAction() {
+      if (!pendingDeleteTxId) return;
+
+      const txToDelete = activeTransactions.find(x => x.id === pendingDeleteTxId);
+      const catName = txToDelete ? (CATEGORIES[txToDelete.category]?.nameUr || '') : '';
+      const amtVal = txToDelete ? Number(txToDelete.amount).toLocaleString() : '';
+
+      activeTransactions = activeTransactions.filter(x => x.id !== pendingDeleteTxId);
+      await dbDelete('active_transactions', pendingDeleteTxId);
+
+      const modal = document.getElementById('modal-delete-confirm');
+      if (modal) modal.classList.add('hidden');
+      pendingDeleteTxId = null;
+
+      playBeep('click');
+      showToast(`اندراج (Rs. ${amtVal} ${catName}) حذف کر دیا گیا`, '🗑️');
+      refreshTodayDashboard();
+    }
+
+    function undoLastSale() {
+      if (activeTransactions.length === 0) {
+        showToast('آج کوئی اندراج موجود نہیں ہے', 'ℹ️');
+        return;
+      }
+      const lastTx = [...activeTransactions].sort((a, b) => b.timestamp - a.timestamp)[0];
+      if (lastTx) {
+        openDeleteModal(lastTx.id);
+      }
+    }
+
+    // Keep backwards compatible function
+    async function deleteTransaction(txId) {
+      openDeleteModal(txId);
+    }
+
+    // --- 8. DAY CLOSING ---
+    function openClosingModal() {
+      if (activeTransactions.length === 0) {
+        if (!confirm('آج کا کاؤنٹر خالی ہے۔ کیا پھر بھی 0 روپے کی کلوزنگ کرنی ہے؟')) {
+          return;
+        }
+      }
+
+      const stats = calculateSubtotals(activeTransactions);
+      const dateStr = getTodayDateStr();
+
+      document.getElementById('closing-modal-date').textContent = `تاریخ: ${formatUrduDate(dateStr)}`;
+      document.getElementById('closing-grand-total').textContent = `Rs. ${stats.total.toLocaleString()}`;
+      document.getElementById('closing-tx-count').textContent = `${activeTransactions.length}`;
+      document.getElementById('input-closing-notes').value = '';
+
+      const tbody = document.getElementById('closing-categories-tbody');
+      tbody.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = stats.subtotals[key] || 0;
+        const count = stats.counts[key] || 0;
+        return `
+          <tr class="hover:bg-slate-50/80">
+            <td class="p-2 font-medium flex items-center gap-1.5">
+              <span>${cat.icon}</span>
+              <span class="font-bold text-slate-800">${cat.nameUr}</span>
+            </td>
+            <td class="p-2 text-center text-slate-500 font-mono">${count}</td>
+            <td class="p-2 text-left font-mono font-bold text-slate-900">Rs. ${amt.toLocaleString()}</td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('modal-closing').classList.remove('hidden');
+    }
+
+    async function executeDayClosing() {
+      const stats = calculateSubtotals(activeTransactions);
+      const notes = (document.getElementById('input-closing-notes').value || '').trim();
+      const dateStr = getTodayDateStr();
+      const monthStr = getMonthStr();
+      const yearStr = String(new Date().getFullYear());
+
+      const closingRecord = {
+        id: 'closing_' + dateStr + '_' + Date.now(),
+        date: dateStr,
+        month: monthStr,
+        year: yearStr,
+        timestamp: Date.now(),
+        grandTotal: stats.total,
+        txCount: activeTransactions.length,
+        subtotals: stats.subtotals,
+        counts: stats.counts,
+        notes: notes,
+        transactionsArchive: [...activeTransactions]
+      };
+
+      await dbAdd('closings', closingRecord);
+      closingsList.push(closingRecord);
+
+      await dbClear('active_transactions');
+      activeTransactions = [];
+
+      document.getElementById('modal-closing').classList.add('hidden');
+
+      playBeep('close');
+      showToast(`کلوزنگ محفوظ! کل رقم: Rs. ${stats.total.toLocaleString()}`, '🔒');
+
+      refreshTodayDashboard();
+      renderLedgerView();
+      renderYearlyView();
+      openReceiptModal(closingRecord);
+    }
+
+    // --- 9. MONTHLY LEDGER ---
+    function renderLedgerMonthSelector() {
+      const select = document.getElementById('select-ledger-month');
+      if (!select) return;
+
+      const monthsSet = new Set();
+      monthsSet.add(getMonthStr());
+
+      closingsList.forEach(c => {
+        if (c.month) monthsSet.add(c.month);
+      });
+
+      const monthsArr = Array.from(monthsSet).sort().reverse();
+      const currentSelected = select.value || getMonthStr();
+
+      select.innerHTML = monthsArr.map(m => {
+        const [yr, mo] = m.split('-');
+        const name = `${URDU_MONTHS[parseInt(mo, 10) - 1]} ${yr}`;
+        return `<option value="${m}" ${m === currentSelected ? 'selected' : ''}>${name}</option>`;
+      }).join('');
+    }
+
+    function renderLedgerView() {
+      renderLedgerMonthSelector();
+
+      const select = document.getElementById('select-ledger-month');
+      const selectedMonth = select ? select.value || getMonthStr() : getMonthStr();
+
+      const filteredClosings = closingsList
+        .filter(c => c.month === selectedMonth)
+        .sort((a, b) => b.timestamp - a.timestamp);
+
+      let monthGrandTotal = 0;
+      const monthCategoryTotals = {};
+      Object.keys(CATEGORIES).forEach(k => { monthCategoryTotals[k] = 0; });
+
+      filteredClosings.forEach(c => {
+        monthGrandTotal += (c.grandTotal || 0);
+        if (c.subtotals) {
+          Object.keys(c.subtotals).forEach(cat => {
+            monthCategoryTotals[cat] = (monthCategoryTotals[cat] || 0) + (c.subtotals[cat] || 0);
+          });
+        }
+      });
+
+      const daysCount = filteredClosings.length;
+      const avgDaily = daysCount > 0 ? Math.round(monthGrandTotal / daysCount) : 0;
+
+      document.getElementById('stat-month-total').textContent = `Rs. ${monthGrandTotal.toLocaleString()}`;
+      document.getElementById('stat-month-days').textContent = `${daysCount} دن`;
+      document.getElementById('stat-month-avg').textContent = `Rs. ${avgDaily.toLocaleString()}`;
+      document.getElementById('closed-days-count').textContent = `${daysCount} ریکارڈز`;
+
+      const barsContainer = document.getElementById('month-category-bars');
+      if (barsContainer) {
+        barsContainer.innerHTML = Object.keys(CATEGORIES).map(key => {
+          const cat = CATEGORIES[key];
+          const amt = monthCategoryTotals[key] || 0;
+          const pct = monthGrandTotal > 0 ? ((amt / monthGrandTotal) * 100).toFixed(1) : 0;
+
+          return `
+            <div class="p-2.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+              <div class="flex items-center justify-between text-xs text-slate-700 font-medium">
+                <span class="flex items-center gap-1.5">
+                  <span>${cat.icon}</span>
+                  <span class="font-bold text-slate-800">${cat.nameUr}</span>
+                  <span class="text-[10px] text-slate-400 font-mono">(${pct}%)</span>
+                </span>
+                <span class="font-mono font-bold text-slate-900">Rs. ${amt.toLocaleString()}</span>
+              </div>
+              <div class="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full rounded-full transition-all duration-500 bg-indigo-600" style="width: ${pct}%;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const listContainer = document.getElementById('closed-days-list');
+      if (!listContainer) return;
+
+      if (filteredClosings.length === 0) {
+        listContainer.innerHTML = `<div class="py-6 text-center text-slate-400 text-xs">اس مہینے میں ابھی کوئی کلوزنگ نہیں ہے۔</div>`;
+        return;
+      }
+
+      listContainer.innerHTML = filteredClosings.map(c => {
+        const dateFormatted = formatUrduDate(c.date);
+        const timeFormatted = formatTime12(new Date(c.timestamp));
+
+        const pills = Object.keys(CATEGORIES).map(k => {
+          const amt = (c.subtotals && c.subtotals[k]) || 0;
+          if (amt <= 0) return '';
+          const cat = CATEGORIES[k];
+          return `
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold ${cat.badge} border ${cat.border}">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr}:</span>
+              <span class="font-mono">Rs. ${amt.toLocaleString()}</span>
+            </span>
+          `;
+        }).filter(Boolean).join('');
+
+        return `
+          <div class="p-3 rounded-2xl border border-slate-100 bg-slate-50/80 hover:bg-white hover:border-slate-200 transition shadow-2xs space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-bold text-xs sm:text-sm text-slate-900 block">${dateFormatted}</span>
+                <span class="text-[10px] text-slate-500 font-mono">وقت: ${timeFormatted} • (${c.txCount || 0} انٹریز)</span>
+              </div>
+              <div class="text-left flex items-center gap-2">
+                <div>
+                  <span class="text-[9px] text-slate-400 font-bold uppercase block">کل سیل</span>
+                  <span class="font-mono font-black text-sm sm:text-base text-indigo-700">Rs. ${(c.grandTotal || 0).toLocaleString()}</span>
+                </div>
+                <button onclick="viewReceiptById('${c.id}')" title="رسید دیکھیں / پرنٹ کریں" class="p-1.5 bg-white hover:bg-indigo-50 text-indigo-700 rounded-xl text-xs font-bold border border-slate-200 shadow-2xs transition btn-press">
+                  🖨️
+                </button>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1 pt-1 border-t border-slate-200/60">
+              ${pills || '<span class="text-[10px] text-slate-400">کوئی تفصیل نہیں</span>'}
+            </div>
+
+            ${c.notes ? `<div class="text-[11px] text-slate-600 bg-white p-1.5 rounded-xl border border-slate-100">📝 <span class="font-bold">نوٹ:</span> ${escapeHtml(c.notes)}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- 10. YEARLY LEDGER ---
+    function renderYearlySelector() {
+      const select = document.getElementById('select-ledger-year');
+      if (!select) return;
+
+      const currentYear = String(new Date().getFullYear());
+      const yearsSet = new Set();
+      yearsSet.add(currentYear);
+
+      closingsList.forEach(c => {
+        if (c.year) yearsSet.add(String(c.year));
+        else if (c.date) yearsSet.add(c.date.split('-')[0]);
+      });
+
+      const yearsArr = Array.from(yearsSet).sort().reverse();
+      const currentSelected = select.value || currentYear;
+
+      select.innerHTML = yearsArr.map(y => {
+        return `<option value="${y}" ${y === currentSelected ? 'selected' : ''}>سال ${y}</option>`;
+      }).join('');
+    }
+
+    function renderYearlyView() {
+      renderYearlySelector();
+      const select = document.getElementById('select-ledger-year');
+      const selectedYear = select ? select.value || String(new Date().getFullYear()) : String(new Date().getFullYear());
+
+      const filteredClosings = closingsList.filter(c => {
+        const yr = c.year || (c.date ? c.date.split('-')[0] : '');
+        return yr === selectedYear;
+      });
+
+      let yearGrandTotal = 0;
+      const monthlyBreakdown = {};
+      for (let i = 1; i <= 12; i++) {
+        const moStr = String(i).padStart(2, '0');
+        const key = `${selectedYear}-${moStr}`;
+        monthlyBreakdown[key] = { monthNum: i, total: 0, days: 0 };
+      }
+
+      filteredClosings.forEach(c => {
+        yearGrandTotal += (c.grandTotal || 0);
+        if (c.month && monthlyBreakdown[c.month]) {
+          monthlyBreakdown[c.month].total += (c.grandTotal || 0);
+          monthlyBreakdown[c.month].days += 1;
+        }
+      });
+
+      const totalClosedDays = filteredClosings.length;
+      const activeMonthsCount = Object.values(monthlyBreakdown).filter(m => m.days > 0).length || 1;
+      const monthlyAvg = Math.round(yearGrandTotal / activeMonthsCount);
+
+      document.getElementById('stat-year-total').textContent = `Rs. ${yearGrandTotal.toLocaleString()}`;
+      document.getElementById('stat-year-days').textContent = `${totalClosedDays} دن`;
+      document.getElementById('stat-year-avg').textContent = `Rs. ${monthlyAvg.toLocaleString()}`;
+
+      const monthsList = document.getElementById('yearly-months-list');
+      if (!monthsList) return;
+
+      const maxMonthSale = Math.max(...Object.values(monthlyBreakdown).map(m => m.total), 1);
+
+      monthsList.innerHTML = Object.keys(monthlyBreakdown).map(k => {
+        const item = monthlyBreakdown[k];
+        const monthName = URDU_MONTHS[item.monthNum - 1];
+        const pct = ((item.total / maxMonthSale) * 100).toFixed(1);
+        const hasData = item.total > 0;
+
+        return `
+          <div class="p-2.5 bg-slate-50 rounded-2xl border ${hasData ? 'border-purple-200 bg-purple-50/40' : 'border-slate-100'} space-y-1">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                <span class="w-5 text-center font-mono text-[11px] text-purple-700 bg-white rounded-lg border border-purple-100 py-0.5">${item.monthNum}</span>
+                <span>${monthName}</span>
+                <span class="text-[10px] text-slate-400">(${item.days} دن)</span>
+              </span>
+              <span class="font-mono font-black text-xs sm:text-sm text-slate-900">
+                Rs. ${item.total.toLocaleString()}
+              </span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-200/80 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all duration-500 bg-purple-600" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- 10. RECEIPT & IMAGE GENERATION ENGINE (روزانہ، ماہانہ، سالانہ رسید و تصویر) ---
+    let currentReceiptMeta = {
+      type: 'daily',
+      title: 'روزانہ کلوزنگ رسید',
+      dateText: '',
+      grandTotalText: 'Rs. 0',
+      filename: 'MirzaShop_Receipt.png',
+      summaryText: ''
+    };
+
+    function viewReceiptById(closingId) {
+      const c = closingsList.find(x => x.id === closingId);
+      if (c) openReceiptModal(c);
+    }
+
+    // 1. Daily Closed Day Receipt
+    function openReceiptModal(closingRecord) {
+      playBeep('click');
+      const timeStr = formatTime12(new Date(closingRecord.timestamp));
+      const dateStr = formatUrduDate(closingRecord.date);
+      const grandTotal = closingRecord.grandTotal || 0;
+
+      currentReceiptMeta = {
+        type: 'daily',
+        title: `روزانہ کلوزنگ رسید (${dateStr})`,
+        dateText: `${dateStr} - ${timeStr}`,
+        grandTotalText: `Rs. ${grandTotal.toLocaleString()}`,
+        filename: `MirzaShop_Daily_${closingRecord.date}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n🧾 *روزانہ کلوزنگ رسید*\n📅 *تاریخ:* ${dateStr} (${timeStr})\n💰 *کل میزان:* Rs. ${grandTotal.toLocaleString()}\n🔒 محفوظ شدہ ریکارڈ`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = 'روزانہ کلوزنگ رسید';
+      document.getElementById('receipt-report-badge').textContent = 'روزانہ کلوزنگ رپورٹ';
+      document.getElementById('receipt-date-time').textContent = `${dateStr} - ${timeStr}`;
+      document.getElementById('receipt-grand-total').textContent = `Rs. ${grandTotal.toLocaleString()}`;
+      
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) extraStats.classList.add('hidden');
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = (closingRecord.subtotals && closingRecord.subtotals[key]) || 0;
+        const count = (closingRecord.counts && closingRecord.counts[key]) || 0;
+        if (amt === 0 && count === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${count}):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      if (closingRecord.notes) {
+        notesBox.classList.remove('hidden');
+        document.getElementById('receipt-notes-text').textContent = closingRecord.notes;
+      } else {
+        notesBox.classList.add('hidden');
+      }
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    // 2. Daily Live Sales Receipt (آج کی لائیو سیلز رسید)
+    function openTodayLiveReceipt() {
+      playBeep('click');
+      const dateStr = formatUrduDate(getTodayDateStr());
+      const timeStr = formatTime12(new Date());
+      const stats = calculateSubtotals(activeTransactions);
+
+      if (stats.total === 0 && activeTransactions.length === 0) {
+        showToast('آج ابھی تک کوئی سیل درج نہیں ہوئی!', '⚠️');
+        return;
+      }
+
+      currentReceiptMeta = {
+        type: 'daily-live',
+        title: `آج کی سیلز رسید (${dateStr})`,
+        dateText: `${dateStr} - ${timeStr}`,
+        grandTotalText: `Rs. ${stats.total.toLocaleString()}`,
+        filename: `MirzaShop_Today_${getTodayDateStr()}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n🧾 *آج کی لائیو سیلز رپورٹ*\n📅 *تاریخ:* ${dateStr} (${timeStr})\n📊 *کل انٹریز:* ${activeTransactions.length}\n💰 *کل میزان:* Rs. ${stats.total.toLocaleString()}`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = 'آج کی لائیو سیلز رسید';
+      document.getElementById('receipt-report-badge').textContent = 'آج کی لائیو سیلز رپورٹ';
+      document.getElementById('receipt-date-time').textContent = `${dateStr} - ${timeStr}`;
+      document.getElementById('receipt-grand-total').textContent = `Rs. ${stats.total.toLocaleString()}`;
+      
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) extraStats.classList.add('hidden');
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = stats[key] || 0;
+        const count = stats.counts[key] || 0;
+        if (amt === 0 && count === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${count}):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      notesBox.classList.remove('hidden');
+      document.getElementById('receipt-notes-text').textContent = `کل ${activeTransactions.length} اندراجات (آج کا لائیو کاؤنٹر)`;
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    // 3. Monthly Receipt Report (ماہانہ رپورٹ رسید)
+    function openMonthlyReceipt() {
+      playBeep('click');
+      const select = document.getElementById('select-ledger-month');
+      const selMonth = select ? select.value : getMonthStr();
+      const monthClosings = closingsList.filter(c => c.month === selMonth);
+
+      const parts = selMonth.split('-');
+      const year = parts[0];
+      const mNum = parts[1];
+      const monthName = URDU_MONTHS[parseInt(mNum, 10) - 1] || selMonth;
+      const monthTitle = `${monthName} ${year}`;
+
+      const totalSales = monthClosings.reduce((sum, c) => sum + (c.grandTotal || 0), 0);
+      const daysCount = monthClosings.length;
+      const avgSale = daysCount > 0 ? Math.round(totalSales / daysCount) : 0;
+
+      const catTotals = {};
+      Object.keys(CATEGORIES).forEach(k => { catTotals[k] = 0; });
+      monthClosings.forEach(c => {
+        if (c.subtotals) {
+          Object.keys(CATEGORIES).forEach(k => {
+            catTotals[k] += (c.subtotals[k] || 0);
+          });
+        }
+      });
+
+      currentReceiptMeta = {
+        type: 'monthly',
+        title: `ماہانہ کھاتہ رپورٹ (${monthTitle})`,
+        dateText: `ماہ: ${monthTitle}`,
+        grandTotalText: `Rs. ${totalSales.toLocaleString()}`,
+        filename: `MirzaShop_Monthly_${selMonth}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n📊 *ماہانہ کھاتہ رپورٹ:* ${monthTitle}\n📅 *کام کے دن:* ${daysCount} دن\n💰 *ماہانہ کل سیل:* Rs. ${totalSales.toLocaleString()}\n📈 *روزانہ اوسط:* Rs. ${avgSale.toLocaleString()}`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = `ماہانہ رپورٹ (${monthTitle})`;
+      document.getElementById('receipt-report-badge').textContent = `ماہانہ کھاتہ سمری (${monthTitle})`;
+      document.getElementById('receipt-date-time').textContent = `مہینہ: ${monthTitle} • پرنٹ وقت: ${formatTime12(new Date())}`;
+      document.getElementById('receipt-grand-total').textContent = `Rs. ${totalSales.toLocaleString()}`;
+
+      // Extra Stats
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) {
+        extraStats.classList.remove('hidden');
+        document.getElementById('receipt-stat-days').textContent = `${daysCount} دن`;
+        document.getElementById('receipt-stat-avg').textContent = `Rs. ${avgSale.toLocaleString()}`;
+      }
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = catTotals[key] || 0;
+        const pct = totalSales > 0 ? Math.round((amt / totalSales) * 100) : 0;
+        if (amt === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${pct}%):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      notesBox.classList.remove('hidden');
+      document.getElementById('receipt-notes-text').textContent = `اس ماہ کل ${daysCount} دنوں کی کلوزنگز ریکارڈ ہوئیں۔`;
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    // 4. Yearly Receipt Report (سالانہ رپورٹ رسید)
+    function openYearlyReceipt() {
+      playBeep('click');
+      const select = document.getElementById('select-ledger-year');
+      const selYear = select ? select.value : String(new Date().getFullYear());
+      const yearlyClosings = closingsList.filter(c => {
+        const yr = c.year || (c.date ? c.date.split('-')[0] : '');
+        return yr === selYear;
+      });
+
+      const totalYearSales = yearlyClosings.reduce((sum, c) => sum + (c.grandTotal || 0), 0);
+      const totalDays = yearlyClosings.length;
+      const avgMonthly = Math.round(totalYearSales / 12);
+
+      // Monthly breakdown
+      const monthlyData = {};
+      for (let i = 1; i <= 12; i++) {
+        monthlyData[i] = { monthNum: i, total: 0, days: 0 };
+      }
+      yearlyClosings.forEach(c => {
+        if (c.date) {
+          const parts = c.date.split('-');
+          const m = parseInt(parts[1], 10);
+          if (m >= 1 && m <= 12) {
+            monthlyData[m].total += (c.grandTotal || 0);
+            monthlyData[m].days += 1;
+          }
+        }
+      });
+
+      currentReceiptMeta = {
+        type: 'yearly',
+        title: `سالانہ کھاتہ رپورٹ (سال ${selYear})`,
+        dateText: `سال: ${selYear}`,
+        grandTotalText: `Rs. ${totalYearSales.toLocaleString()}`,
+        filename: `MirzaShop_Yearly_${selYear}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n📈 *سالانہ کھاتہ رپورٹ:* سال ${selYear}\n📅 *کل کام کے دن:* ${totalDays} دن\n💰 *سال کی کل سیل:* Rs. ${totalYearSales.toLocaleString()}\n📊 *ماہانہ اوسط:* Rs. ${avgMonthly.toLocaleString()}`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = `سالانہ رپورٹ (سال ${selYear})`;
+      document.getElementById('receipt-report-badge').textContent = `سالانہ کھاتہ سمری (سال ${selYear})`;
+      document.getElementById('receipt-date-time').textContent = `سال: ${selYear} • پرنٹ وقت: ${formatTime12(new Date())}`;
+      document.getElementById('receipt-grand-total').textContent = `Rs. ${totalYearSales.toLocaleString()}`;
+
+      // Extra Stats
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) {
+        extraStats.classList.remove('hidden');
+        document.getElementById('receipt-stat-days').textContent = `${totalDays} دن`;
+        document.getElementById('receipt-stat-avg').textContent = `Rs. ${avgMonthly.toLocaleString()}`;
+      }
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(monthlyData).map(mKey => {
+        const item = monthlyData[mKey];
+        const mName = URDU_MONTHS[item.monthNum - 1];
+        if (item.total === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1 font-bold">
+              <span class="w-4 text-center font-mono text-[10px] text-purple-700 font-bold">${item.monthNum}.</span>
+              <span>${mName} (${item.days} دن):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900">Rs. ${item.total.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      notesBox.classList.remove('hidden');
+      document.getElementById('receipt-notes-text').textContent = `سال ${selYear} میں کل ${totalDays} کام کے دن اور Rs. ${totalYearSales.toLocaleString()} سیل ریکارڈ ہوئی۔`;
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    // 5. Save Receipt As PNG Image (موبائل گیلری میں تصویر کے طور پر محفوظ کریں)
+    async function saveReceiptAsImage() {
+      playBeep('click');
+      const receiptCard = document.getElementById('receipt-printable-card');
+      if (!receiptCard) return;
+
+      const saveBtn = document.getElementById('btn-save-receipt-image');
+      const origHtml = saveBtn ? saveBtn.innerHTML : '';
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<span>⏳</span><span>تصویر بن رہی ہے...</span>`;
+      }
+
+      try {
+        const h2c = window.html2canvas || (typeof html2canvas !== 'undefined' ? html2canvas : null);
+        if (!h2c) {
+          throw new Error('html2canvas unavailable');
+        }
+
+        const canvas = await h2c(receiptCard, {
+          scale: 3, // Ultra-sharp 3x Retina resolution
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff'
+        });
+
+        const filename = currentReceiptMeta.filename || `MirzaShop_Receipt_${getTodayDateStr()}.png`;
+
+        // Check if Web Share API with files is supported (Mobile Chrome, Android, iOS)
+        if (navigator.share && navigator.canShare) {
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              const file = new File([blob], filename, { type: 'image/png' });
+              if (navigator.canShare({ files: [file] })) {
+                try {
+                  await navigator.share({
+                    files: [file],
+                    title: currentReceiptMeta.title || 'مرزا شاپ رسید',
+                    text: currentReceiptMeta.title || 'مرزا موبائل اینڈ ڈائیپر شاپ رسید'
+                  });
+                  showToast('تصویر گیلری میں محفوظ ہو گئی!', '✓');
+                  return;
+                } catch (shareErr) {
+                  // If share cancelled or dismissed, trigger direct file download
+                }
+              }
+            }
+            triggerCanvasDownload(canvas, filename);
+          }, 'image/png', 1.0);
+        } else {
+          triggerCanvasDownload(canvas, filename);
+        }
+      } catch (err) {
+        console.error('Save receipt photo error:', err);
+        showToast('تصویر ڈاؤن لوڈ ہو رہی ہے...', '🖼️');
+        window.print();
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = origHtml;
+        }
+      }
+    }
+
+    function triggerCanvasDownload(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png', 1.0);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('رسید کی تصویر موبائل میں محفوظ ہو گئی!', '🖼️');
+    }
+
+    // 6. Share Receipt to WhatsApp
+    function shareReceiptWhatsApp() {
+      playBeep('click');
+      const text = currentReceiptMeta.summaryText || `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n🧾 *رسید:* ${currentReceiptMeta.title}\n📅 *تاریخ:* ${currentReceiptMeta.dateText}\n💰 *کل رقم:* ${currentReceiptMeta.grandTotalText}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      showToast('واٹس ایپ پر رسید شیئر ہو رہی ہے', '💬');
+    }
+
+    // --- 11. BACKUP & EXPORTS ---
+    function exportJSONBackup() {
+      const backupData = {
+        appName: 'Mirza Mobile & Diaper Shop',
+        version: 2.5,
+        exportedAt: new Date().toISOString(),
+        activeTransactions,
+        closings: closingsList
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MirzaShop_Backup_${getTodayDateStr()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      showToast('بیک اپ ڈاؤن لوڈ ہو گیا!', '💾');
+    }
+
+    function exportTodayCSV() {
+      if (activeTransactions.length === 0) {
+        showToast('آج کوئی ٹرانزیکشن نہیں!', '⚠️');
+        return;
+      }
+      const headers = ['ID', 'Date', 'Time', 'Category (کیٹیگری)', 'Amount (PKR)', 'Note'];
+      const rows = activeTransactions.map(t => [
+        `"${t.id}"`,
+        `"${t.date}"`,
+        `"${formatTime12(new Date(t.timestamp))}"`,
+        `"${CATEGORIES[t.category] ? CATEGORIES[t.category].nameUr : 'دیگر'}"`,
+        t.amount,
+        `"${(t.note || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MirzaShop_Today_${getTodayDateStr()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('ایکسل فائل ڈاؤن لوڈ ہو گئی!', '📊');
+    }
+
+    function exportCSV(filteredOnly = false) {
+      let dataToExport = closingsList;
+      if (filteredOnly) {
+        const select = document.getElementById('select-ledger-month');
+        const selMonth = select ? select.value : getMonthStr();
+        dataToExport = closingsList.filter(c => c.month === selMonth);
+      }
+
+      const headers = [
+        'Date',
+        'Grand Total (PKR)',
+        'Diapers (پیمپر)',
+        'Computer (کمپیوٹر)',
+        'Accessories (اسیسریز)',
+        'Devices (ڈیوائسز)',
+        'JazzCash (جاز کیش)',
+        'Easypaisa (ایزی پیسہ)',
+        'Easyload (ایزی لوڈ)',
+        'Other (دیگر)',
+        'Transactions Count',
+        'Notes'
+      ];
+
+      const rows = dataToExport.map(c => [
+        `"${c.date}"`,
+        c.grandTotal || 0,
+        (c.subtotals && c.subtotals.diapers) || 0,
+        (c.subtotals && c.subtotals.computer) || 0,
+        (c.subtotals && c.subtotals.accessories) || 0,
+        (c.subtotals && c.subtotals.devices) || 0,
+        (c.subtotals && c.subtotals.jazzcash) || 0,
+        (c.subtotals && c.subtotals.easypaisa) || 0,
+        (c.subtotals && c.subtotals.easyload) || 0,
+        (c.subtotals && c.subtotals.other) || 0,
+        c.txCount || 0,
+        `"${(c.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MirzaShop_Closings_${getTodayDateStr()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      showToast('ایکسل رپورٹ ڈاؤن لوڈ ہو گئی!', '📊');
+    }
+
+    function exportYearlyCSV() {
+      const select = document.getElementById('select-ledger-year');
+      const selYear = select ? select.value : String(new Date().getFullYear());
+      const filtered = closingsList.filter(c => {
+        const yr = c.year || (c.date ? c.date.split('-')[0] : '');
+        return yr === selYear;
+      });
+
+      const headers = ['Date', 'Month', 'Grand Total', 'Tx Count', 'Notes'];
+      const rows = filtered.map(c => [
+        `"${c.date}"`,
+        `"${c.month}"`,
+        c.grandTotal || 0,
+        c.txCount || 0,
+        `"${(c.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `MirzaShop_Year_${selYear}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`سال ${selYear} کی ایکسل فائل ڈاؤن لوڈ!`, '📈');
+    }
+
+    // Share & Send Backup to WhatsApp / Cloud
+    function shareWhatsAppBackup() {
+      playBeep('click');
+      const dateStr = getTodayDateStr();
+      const grandTotal = closingsList.reduce((acc, c) => acc + (c.grandTotal || 0), 0);
+      const activeStats = calculateSubtotals(activeTransactions);
+
+      const backupData = {
+        appName: "مرزا موبائل اینڈ ڈائیپر شاپ",
+        backupDate: dateStr,
+        timestamp: Date.now(),
+        closingsCount: closingsList.length,
+        activeTransactionsCount: activeTransactions.length,
+        activeTransactions: activeTransactions,
+        closings: closingsList
+      };
+
+      const backupJSON = JSON.stringify(backupData, null, 2);
+
+      // Attempt native Web Share API with file support
+      if (navigator.share) {
+        try {
+          const file = new File([backupJSON], `MirzaShop_Backup_${dateStr}.json`, { type: 'application/json' });
+          navigator.share({
+            title: 'مرزا موبائل اینڈ ڈائیپر شاپ - بیک اپ ڈیٹا',
+            text: `مرزا موبائل اینڈ ڈائیپر شاپ بیک اپ (${dateStr})\nکل محفوظ کلوزنگز: ${closingsList.length}\nآج کی سیل: Rs. ${activeStats.total.toLocaleString()}`,
+            files: [file]
+          }).catch(() => {
+            sendWhatsAppSummaryOnly(dateStr, grandTotal, activeStats);
+          });
+          return;
+        } catch (e) {}
+      }
+
+      sendWhatsAppSummaryOnly(dateStr, grandTotal, activeStats);
+    }
+
+    function sendWhatsAppSummaryOnly(dateStr, grandTotal, activeStats) {
+      const summaryText = `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ - دکان لیجر بیک اپ خلاصہ*\n📅 تاریخ: ${dateStr}\n\n📊 *آج کی سیل:* Rs. ${activeStats.total.toLocaleString()} (${activeTransactions.length} انٹریز)\n🔒 *محفوظ کلوزنگز:* ${closingsList.length} دن\n💰 *تمام ریکارڈ شدہ سیلز:* Rs. ${grandTotal.toLocaleString()}\n\n✅ ڈیٹا انٹرنل میموری میں محفوظ ہے۔`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(summaryText)}`;
+      window.open(whatsappUrl, '_blank');
+      showToast('واٹس ایپ پر خلاصہ شیئر کیا جا رہا ہے', '💬');
+    }
+
+    async function restoreBackupFromFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (!parsed.closings && !parsed.activeTransactions) {
+            alert('غلط فائل فارمیٹ! درست فائل منتخب کریں۔');
+            return;
+          }
+
+          if (!confirm('کیا آپ بیک اپ بحال کرنا چاہتے ہیں؟')) {
+            return;
+          }
+
+          await dbClear('active_transactions');
+          await dbClear('closings');
+
+          activeTransactions = parsed.activeTransactions || [];
+          closingsList = parsed.closings || [];
+
+          for (const tx of activeTransactions) await dbAdd('active_transactions', tx);
+          for (const c of closingsList) await dbAdd('closings', c);
+
+          saveEmergencySnapshot();
+
+          document.getElementById('modal-backup').classList.add('hidden');
+          showToast('ڈیٹا کامیابی سے بحال ہو گیا!', '✓');
+          refreshTodayDashboard();
+          renderLedgerView();
+          renderYearlyView();
+        } catch (err) {
+          alert('فائل پڑھنے میں غلطی: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // --- 12. UTILITIES & NUMPAD ---
+    let toastTimeout = null;
+    function showToast(msg, icon = '✓') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+
+      if (!toast) return;
+      toastMsg.textContent = msg;
+      toastIcon.textContent = icon;
+
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+      }, 2500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function toggleNumpad(forceShow = null) {
+      const pad = document.getElementById('collapsible-numpad');
+      const isCurrentlyHidden = pad.classList.contains('hidden');
+      const shouldShow = forceShow !== null ? forceShow : isCurrentlyHidden;
+
+      if (shouldShow) pad.classList.remove('hidden');
+      else pad.classList.add('hidden');
+    }
+
+    // --- 13. APP INITIALIZATION & SERVICE WORKER ---
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+
+      // Check Install status & Request Persistent Storage from Chrome
+      checkAppInstallStatus();
+      ensurePersistentStorage();
+
+      await initDB();
+      
+      // Multi-layer safe data loading
+      let idbTx = await dbGetAll('active_transactions');
+      let idbClosings = await dbGetAll('closings');
+
+      let lsTx = [];
+      let lsClosings = [];
+      try { lsTx = JSON.parse(localStorage.getItem('mirza_active_transactions') || '[]'); } catch {}
+      try { lsClosings = JSON.parse(localStorage.getItem('mirza_closings') || '[]'); } catch {}
+
+      let snapshot = null;
+      try { snapshot = JSON.parse(localStorage.getItem('mirza_emergency_snapshot') || 'null'); } catch {}
+
+      if (idbTx.length > 0) {
+        activeTransactions = idbTx;
+      } else if (lsTx.length > 0) {
+        activeTransactions = lsTx;
+        for (const t of lsTx) await dbAdd('active_transactions', t);
+      } else if (snapshot && snapshot.activeTransactions) {
+        activeTransactions = snapshot.activeTransactions;
+      } else {
+        activeTransactions = [];
+      }
+
+      if (idbClosings.length > 0) {
+        closingsList = idbClosings;
+      } else if (lsClosings.length > 0) {
+        closingsList = lsClosings;
+        for (const c of lsClosings) await dbAdd('closings', c);
+      } else if (snapshot && snapshot.closings) {
+        closingsList = snapshot.closings;
+      } else {
+        closingsList = [];
+      }
+
+      saveEmergencySnapshot();
+
+      updateLiveDateTime();
+      setInterval(updateLiveDateTime, 10000);
+
+      initSwipeGestures();
+
+      const soundIcon = document.getElementById('sound-icon');
+      if (soundIcon) {
+        soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
+      }
+
+      refreshTodayDashboard();
+      renderLedgerView();
+      renderYearlyView();
+
+      const amountInput = document.getElementById('input-amount');
+      const amountInWords = document.getElementById('amount-in-words');
+
+      function updateAmountDisplay(val) {
+        amountInput.value = val;
+        const num = parseFloat(val) || 0;
+        amountInWords.textContent = numberToUrduWords(num);
+      }
+
+      amountInput.addEventListener('click', () => {
+        playBeep('click');
+        toggleNumpad(true);
+      });
+
+      document.getElementById('btn-toggle-keypad').addEventListener('click', () => {
+        playBeep('click');
+        toggleNumpad();
+      });
+
+      document.getElementById('btn-hide-keypad').addEventListener('click', () => {
+        playBeep('click');
+        toggleNumpad(false);
+      });
+
+      document.getElementById('btn-clear-amount').addEventListener('click', () => {
+        playBeep('click');
+        updateAmountDisplay('');
+      });
+
+      const backspaceBtn = document.getElementById('btn-backspace');
+      if (backspaceBtn) {
+        backspaceBtn.addEventListener('click', () => {
+          playBeep('click');
+          const current = amountInput.value || '';
+          updateAmountDisplay(current.slice(0, -1));
+        });
+      }
+
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playBeep('click');
+          const addVal = parseInt(btn.dataset.val, 10);
+          const current = parseInt(amountInput.value || '0', 10);
+          updateAmountDisplay(String(current + addVal));
+        });
+      });
+
+      document.querySelectorAll('.numpad-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playBeep('click');
+          const key = btn.dataset.key;
+          const current = amountInput.value || '';
+
+          if (key === 'done') {
+            toggleNumpad(false);
+          } else if (key === '00') {
+            if (current && current !== '0') updateAmountDisplay(current + '00');
+          } else {
+            if (current === '0') updateAmountDisplay(key);
+            else updateAmountDisplay(current + key);
+          }
+        });
+      });
+
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          logSale(btn.dataset.cat);
+        });
+      });
+
+      // Carousel Page Switches
+      document.getElementById('tab-page-1').addEventListener('click', () => { playBeep('click'); setPage(0); });
+      document.getElementById('tab-page-2').addEventListener('click', () => { playBeep('click'); setPage(1); });
+      document.getElementById('nav-btn-prev').addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
+      document.getElementById('nav-btn-next').addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
+      document.getElementById('btn-goto-page-2').addEventListener('click', () => { playBeep('click'); setPage(1); });
+      document.getElementById('btn-goto-page-1').addEventListener('click', () => { playBeep('click'); setPage(0); });
+
+      // Page 2 Subtabs (Daily / Monthly / Yearly)
+      document.getElementById('subtab-daily').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('daily'); });
+      document.getElementById('subtab-monthly').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('monthly'); });
+      document.getElementById('subtab-yearly').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('yearly'); });
+
+      // Month & Year select triggers
+      const selectMonth = document.getElementById('select-ledger-month');
+      if (selectMonth) selectMonth.addEventListener('change', renderLedgerView);
+      const selectYear = document.getElementById('select-ledger-year');
+      if (selectYear) selectYear.addEventListener('change', renderYearlyView);
+
+      // Sound toggle
+      document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+        isSoundEnabled = !isSoundEnabled;
+        localStorage.setItem('mirza_sound', isSoundEnabled ? 'true' : 'false');
+        soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
+        showToast(isSoundEnabled ? 'آواز آن' : 'آواز بند', '🔊');
+      });
+
+      // Install Button & Direct Chrome Prompt
+      document.getElementById('btn-pwa-install').addEventListener('click', triggerDirectChromeInstall);
+      document.getElementById('btn-close-install-modal').addEventListener('click', () => {
+        document.getElementById('modal-install').classList.add('hidden');
+      });
+      document.getElementById('btn-dismiss-install-modal').addEventListener('click', () => {
+        document.getElementById('modal-install').classList.add('hidden');
+      });
+      document.getElementById('btn-modal-direct-install').addEventListener('click', triggerDirectChromeInstall);
+
+      // Closing Modal
+      document.getElementById('btn-trigger-closing').addEventListener('click', openClosingModal);
+      document.getElementById('btn-close-closing-modal').addEventListener('click', () => {
+        document.getElementById('modal-closing').classList.add('hidden');
+      });
+      document.getElementById('btn-cancel-closing').addEventListener('click', () => {
+        document.getElementById('modal-closing').classList.add('hidden');
+      });
+      document.getElementById('btn-confirm-closing').addEventListener('click', executeDayClosing);
+
+      // Receipt & Image Save Triggers (روزانہ، ماہانہ، سالانہ رسیدیں)
+      const btnTodayReceipt = document.getElementById('btn-view-today-receipt');
+      if (btnTodayReceipt) btnTodayReceipt.addEventListener('click', openTodayLiveReceipt);
+
+      const btnMonthlyReceipt = document.getElementById('btn-view-monthly-receipt');
+      if (btnMonthlyReceipt) btnMonthlyReceipt.addEventListener('click', openMonthlyReceipt);
+
+      const btnYearlyReceipt = document.getElementById('btn-view-yearly-receipt');
+      if (btnYearlyReceipt) btnYearlyReceipt.addEventListener('click', openYearlyReceipt);
+
+      const btnSaveReceiptImg = document.getElementById('btn-save-receipt-image');
+      if (btnSaveReceiptImg) btnSaveReceiptImg.addEventListener('click', saveReceiptAsImage);
+
+      const btnShareReceiptWA = document.getElementById('btn-share-receipt-whatsapp');
+      if (btnShareReceiptWA) btnShareReceiptWA.addEventListener('click', shareReceiptWhatsApp);
+
+      const btnPrintReceipt = document.getElementById('btn-print-receipt');
+      if (btnPrintReceipt) btnPrintReceipt.addEventListener('click', () => { playBeep('click'); window.print(); });
+
+      const btnDismissReceipt = document.getElementById('btn-dismiss-receipt');
+      if (btnDismissReceipt) btnDismissReceipt.addEventListener('click', () => {
+        document.getElementById('print-receipt-modal').classList.add('hidden');
+      });
+
+      // Receipt Modal Close Button
+      document.getElementById('btn-close-receipt').addEventListener('click', () => {
+        document.getElementById('print-receipt-modal').classList.add('hidden');
+      });
+
+      // Backup & Settings Modal
+      document.getElementById('btn-open-backup').addEventListener('click', () => {
+        document.getElementById('modal-backup').classList.remove('hidden');
+      });
+      document.getElementById('btn-close-backup-modal').addEventListener('click', () => {
+        document.getElementById('modal-backup').classList.add('hidden');
+      });
+      document.getElementById('btn-share-whatsapp-backup').addEventListener('click', shareWhatsAppBackup);
+      document.getElementById('btn-export-json').addEventListener('click', exportJSONBackup);
+      document.getElementById('btn-export-csv-all').addEventListener('click', () => exportCSV(false));
+      document.getElementById('btn-export-excel-filtered').addEventListener('click', () => exportCSV(true));
+      document.getElementById('btn-export-yearly-csv').addEventListener('click', exportYearlyCSV);
+      document.getElementById('btn-export-today-csv').addEventListener('click', exportTodayCSV);
+
+      // Undo & Delete Modal Listeners
+      const undoBtn = document.getElementById('btn-undo-last-tx');
+      if (undoBtn) undoBtn.addEventListener('click', undoLastSale);
+
+      const closeDeleteBtn = document.getElementById('btn-close-delete-modal');
+      if (closeDeleteBtn) closeDeleteBtn.addEventListener('click', () => {
+        document.getElementById('modal-delete-confirm').classList.add('hidden');
+        pendingDeleteTxId = null;
+      });
+
+      const cancelDeleteBtn = document.getElementById('btn-cancel-delete');
+      if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => {
+        document.getElementById('modal-delete-confirm').classList.add('hidden');
+        pendingDeleteTxId = null;
+      });
+
+      const confirmDeleteBtn = document.getElementById('btn-confirm-delete-action');
+      if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDeleteAction);
+
+      // 3D Logo Showcase Modal
+      const openLogoBtn = document.getElementById('btn-open-logo-modal');
+      if (openLogoBtn) openLogoBtn.addEventListener('click', () => {
+        playBeep('click');
+        document.getElementById('modal-logo-showcase').classList.remove('hidden');
+      });
+
+      const closeLogoBtn = document.getElementById('btn-close-logo-modal');
+      if (closeLogoBtn) closeLogoBtn.addEventListener('click', () => {
+        document.getElementById('modal-logo-showcase').classList.add('hidden');
+      });
+
+      const dismissLogoBtn = document.getElementById('btn-dismiss-logo-modal');
+      if (dismissLogoBtn) dismissLogoBtn.addEventListener('click', () => {
+        document.getElementById('modal-logo-showcase').classList.add('hidden');
+      });
+
+      const restoreInput = document.getElementById('input-restore-file');
+      document.getElementById('btn-trigger-restore').addEventListener('click', () => restoreInput.click());
+      restoreInput.addEventListener('change', restoreBackupFromFile);
+    });
+  </script>
+
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

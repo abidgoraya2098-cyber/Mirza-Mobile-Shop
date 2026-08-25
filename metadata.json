@@ -1,0 +1,6 @@
+{
+  "name": "مرزا موبائل اینڈ ڈائیپر شاپ",
+  "description": "مرزا موبائل اینڈ ڈائیپر شاپ کے لیے ڈیلی، ماہانہ اور سالانہ سیلز و کلوزنگ لیجر پروگریسو ویب ایپ (PWA)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,313 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <defs>
+    <!-- Background Radial Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="45%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+
+    <!-- Gold Metallic Gradients -->
+    <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="20%" stop-color="#fde047" />
+      <stop offset="45%" stop-color="#d97706" />
+      <stop offset="70%" stop-color="#fef08a" />
+      <stop offset="90%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+
+    <linearGradient id="goldGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef9c3" />
+      <stop offset="35%" stop-color="#eab308" />
+      <stop offset="65%" stop-color="#ca8a04" />
+      <stop offset="100%" stop-color="#854d0e" />
+    </linearGradient>
+
+    <!-- Royal Blue Textile Gradients -->
+    <linearGradient id="royalBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="35%" stop-color="#1d4ed8" />
+      <stop offset="75%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#090d21" />
+    </linearGradient>
+
+    <!-- Silver & Steel Gradient -->
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#cbd5e1" />
+      <stop offset="50%" stop-color="#64748b" />
+      <stop offset="75%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+
+    <!-- Phone Screen Glow -->
+    <linearGradient id="phoneScreenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#312e81" />
+      <stop offset="30%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <!-- Diaper Soft Gradient -->
+    <linearGradient id="diaperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#f8fafc" />
+      <stop offset="80%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#cbd5e1" />
+    </linearGradient>
+
+    <!-- Filters: 3D Depth & Glowing Shadows -->
+    <filter id="shadow3D" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.65" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#d97706" flood-opacity="0.3" />
+    </filter>
+
+    <filter id="glowGold" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
+
+    <!-- Textile Pattern Pattern -->
+    <pattern id="textileWeave" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 0 6 L 6 0 L 12 6 L 6 12 Z" fill="none" stroke="#3b82f6" stroke-width="0.75" opacity="0.22" />
+      <path d="M 6 0 L 12 6 L 6 12 L 0 6 Z" fill="#1e3a8a" opacity="0.1" />
+    </pattern>
+  </defs>
+
+  <!-- 1. Background Soft Marble/Studio Glow -->
+  <rect width="800" height="800" rx="140" fill="url(#bgGrad)" />
+  <circle cx="400" cy="400" r="320" fill="#2563eb" opacity="0.08" filter="url(#glowGold)" />
+  <circle cx="400" cy="300" r="180" fill="#eab308" opacity="0.06" filter="url(#glowGold)" />
+
+  <!-- 2. Main 3D Polygonal Luxury Frame (Octagonal / Shield Hybrid) -->
+  <g filter="url(#shadow3D)">
+    
+    <!-- Outer Polygonal Gold Bevel -->
+    <polygon points="400,65 670,175 745,445 615,705 400,745 185,705 55,445 130,175" 
+             fill="url(#goldGrad1)" stroke="#fef08a" stroke-width="3" />
+
+    <!-- Inner Recessed Layer - Royal Blue Textile -->
+    <polygon points="400,85 650,190 720,440 600,685 400,725 200,685 80,440 150,190" 
+             fill="url(#royalBlueGrad)" />
+    <!-- Textile Weave Overlay -->
+    <polygon points="400,85 650,190 720,440 600,685 400,725 200,685 80,440 150,190" 
+             fill="url(#textileWeave)" />
+
+    <!-- Polygonal Inner Gold Trim Rim -->
+    <polygon points="400,98 638,198 705,435 590,672 400,710 210,672 95,435 162,198" 
+             fill="none" stroke="url(#goldGrad2)" stroke-width="4.5" stroke-linejoin="round" />
+
+    <!-- Inner Dark Velvet Polygonal Panel -->
+    <polygon points="400,108 628,204 692,432 580,660 400,698 220,660 108,432 172,204" 
+             fill="#0b0f19" opacity="0.88" />
+  </g>
+
+  <!-- 3. TOP RIBBON / BRAND EMBLEM (3D Gold & Urdu Calligraphy) -->
+  <g filter="url(#softShadow)">
+    <!-- 3D Header Arc / Arch Ribbon -->
+    <path d="M 230 180 Q 400 135 570 180 L 590 270 Q 400 220 210 270 Z" 
+          fill="url(#royalBlueGrad)" stroke="url(#goldGrad1)" stroke-width="3" />
+    <path d="M 240 188 Q 400 148 560 188" 
+          fill="none" stroke="#fde047" stroke-width="1.5" opacity="0.8" />
+
+    <!-- 3D Embossed Gold Urdu Calligraphy -->
+    <!-- Drop Shadow / Extrusion of Text -->
+    <text x="400" y="226" text-anchor="middle" font-family="'Noto Nastaliq Urdu', 'Noto Sans Arabic', Arial, sans-serif" 
+          font-size="44" font-weight="bold" fill="#78350f" opacity="0.9">
+      مرزا موبائل اینڈ ڈائپر شاپ
+    </text>
+    <text x="400" y="222" text-anchor="middle" font-family="'Noto Nastaliq Urdu', 'Noto Sans Arabic', Arial, sans-serif" 
+          font-size="44" font-weight="bold" fill="url(#goldGrad1)" filter="url(#glowGold)">
+      مرزا موبائل اینڈ ڈائپر شاپ
+    </text>
+
+    <!-- English Subtitle in Sleek Gold Typography -->
+    <rect x="260" y="252" width="280" height="24" rx="12" fill="#0f172a" stroke="url(#goldGrad2)" stroke-width="1.5" />
+    <text x="400" y="268" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" 
+          font-size="13" font-weight="800" letter-spacing="2.5" fill="url(#goldGrad1)">
+      MIRZA MOBILE &amp; DIAPER SHOP
+    </text>
+  </g>
+
+  <!-- 4. CENTRAL COMPOSITION: Left (Smartphone + Map) & Right (Realistic Soft Diaper) -->
+
+  <!-- [A] BACK ELEMENT: Folded 3D Map with Location Pin (Behind Phone) -->
+  <g transform="translate(160, 310)" filter="url(#softShadow)">
+    <!-- Map Base Isometric Panels -->
+    <!-- Panel 1 (Left) -->
+    <polygon points="15,40 75,15 75,140 15,165" fill="#334155" stroke="#475569" stroke-width="1.5" />
+    <line x1="25" y1="65" x2="65" y2="45" stroke="#64748b" stroke-width="3" stroke-linecap="round" />
+    <line x1="25" y1="110" x2="65" y2="90" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+
+    <!-- Panel 2 (Middle) -->
+    <polygon points="75,15 135,45 135,170 75,140" fill="#1e293b" stroke="#475569" stroke-width="1.5" />
+    <line x1="85" y1="48" x2="125" y2="68" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+    <circle cx="105" cy="100" r="10" fill="#0284c7" opacity="0.3" />
+
+    <!-- Panel 3 (Right) -->
+    <polygon points="135,45 195,20 195,145 135,170" fill="#334155" stroke="#475569" stroke-width="1.5" />
+    <line x1="145" y1="70" x2="185" y2="50" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" />
+
+    <!-- 3D Gold Location Pin with Gloss -->
+    <g transform="translate(105, 55)">
+      <!-- Pin Shadow -->
+      <ellipse cx="0" cy="42" rx="12" ry="5" fill="#000000" opacity="0.6" />
+      <!-- Pin Body -->
+      <path d="M 0,0 C -18,-18 -18,-42 0,-42 C 18,-42 18,-18 0,0 Z" fill="url(#goldGrad1)" stroke="#ffffff" stroke-width="1.5" filter="url(#glowGold)" />
+      <!-- Inner Pin Center -->
+      <circle cx="0" cy="-28" r="7" fill="#0f172a" stroke="url(#goldGrad2)" stroke-width="1.5" />
+    </g>
+  </g>
+
+  <!-- [B] LEFT FOREGROUND: Polished Smartphone with illuminated Live Dashboard -->
+  <g transform="translate(195, 320)" filter="url(#shadow3D)">
+    <!-- Smartphone Outer Metal Edge (Gold & Silver Chamfer) -->
+    <rect x="0" y="0" width="165" height="285" rx="30" fill="url(#silverGrad)" stroke="url(#goldGrad1)" stroke-width="3.5" />
+    <!-- Glass Bezel -->
+    <rect x="6" y="6" width="153" height="273" rx="25" fill="#020617" />
+
+    <!-- Glowing Screen with Shop App Graphic -->
+    <rect x="10" y="10" width="145" height="265" rx="21" fill="url(#phoneScreenGrad)" />
+
+    <!-- Speaker Notch & Dynamic Island -->
+    <rect x="60" y="16" width="45" height="8" rx="4" fill="#000000" />
+    <circle cx="95" cy="20" r="2" fill="#38bdf8" />
+
+    <!-- Screen App UI: Mini Mirza Shop Dashboard -->
+    <!-- Mini Header -->
+    <rect x="18" y="32" width="129" height="22" rx="6" fill="#1e1b4b" stroke="#3730a3" stroke-width="1" />
+    <circle cx="28" cy="43" r="5" fill="url(#goldGrad1)" />
+    <rect x="38" y="39" width="55" height="4" rx="2" fill="#e2e8f0" />
+    <rect x="38" y="45" width="35" height="3" rx="1.5" fill="#94a3b8" />
+    <rect x="118" y="37" width="22" height="12" rx="4" fill="#10b981" />
+
+    <!-- Metric Card (Today Sale) -->
+    <rect x="18" y="60" width="129" height="48" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+    <text x="26" y="74" font-family="sans-serif" font-size="7" fill="#94a3b8" font-weight="bold">TODAY SALE</text>
+    <text x="26" y="93" font-family="sans-serif" font-size="14" fill="#34d399" font-weight="bold">Rs. 48,500</text>
+    <path d="M 95 90 Q 110 75 135 70" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Mini 4-Category Grid -->
+    <rect x="18" y="114" width="61" height="32" rx="6" fill="#312e81" stroke="#4338ca" stroke-width="1" />
+    <text x="24" y="134" font-size="12">👶</text>
+    <text x="40" y="133" font-family="sans-serif" font-size="7.5" fill="#ffffff" font-weight="bold">ڈائیپر</text>
+
+    <rect x="86" y="114" width="61" height="32" rx="6" fill="#065f46" stroke="#047857" stroke-width="1" />
+    <text x="92" y="134" font-size="12">📱</text>
+    <text x="108" y="133" font-family="sans-serif" font-size="7.5" fill="#ffffff" font-weight="bold">موبائل</text>
+
+    <rect x="18" y="152" width="61" height="32" rx="6" fill="#7c2d12" stroke="#9a3412" stroke-width="1" />
+    <text x="24" y="172" font-size="12">💳</text>
+    <text x="40" y="171" font-family="sans-serif" font-size="7.5" fill="#ffffff" font-weight="bold">کیش</text>
+
+    <rect x="86" y="152" width="61" height="32" rx="6" fill="#1e1b4b" stroke="#312e81" stroke-width="1" />
+    <text x="92" y="172" font-size="12">⚡</text>
+    <text x="108" y="171" font-family="sans-serif" font-size="7.5" fill="#ffffff" font-weight="bold">لوڈ</text>
+
+    <!-- Mini Transaction Row -->
+    <rect x="18" y="192" width="129" height="24" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <text x="26" y="208" font-size="9">👶 پریمیم پیمپر</text>
+    <text x="110" y="208" font-family="monospace" font-size="8" fill="#e2e8f0" font-weight="bold">Rs 2,400</text>
+
+    <rect x="18" y="222" width="129" height="24" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="1" />
+    <text x="26" y="238" font-size="9">📱 ایزی لوڈ</text>
+    <text x="118" y="238" font-family="monospace" font-size="8" fill="#e2e8f0" font-weight="bold">Rs 500</text>
+
+    <!-- Phone Glass Light Reflection Glare -->
+    <path d="M 12 12 L 140 12 L 35 270 L 12 270 Z" fill="#ffffff" opacity="0.06" />
+    <!-- Bottom Home Bar -->
+    <rect x="62" y="266" width="40" height="3" rx="1.5" fill="#cbd5e1" opacity="0.7" />
+  </g>
+
+  <!-- [C] RIGHT FOREGROUND: Ultra-Soft Realistic 3D Cotton Baby Diaper -->
+  <g transform="translate(425, 335)" filter="url(#shadow3D)">
+    
+    <!-- Outer Soft Fabric Shadow/Glow -->
+    <path d="M 40 70 Q 115 15 200 45 Q 260 70 250 160 Q 240 240 180 265 Q 110 280 50 240 Q 5 190 15 120 Q 20 85 40 70 Z" 
+          fill="#000000" opacity="0.35" transform="translate(0, 12)" />
+
+    <!-- Main Diaper Body (Soft Cotton Pillow Shape) -->
+    <path d="M 40 70 Q 115 15 200 45 Q 260 70 250 160 Q 240 240 180 265 Q 110 280 50 240 Q 5 190 15 120 Q 20 85 40 70 Z" 
+          fill="url(#diaperGrad)" stroke="#e2e8f0" stroke-width="2.5" />
+
+    <!-- Elasticated Leg Ruffles / Gathers (Soft 3D curves) -->
+    <!-- Left Leg Gather -->
+    <path d="M 28 115 Q 10 165 35 210 Q 50 235 75 245" 
+          fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" stroke-dasharray="2,6" />
+    <path d="M 32 118 Q 16 165 38 208 Q 52 232 75 242" 
+          fill="none" stroke="#93c5fd" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Right Leg Gather -->
+    <path d="M 245 145 Q 248 195 215 238 Q 190 260 165 268" 
+          fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round" stroke-dasharray="2,6" />
+    <path d="M 240 148 Q 242 192 212 234 Q 188 255 165 264" 
+          fill="none" stroke="#86efac" stroke-width="2" stroke-linecap="round" />
+
+    <!-- Waistband with Pastel Blue/Green Soft Abstract Motif -->
+    <path d="M 40 70 Q 115 20 198 46 L 205 92 Q 120 70 46 112 Z" 
+          fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5" />
+    
+    <!-- Abstract Baby Pattern Ribbon on Waistband -->
+    <g opacity="0.85">
+      <!-- Soft Clouds, Stars & Hearts on Waistband -->
+      <circle cx="85" cy="72" r="7" fill="#60a5fa" />
+      <circle cx="94" cy="70" r="9" fill="#93c5fd" />
+      <circle cx="104" cy="74" r="6" fill="#60a5fa" />
+
+      <circle cx="140" cy="72" r="7" fill="#4ade80" />
+      <circle cx="150" cy="70" r="9" fill="#86efac" />
+      <circle cx="160" cy="74" r="6" fill="#4ade80" />
+
+      <!-- Golden Fastener Tape Tabs -->
+      <!-- Left Tape Tab -->
+      <rect x="25" y="92" width="30" height="24" rx="6" fill="url(#goldGrad1)" stroke="#b45309" stroke-width="1" filter="url(#softShadow)" />
+      <rect x="28" y="95" width="12" height="18" rx="3" fill="#ffffff" opacity="0.5" />
+
+      <!-- Right Tape Tab -->
+      <rect x="195" y="70" width="30" height="24" rx="6" fill="url(#goldGrad1)" stroke="#b45309" stroke-width="1" filter="url(#softShadow)" />
+      <rect x="210" y="73" width="12" height="18" rx="3" fill="#ffffff" opacity="0.5" />
+    </g>
+
+    <!-- Central Wetness Indicator Line (Yellow / Soft Cyan) -->
+    <path d="M 125 110 Q 122 170 115 230" fill="none" stroke="#facc15" stroke-width="4" stroke-linecap="round" />
+    <path d="M 125 110 Q 122 170 115 190" fill="none" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+
+    <!-- Cute Diaper Center Icon (Baby Face / Teddy with Gold Halo) -->
+    <g transform="translate(130, 160)">
+      <circle cx="0" cy="0" r="22" fill="#ffffff" stroke="#bfdbfe" stroke-width="2" />
+      <circle cx="0" cy="0" r="18" fill="#eff6ff" />
+      <!-- Baby Cute Smile -->
+      <circle cx="-6" cy="-4" r="2.5" fill="#1e3a8a" />
+      <circle cx="6" cy="-4" r="2.5" fill="#1e3a8a" />
+      <path d="M -6 5 Q 0 11 6 5" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" />
+      <!-- Rosy Cheeks -->
+      <circle cx="-11" cy="2" r="3" fill="#fda4af" opacity="0.7" />
+      <circle cx="11" cy="2" r="3" fill="#fda4af" opacity="0.7" />
+    </g>
+
+    <!-- 3D Cotton Puffy Quilt Lines (Diamond Weave) -->
+    <path d="M 60 140 Q 120 180 180 150" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="3,4" opacity="0.7" />
+    <path d="M 70 190 Q 120 220 170 200" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="3,4" opacity="0.7" />
+  </g>
+
+  <!-- 5. BOTTOM METALLIC EMBLEM & CERTIFIED BADGES -->
+  <g transform="translate(400, 680)" filter="url(#shadow3D)">
+    <!-- Central Shield Clasp in Solid Polished Gold -->
+    <polygon points="0,-25 35,-10 30,25 0,40 -30,25 -35,-10" 
+             fill="url(#goldGrad1)" stroke="#ffffff" stroke-width="2" filter="url(#glowGold)" />
+    <!-- Center Icon in Shield -->
+    <text x="0" y="12" text-anchor="middle" font-family="'Noto Sans Arabic', sans-serif" font-size="22" font-weight="900" fill="#78350f">
+      M
+    </text>
+  </g>
+
+  <!-- 6. Studio Lighting Flare Highlights on Outer Frame -->
+  <circle cx="185" cy="175" r="5" fill="#ffffff" filter="url(#glowGold)" />
+  <circle cx="670" cy="175" r="5" fill="#ffffff" filter="url(#glowGold)" />
+  <circle cx="400" cy="65" r="7" fill="#ffffff" filter="url(#glowGold)" />
+  <circle cx="400" cy="745" r="5" fill="#ffffff" filter="url(#glowGold)" />
+</svg>
