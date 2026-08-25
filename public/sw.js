@@ -1,11 +1,11 @@
-const CACHE_NAME = 'mirza-shop-cache-v4';
+const CACHE_NAME = 'mirza-shop-cache-v5';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/assets/icon-192.png',
-  '/assets/icon-512.png',
-  '/assets/mirza_shop_logo.svg'
+  './',
+  './index.html',
+  './manifest.json',
+  './assets/icon-192.png',
+  './assets/icon-512.png',
+  './assets/mirza_shop_logo.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -39,7 +39,7 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(event.request).catch(() => {
-        return caches.match('/');
+        return caches.match('./index.html') || caches.match('./');
       });
     })
   );
