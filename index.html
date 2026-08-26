@@ -1270,160 +1270,134 @@
     <span id="toast-msg">کامیابی!</span>
   </div>
 
+  
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /**
-     * Mirza Mobile & Diaper Shop - Native PWA & Indestructible Persistent Storage Engine
+     * Mirza Mobile & Diaper Shop - Global Master Controllers
      */
+    window.deferredPrompt = null;
 
-    
+    // Capture Native Chrome Install Event
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredPrompt = e;
+      console.log('[PWA] Chrome beforeinstallprompt event captured and ready!');
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'flex';
+    });
+
+    window.addEventListener('appinstalled', () => {
+      window.deferredPrompt = null;
+      console.log('[PWA] App successfully installed on device.');
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'none';
+      if (typeof closeInstallGuideModal === 'function') closeInstallGuideModal();
+      if (typeof showToast === 'function') showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
+    });
+
+    async function triggerDirectChromeInstall() {
+      try {
+        if (typeof playBeep === 'function') playBeep('click');
+      } catch (e) {}
+      
+      console.log('[PWA] triggerDirectChromeInstall clicked. deferredPrompt:', window.deferredPrompt);
+
+      // If Chrome native prompt is ready -> Trigger native popup directly
+      if (window.deferredPrompt) {
+        try {
+          window.deferredPrompt.prompt();
+          const choiceResult = await window.deferredPrompt.userChoice;
+          console.log('[PWA] User response:', choiceResult);
+          if (choiceResult && choiceResult.outcome === 'accepted') {
+            window.deferredPrompt = null;
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.style.display = 'none';
+          }
+          return;
+        } catch (err) {
+          console.warn('[PWA] Prompt error:', err);
+        }
+      }
+
+      // If Chrome native prompt is in cooldown/not ready -> Open Dedicated In-App Install Center Modal
+      openInstallGuideModal();
+    }
+
+    async function triggerNativeOrGuideInstall() {
+      if (window.deferredPrompt) {
+        try {
+          window.deferredPrompt.prompt();
+          const choiceResult = await window.deferredPrompt.userChoice;
+          if (choiceResult && choiceResult.outcome === 'accepted') {
+            window.deferredPrompt = null;
+            closeInstallGuideModal();
+            const banner = document.getElementById('pwa-install-banner');
+            if (banner) banner.style.display = 'none';
+          }
+          return;
+        } catch (err) {}
+      }
+      if (typeof showToast === 'function') {
+        showToast('براؤزر مینو (⋮) پر جا کر "Install app" یا "Add to Home screen" دبائیں', '📲');
+      } else {
+        alert('موبائل پر انسٹال کرنے کے لیے کروم کے 3 ڈاٹس (⋮) دبا کر "Install app" یا "Add to Home screen" پر کلک کریں!');
+      }
+    }
+
+    function openInstallGuideModal() {
+      const modal = document.getElementById('modal-install-guide');
+      if (!modal) {
+        alert('موبائل پر انسٹال کرنے کے لیے کروم کے 3 ڈاٹس (⋮) دبا کر "Install app" یا "Add to Home screen" پر کلک کریں!');
+        return;
+      }
+      modal.classList.remove('hidden');
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        const box = modal.querySelector('div');
+        if (box) box.classList.remove('scale-95');
+      }, 10);
+    }
+
+    function closeInstallGuideModal() {
+      const modal = document.getElementById('modal-install-guide');
+      if (!modal) return;
+      modal.classList.add('opacity-0');
+      const box = modal.querySelector('div');
+      if (box) box.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }, 300);
+    }
+
+    function copyAppLiveLink() {
+      try {
+        if (typeof playBeep === 'function') playBeep('click');
+      } catch (e) {}
+      const url = window.location.origin || window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+          if (typeof showToast === 'function') showToast('ایپ کا لائیو لنک کاپی ہو گیا ہے!', '📋');
+        }).catch(() => {
+          if (typeof showToast === 'function') showToast(url, '📋');
+        });
+      } else {
+        if (typeof showToast === 'function') showToast(url, '📋');
+      }
+    }
+
+    window.triggerDirectChromeInstall = triggerDirectChromeInstall;
+    window.triggerNativeOrGuideInstall = triggerNativeOrGuideInstall;
+    window.openInstallGuideModal = openInstallGuideModal;
+    window.closeInstallGuideModal = closeInstallGuideModal;
+    window.copyAppLiveLink = copyAppLiveLink;
+
     function safeListen(id, event, handler) {
       const el = document.getElementById(id);
       if (el) el.addEventListener(event, handler);
     }
-
-    
-    
-    
-    // ========================================================
-    // ⚡ 1-CLICK NATIVE GOOGLE CHROME INSTALLATION ENGINE
-    // ========================================================
-    }
-
-    // ========================================================
-    
-    // ========================================================
-    // 🔀 DYNAMIC REORDERABLE CATEGORY BUTTONS ENGINE
-    // ========================================================
-    const DEFAULT_CATEGORIES = [
-      { id: 'diapers', name: 'پیمپر', icon: '👶', bg: 'bg-rose-50 hover:bg-rose-100/90', border: 'border-rose-200', text: 'text-rose-950' },
-      { id: 'computer', name: 'کمپیوٹر', icon: '💻', bg: 'bg-blue-50 hover:bg-blue-100/90', border: 'border-blue-200', text: 'text-blue-950' },
-      { id: 'accessories', name: 'اسیسریز', icon: '🎧', bg: 'bg-emerald-50 hover:bg-emerald-100/90', border: 'border-emerald-200', text: 'text-emerald-950' },
-      { id: 'devices', name: 'ڈیوائسز', icon: '📱', bg: 'bg-violet-50 hover:bg-violet-100/90', border: 'border-violet-200', text: 'text-violet-950' },
-      { id: 'jazzcash', name: 'جاز کیش', icon: '💳', bg: 'bg-amber-50 hover:bg-amber-100/90', border: 'border-amber-200', text: 'text-amber-950' },
-      { id: 'easypaisa', name: 'ایزی پیسہ', icon: '💸', bg: 'bg-teal-50 hover:bg-teal-100/90', border: 'border-teal-200', text: 'text-teal-950' },
-      { id: 'easyload', name: 'ایزی لوڈ', icon: '⚡', bg: 'bg-fuchsia-50 hover:bg-fuchsia-100/90', border: 'border-fuchsia-200', text: 'text-fuchsia-950' },
-      { id: 'other', name: 'دیگر', icon: '⚙️', bg: 'bg-slate-100 hover:bg-slate-200/90', border: 'border-slate-300', text: 'text-slate-900' }
-    ];
-
-    let isReorderModeActive = false;
-
-    function getSavedCategoryOrder() {
-      try {
-        const saved = localStorage.getItem('mirza_custom_cat_order_v1');
-        if (saved) {
-          const ids = JSON.parse(saved);
-          if (Array.isArray(ids) && ids.length === DEFAULT_CATEGORIES.length) {
-            const mapped = ids.map(id => DEFAULT_CATEGORIES.find(c => c.id === id)).filter(Boolean);
-            if (mapped.length === DEFAULT_CATEGORIES.length) return mapped;
-          }
-        }
-      } catch (e) {}
-      return [...DEFAULT_CATEGORIES];
-    }
-
-    let activeCategoriesList = getSavedCategoryOrder();
-
-    function renderCategoriesGrid() {
-      const container = document.getElementById('categories-grid-container');
-      if (!container) return;
-
-      container.innerHTML = activeCategoriesList.map((cat, index) => {
-        if (isReorderModeActive) {
-          return `
-            <div class="relative bg-white border-2 border-indigo-400 rounded-2xl p-3 flex flex-col items-center justify-between gap-1 shadow-md animate-pulse">
-              <span class="absolute top-1.5 right-2 bg-indigo-600 text-white font-mono text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">${index + 1}</span>
-              <div class="flex flex-col items-center mt-1">
-                <span class="text-3xl">${cat.icon}</span>
-                <span class="font-black text-slate-900 text-sm mt-0.5">${cat.name}</span>
-              </div>
-              <div class="flex items-center gap-2 w-full mt-2 pt-1 border-t border-slate-100">
-                <button onclick="moveCategoryIndex(${index}, 1)" ${index === activeCategoriesList.length - 1 ? 'disabled class="opacity-20 flex-1 py-1 bg-slate-100 rounded-lg text-xs"' : 'class="flex-1 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-lg text-xs font-bold btn-press"'} title="آگے کریں">
-                  ◀️
-                </button>
-                <button onclick="moveCategoryIndex(${index}, -1)" ${index === 0 ? 'disabled class="opacity-20 flex-1 py-1 bg-slate-100 rounded-lg text-xs"' : 'class="flex-1 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 rounded-lg text-xs font-bold btn-press"'} title="پیچھے کریں">
-                  ▶️
-                </button>
-              </div>
-            </div>
-          `;
-        }
-
-        return `
-          <button data-cat="${cat.id}" class="cat-btn btn-press ${cat.bg} border-2 ${cat.border} rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-            <span class="text-3xl sm:text-4xl">${cat.icon}</span>
-            <span class="font-black ${cat.text} text-sm sm:text-base">${cat.name}</span>
-          </button>
-        `;
-      }).join('');
-
-      // Re-attach sales button click listeners
-      if (!isReorderModeActive) {
-        container.querySelectorAll('.cat-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const catId = btn.getAttribute('data-cat');
-            if (catId) handleCategorySaleClick(catId);
-          });
-        });
-      }
-    }
-
-    function toggleReorderMode() {
-      playBeep('click');
-      isReorderModeActive = !isReorderModeActive;
-      
-      const banner = document.getElementById('reorder-banner');
-      const modeText = document.getElementById('reorder-mode-text');
-      const modeIcon = document.getElementById('reorder-mode-icon');
-      const toggleBtn = document.getElementById('btn-toggle-reorder');
-
-      if (isReorderModeActive) {
-        if (banner) banner.classList.remove('hidden');
-        if (modeText) modeText.textContent = 'مکمل کریں ✓';
-        if (modeIcon) modeIcon.textContent = '✅';
-        if (toggleBtn) {
-          toggleBtn.className = 'text-[11px] font-black px-2.5 py-1 rounded-lg border transition flex items-center gap-1 btn-press bg-emerald-600 text-white border-emerald-700';
-        }
-      } else {
-        if (banner) banner.classList.add('hidden');
-        if (modeText) modeText.textContent = 'ترتیب بدلیں';
-        if (modeIcon) modeIcon.textContent = '🔄';
-        if (toggleBtn) {
-          toggleBtn.className = 'text-[11px] font-black px-2.5 py-1 rounded-lg border transition flex items-center gap-1 btn-press bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100';
-        }
-        showToast('نئی بٹن ترتیب محفوظ ہو گئی ہے!', '✅');
-      }
-
-      }
-
-    function moveCategoryIndex(currentIndex, direction) {
-      playBeep('click');
-      const targetIndex = currentIndex + direction;
-      if (targetIndex < 0 || targetIndex >= activeCategoriesList.length) return;
-
-      // Swap elements
-      const temp = activeCategoriesList[currentIndex];
-      activeCategoriesList[currentIndex] = activeCategoriesList[targetIndex];
-      activeCategoriesList[targetIndex] = temp;
-
-      // Save to localStorage
-      try {
-        const ids = activeCategoriesList.map(c => c.id);
-        localStorage.setItem('mirza_custom_cat_order_v1', JSON.stringify(ids));
-      } catch (e) {}
-
-      }
-
-    function resetCategoryOrder() {
-      playBeep('click');
-      activeCategoriesList = [...DEFAULT_CATEGORIES];
-      try {
-        localStorage.removeItem('mirza_custom_cat_order_v1');
-      } catch (e) {}
-      showToast('کیٹیگری بٹن اصل حالت پر واپس آ گئے!', '↺');
-    }
-
-    
     // ⚡ Global 1-Click Instant Sales Entry Bridge
     function handleCategorySaleClick(cat) {
       if (cat === 'other') {
