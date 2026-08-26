@@ -3,7 +3,7 @@
   "short_name": "مرزا شاپ",
   "description": "مرزا موبائل اینڈ ڈائیپر شاپ - ڈیلی سیلز، کلوزنگ اور کھاتہ لیجر",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0f172a",
