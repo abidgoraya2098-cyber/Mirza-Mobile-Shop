@@ -13,47 +13,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
   <link rel="apple-touch-icon" href="/assets/icon-192.png" />
 
-    <script>
-    // سروس ورکر کو رجسٹر کرنا
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-
-    let deferredPrompt;
-
-    // کروم جب ایپ کو پاس کرے گا تو یہ ایونٹ چلے گا
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // کروم کو خود پاپ اپ لانے سے روکیں
-      deferredPrompt = e; // ایونٹ کو سیو کر لیں
-      window.deferredPrompt = e;
-      console.log('[PWA] Native Chrome beforeinstallprompt event captured.');
-
-      const banner = document.getElementById('pwa-install-banner');
-      const headerBtn = document.getElementById('btn-header-install');
-      const floating = document.getElementById('floating-install-wrapper');
-
-      if (banner) banner.style.display = 'flex';
-      if (headerBtn) headerBtn.style.display = 'inline-flex';
-      if (floating) floating.style.display = 'block';
-    });
-
-    // انسٹال مکمل ہونے کے بعد کی سیٹنگ
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      window.deferredPrompt = null;
-      console.log('[PWA] App successfully installed on device.');
-
-      const banner = document.getElementById('pwa-install-banner');
-      const headerBtn = document.getElementById('btn-header-install');
-      const floating = document.getElementById('floating-install-wrapper');
-
-      if (banner) banner.style.display = 'none';
-      if (headerBtn) headerBtn.style.display = 'none';
-      if (floating) floating.style.display = 'none';
-    });
-  </script>
+    
 
   <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1136,35 +1096,81 @@
      * Mirza Mobile & Diaper Shop - Native PWA & Indestructible Persistent Storage Engine
      */
 
-    // Capture Chrome PWA Install Prompt Immediately at Top-Level
+    
+    function safeListen(id, event, handler) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener(event, handler);
+    }
+
+    
+    // ========================================================
+    // ⚡ 1-CLICK NATIVE GOOGLE CHROME INSTALLATION ENGINE
+    // ========================================================
     let deferredPrompt = null;
     let isAppInstalled = false;
 
-    // Register Service Worker immediately with relative path
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => {
-          console.log('SW Registered successfully:', reg.scope);
-        })
-        .catch(err => {
-          console.warn('SW Registration:', err);
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[SW] Registered:', reg.scope))
+          .catch(err => console.warn('[SW] Registration failed:', err));
+      });
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      checkAppInstallStatus();
-      console.log('Google Chrome PWA prompt ready for instant install');
+      window.deferredPrompt = e;
+      console.log('[PWA] Chrome beforeinstallprompt event captured.');
+
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      if (banner) banner.style.display = 'flex';
+      if (headerBtn) headerBtn.style.display = 'inline-flex';
     });
 
     window.addEventListener('appinstalled', () => {
-      isAppInstalled = true;
       deferredPrompt = null;
-      checkAppInstallStatus();
-      const modal = 
+      window.deferredPrompt = null;
+      isAppInstalled = true;
+      console.log('[PWA] App successfully installed on device.');
+
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      if (banner) banner.style.display = 'none';
+      if (headerBtn) headerBtn.style.display = 'none';
       showToast('مرزا شاپ ہوم سکرین پر انسٹال ہو گئی!', '📲');
     });
+
+    
+    function checkAppInstallStatus() {
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+
+      if (isStandalone) {
+        if (banner) banner.style.display = 'none';
+        if (headerBtn) headerBtn.style.display = 'none';
+      }
+    }
+
+    async function triggerDirectChromeInstall() {
+      playBeep('click');
+      const promptToUse = deferredPrompt || window.deferredPrompt;
+      if (promptToUse) {
+        promptToUse.prompt();
+        const choice = await promptToUse.userChoice;
+        console.log('[PWA] User response:', choice);
+        deferredPrompt = null;
+        window.deferredPrompt = null;
+
+        const banner = document.getElementById('pwa-install-banner');
+        const headerBtn = document.getElementById('btn-header-install');
+        if (banner) banner.style.display = 'none';
+        if (headerBtn) headerBtn.style.display = 'none';
+      }
+    }
+
 
     // --- 1. CATEGORIES DEFINITION ---
     const CATEGORIES = {
@@ -1471,26 +1477,31 @@
     }
 
 
-    // --- 6. PAGE NAVIGATION ---
+    
+    // --- 6. PAGE NAVIGATION (100% RELIABLE) ---
     function setPage(index) {
       currentPageIndex = Math.max(0, Math.min(1, index));
       const track = document.getElementById('slider-track');
       const tab1 = document.getElementById('tab-page-1');
       const tab2 = document.getElementById('tab-page-2');
 
-      const translateVal = currentPageIndex === 0 ? '0%' : '50%';
-      track.style.transform = `translateX(${translateVal})`;
+      playBeep('click');
+
+      if (track) {
+        track.style.transform = (currentPageIndex === 0) ? 'translateX(0%)' : 'translateX(50%)';
+      }
 
       if (currentPageIndex === 0) {
-        tab1.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-xs transition flex items-center justify-center gap-1.5 btn-press';
-        tab2.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 btn-press';
+        if (tab1) tab1.className = 'flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg bg-white text-slate-950 shadow-sm transition flex items-center justify-center gap-1 btn-press';
+        if (tab2) tab2.className = 'flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1 btn-press';
       } else {
-        tab2.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl bg-white text-indigo-700 shadow-xs transition flex items-center justify-center gap-1.5 btn-press';
-        tab1.className = 'flex-1 py-2 sm:py-2.5 px-3 text-center text-xs sm:text-sm font-black rounded-xl text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5 btn-press';
+        if (tab2) tab2.className = 'flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg bg-white text-slate-950 shadow-sm transition flex items-center justify-center gap-1 btn-press';
+        if (tab1) tab1.className = 'flex-1 py-1.5 px-2 text-center text-xs sm:text-sm font-black rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1 btn-press';
         renderLedgerView();
         renderYearlyView();
       }
     }
+
 
     function switchPage2Subtab(subtab) {
       page2ActiveSubtab = subtab;
@@ -2789,17 +2800,17 @@
         toggleNumpad(true);
       });
 
-      document.getElementById('btn-toggle-keypad').addEventListener('click', () => {
+      (document.getElementById('btn-toggle-keypad') && document.getElementById('btn-toggle-keypad')).addEventListener('click', () => {
         playBeep('click');
         toggleNumpad();
       });
 
-      document.getElementById('btn-hide-keypad').addEventListener('click', () => {
+      (document.getElementById('btn-hide-keypad') && document.getElementById('btn-hide-keypad')).addEventListener('click', () => {
         playBeep('click');
         toggleNumpad(false);
       });
 
-      document.getElementById('btn-clear-amount').addEventListener('click', () => {
+      (document.getElementById('btn-clear-amount') && document.getElementById('btn-clear-amount')).addEventListener('click', () => {
         playBeep('click');
         updateAmountDisplay('');
       });
@@ -2846,17 +2857,17 @@
       });
 
       // Carousel Page Switches
-      document.getElementById('tab-page-1').addEventListener('click', () => { playBeep('click'); setPage(0); });
-      document.getElementById('tab-page-2').addEventListener('click', () => { playBeep('click'); setPage(1); });
-      document.getElementById('nav-btn-prev').addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
-      document.getElementById('nav-btn-next').addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
-      document.getElementById('btn-goto-page-2').addEventListener('click', () => { playBeep('click'); setPage(1); });
-      document.getElementById('btn-goto-page-1').addEventListener('click', () => { playBeep('click'); setPage(0); });
+      (document.getElementById('tab-page-1') && document.getElementById('tab-page-1')).addEventListener('click', () => { playBeep('click'); setPage(0); });
+      (document.getElementById('tab-page-2') && document.getElementById('tab-page-2')).addEventListener('click', () => { playBeep('click'); setPage(1); });
+      (document.getElementById('nav-btn-prev') && document.getElementById('nav-btn-prev')).addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
+      (document.getElementById('nav-btn-next') && document.getElementById('nav-btn-next')).addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
+      (document.getElementById('btn-goto-page-2') && document.getElementById('btn-goto-page-2')).addEventListener('click', () => { playBeep('click'); setPage(1); });
+      (document.getElementById('btn-goto-page-1') && document.getElementById('btn-goto-page-1')).addEventListener('click', () => { playBeep('click'); setPage(0); });
 
       // Page 2 Subtabs (Daily / Monthly / Yearly)
-      document.getElementById('subtab-daily').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('daily'); });
-      document.getElementById('subtab-monthly').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('monthly'); });
-      document.getElementById('subtab-yearly').addEventListener('click', () => { playBeep('click'); switchPage2Subtab('yearly'); });
+      (document.getElementById('subtab-daily') && document.getElementById('subtab-daily')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('daily'); });
+      (document.getElementById('subtab-monthly') && document.getElementById('subtab-monthly')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('monthly'); });
+      (document.getElementById('subtab-yearly') && document.getElementById('subtab-yearly')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('yearly'); });
 
       // Month & Year select triggers
       const selectMonth = document.getElementById('select-ledger-month');
@@ -2865,7 +2876,7 @@
       if (selectYear) selectYear.addEventListener('change', renderYearlyView);
 
       // Sound toggle
-      document.getElementById('btn-sound-toggle').addEventListener('click', () => {
+      (document.getElementById('btn-sound-toggle') && document.getElementById('btn-sound-toggle')).addEventListener('click', () => {
         isSoundEnabled = !isSoundEnabled;
         localStorage.setItem('mirza_sound', isSoundEnabled ? 'true' : 'false');
         soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
@@ -2873,12 +2884,16 @@
       });
 
       // Install Button & Direct Chrome Prompt
-      document.getElementById('btn-pwa-install').addEventListener('click', triggerDirectChromeInstall);
-      document.getElementById('btn-close-install-modal').addEventListener('click', () => {
-        });
-      document.getElementById('btn-dismiss-install-modal').addEventListener('click', () => {
-        });
-      document.getElementById('btn-modal-direct-install').addEventListener('click', triggerDirectChromeInstall);
+      (document.getElementById('btn-pwa-install') && document.getElementById('btn-pwa-install')).addEventListener('click', triggerDirectChromeInstall);
+            // Install Button & Direct Chrome Prompt
+      const btnPwa = document.getElementById('btn-pwa-install');
+      if (btnPwa) btnPwa.addEventListener('click', triggerDirectChromeInstall);
+
+      const btnHdr = document.getElementById('btn-header-install');
+      if (btnHdr) btnHdr.addEventListener('click', triggerDirectChromeInstall);
+
+      const btnInst = document.getElementById('installAppBtn');
+      if (btnInst) btnInst.addEventListener('click', triggerDirectChromeInstall);
       
       const copyLinkBtn = document.getElementById('btn-copy-app-link');
       if (copyLinkBtn) {
@@ -2892,14 +2907,14 @@
       }
 
       // Closing Modal
-      document.getElementById('btn-trigger-closing').addEventListener('click', openClosingModal);
-      document.getElementById('btn-close-closing-modal').addEventListener('click', () => {
+      (document.getElementById('btn-trigger-closing') && document.getElementById('btn-trigger-closing')).addEventListener('click', openClosingModal);
+      (document.getElementById('btn-close-closing-modal') && document.getElementById('btn-close-closing-modal')).addEventListener('click', () => {
         document.getElementById('modal-closing').classList.add('hidden');
       });
-      document.getElementById('btn-cancel-closing').addEventListener('click', () => {
+      (document.getElementById('btn-cancel-closing') && document.getElementById('btn-cancel-closing')).addEventListener('click', () => {
         document.getElementById('modal-closing').classList.add('hidden');
       });
-      document.getElementById('btn-confirm-closing').addEventListener('click', executeDayClosing);
+      (document.getElementById('btn-confirm-closing') && document.getElementById('btn-confirm-closing')).addEventListener('click', executeDayClosing);
 
       // Receipt & Image Save Triggers (روزانہ، ماہانہ، سالانہ رسیدیں)
       const btnTodayReceipt = document.getElementById('btn-view-today-receipt');
@@ -2926,23 +2941,23 @@
       });
 
       // Receipt Modal Close Button
-      document.getElementById('btn-close-receipt').addEventListener('click', () => {
+      (document.getElementById('btn-close-receipt') && document.getElementById('btn-close-receipt')).addEventListener('click', () => {
         document.getElementById('print-receipt-modal').classList.add('hidden');
       });
 
       // Backup & Settings Modal
-      document.getElementById('btn-open-backup').addEventListener('click', () => {
+      (document.getElementById('btn-open-backup') && document.getElementById('btn-open-backup')).addEventListener('click', () => {
         document.getElementById('modal-backup').classList.remove('hidden');
       });
-      document.getElementById('btn-close-backup-modal').addEventListener('click', () => {
+      (document.getElementById('btn-close-backup-modal') && document.getElementById('btn-close-backup-modal')).addEventListener('click', () => {
         document.getElementById('modal-backup').classList.add('hidden');
       });
-      document.getElementById('btn-share-whatsapp-backup').addEventListener('click', shareWhatsAppBackup);
-      document.getElementById('btn-export-json').addEventListener('click', exportJSONBackup);
-      document.getElementById('btn-export-csv-all').addEventListener('click', () => exportCSV(false));
-      document.getElementById('btn-export-excel-filtered').addEventListener('click', () => exportCSV(true));
-      document.getElementById('btn-export-yearly-csv').addEventListener('click', exportYearlyCSV);
-      document.getElementById('btn-export-today-csv').addEventListener('click', exportTodayCSV);
+      (document.getElementById('btn-share-whatsapp-backup') && document.getElementById('btn-share-whatsapp-backup')).addEventListener('click', shareWhatsAppBackup);
+      (document.getElementById('btn-export-json') && document.getElementById('btn-export-json')).addEventListener('click', exportJSONBackup);
+      (document.getElementById('btn-export-csv-all') && document.getElementById('btn-export-csv-all')).addEventListener('click', () => exportCSV(false));
+      (document.getElementById('btn-export-excel-filtered') && document.getElementById('btn-export-excel-filtered')).addEventListener('click', () => exportCSV(true));
+      (document.getElementById('btn-export-yearly-csv') && document.getElementById('btn-export-yearly-csv')).addEventListener('click', exportYearlyCSV);
+      (document.getElementById('btn-export-today-csv') && document.getElementById('btn-export-today-csv')).addEventListener('click', exportTodayCSV);
 
       // Undo & Delete Modal Listeners
       const undoBtn = document.getElementById('btn-undo-last-tx');
@@ -2981,7 +2996,7 @@
       });
 
       const restoreInput = document.getElementById('input-restore-file');
-      document.getElementById('btn-trigger-restore').addEventListener('click', () => restoreInput.click());
+      (document.getElementById('btn-trigger-restore') && document.getElementById('btn-trigger-restore')).addEventListener('click', () => restoreInput.click());
       restoreInput.addEventListener('change', restoreBackupFromFile);
     });
   </script>
