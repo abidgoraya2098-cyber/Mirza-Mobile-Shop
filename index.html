@@ -11,8 +11,9 @@
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/logo.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/logo.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
@@ -153,7 +154,7 @@
         <div class="flex items-center gap-2.5 min-w-0">
           <!-- 3D Brand Logo Icon Button -->
           <button id="btn-open-logo-modal" title="مرزا شاپ 3D لوگو دیکھیں" class="relative p-0.5 rounded-xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-md transition hover:scale-105 btn-press shrink-0">
-            <img src="/header-logo.png" style="width:42px; height:42px; object-fit:cover; border-radius:10px; border:1.5px solid #f59e0b;" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="shadow-sm block" />
+            <img src="/header-logo.png" onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='/logo.png';}" style="width:42px; height:42px; object-fit:cover; border-radius:10px; border:1.5px solid #f59e0b;" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="shadow-sm block" />
           </button>
 
           <!-- Full Shop Name in Ultra-Crisp High Contrast White (نو کٹنگ - مکمل نام) -->
