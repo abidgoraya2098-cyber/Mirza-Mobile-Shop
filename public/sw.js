@@ -1,5 +1,5 @@
-// Mirza Mobile & Diaper Shop PWA Service Worker (v27-universal-icons)
-const CACHE_NAME = 'mirza-shop-v27-live';
+// Mirza Mobile & Diaper Shop PWA Service Worker (v28-final-enforce)
+const CACHE_NAME = 'mirza-shop-v28-live';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -7,16 +7,13 @@ const STATIC_ASSETS = [
   '/icon-192.png',
   '/icon-512.png',
   '/assets/icon-192.png',
-  '/assets/icon-512.png',
-  '/assets/mirza_shop_logo.png'
+  '/assets/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch((err) => console.warn('Cache pre-fetch:', err));
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS).catch(() => {}))
   );
 });
 
@@ -36,7 +33,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Navigation requests
+  // Navigation
   if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
     event.respondWith(
       fetch(event.request)
@@ -54,7 +51,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets (Icons, CSS, Manifest, Images)
+  // Assets
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
@@ -65,7 +62,7 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       }).catch(async () => {
-        return caches.match('/icon-192.png') || caches.match('/assets/icon-192.png') || caches.match('/index.html');
+        return caches.match('/icon-192.png') || caches.match('/icon-512.png');
       });
     })
   );
