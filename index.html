@@ -408,6 +408,88 @@
             </div>
           </div>
 
+          <!-- ======================================================== -->
+          <!-- TOTAL SALES, EXPENSES & NET CASH (کل سیل، خرچہ و دراز کیش) -->
+          <!-- ======================================================== -->
+          <div class="bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 rounded-3xl p-3.5 sm:p-5 border-2 border-slate-700/80 shadow-xl text-white space-y-3 mt-2">
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                <h3 class="font-black text-xs sm:text-sm text-white flex items-center gap-1.5">
+                  <span>💰</span>
+                  <span>آج کا کل کھاتہ و دراز کیش</span>
+                </h3>
+              </div>
+
+              <!-- Quick Expense Entry Modal Trigger -->
+              <button id="btn-open-expense-modal" class="px-3 py-1.5 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white text-xs font-black rounded-xl shadow-md transition flex items-center gap-1.5 btn-press border border-rose-400/30">
+                <span>➖</span>
+                <span>تفصیلی خرچہ درج کریں</span>
+              </button>
+            </div>
+
+            <!-- 3-Column Financial Overview Cards -->
+            <div class="grid grid-cols-3 gap-2">
+              
+              <!-- 1. Total Sales -->
+              <div class="bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-inner">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-[10px] sm:text-xs font-bold text-emerald-400">🟢 کل سیلز</span>
+                  <span class="text-xs hidden sm:inline">📈</span>
+                </div>
+                <div class="flex items-baseline justify-center sm:justify-start gap-1">
+                  <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
+                  <span id="card-total-income" class="text-xs sm:text-lg md:text-xl font-black text-emerald-300 font-mono">0</span>
+                </div>
+                <span class="text-[8px] sm:text-[9px] text-slate-400 block mt-0.5" id="card-income-breakdown">تمام کیٹیگریز کی سیل</span>
+              </div>
+
+              <!-- 2. Total Expense (Deducted from sales) -->
+              <div class="bg-slate-900/90 border border-rose-500/40 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-inner">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-[10px] sm:text-xs font-bold text-rose-400">🔴 کل خرچہ</span>
+                  <span class="text-xs hidden sm:inline">📉</span>
+                </div>
+                <div class="flex items-baseline justify-center sm:justify-start gap-1">
+                  <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
+                  <span id="card-total-expense" class="text-xs sm:text-lg md:text-xl font-black text-rose-300 font-mono">0</span>
+                </div>
+                <span class="text-[8px] sm:text-[9px] text-slate-400 block mt-0.5" id="card-expense-count">0 اخراجات</span>
+              </div>
+
+              <!-- 3. Net Cash in Hand (Sales - Expense) -->
+              <div class="bg-gradient-to-tr from-indigo-950 to-slate-900 border-2 border-amber-400/60 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-lg">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-[10px] sm:text-xs font-black text-amber-300">💎 دراز میں کیش</span>
+                  <span class="text-xs hidden sm:inline">💵</span>
+                </div>
+                <div class="flex items-baseline justify-center sm:justify-start gap-1">
+                  <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
+                  <span id="card-net-balance" class="text-xs sm:text-lg md:text-xl font-black text-amber-400 font-mono">0</span>
+                </div>
+                <span class="text-[8px] sm:text-[9px] text-amber-200/90 block mt-0.5 font-bold" id="card-net-status">سیلز - خرچہ</span>
+              </div>
+
+            </div>
+
+            <!-- Today's Expenses Mini List with Delete Option -->
+            <div class="pt-1 border-t border-slate-800">
+              <div class="flex items-center justify-between text-xs mb-1.5 px-1">
+                <span class="text-slate-300 font-bold flex items-center gap-1">
+                  <span>📋</span>
+                  <span>آج کے دکان خرچے (سیلز سے مائنس):</span>
+                </span>
+                <span id="today-expenses-count-badge" class="text-[10px] bg-slate-800 text-rose-300 px-2 py-0.5 rounded-full font-bold">0 اخراجات</span>
+              </div>
+              <div id="today-expenses-mini-list" class="space-y-1 max-h-32 overflow-y-auto pr-0.5 text-xs">
+                <div class="text-center text-slate-500 py-2 text-xs">آج کوئی خرچہ درج نہیں ہوا۔</div>
+              </div>
+            </div>
+
+          </div>
+
+
           <!-- Bottom Navigation Link to Page 2 & Quick Undo Button -->
           <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
             <!-- Undo Last Sale Button (active when transactions exist) -->
@@ -686,6 +768,90 @@
       </div>
     </div>
   </footer>
+
+  
+  <!-- ========================================================================= -->
+  <!-- MODAL: ADD EXPENSE (دکان خرچہ درج کریں)                                    -->
+  <!-- ========================================================================= -->
+  <div id="modal-expense" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="bg-rose-900 text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">💸</span>
+          <div>
+            <h3 class="font-black text-sm sm:text-base text-white leading-snug">دکان خرچہ درج کریں</h3>
+            <p class="text-[10px] text-rose-200">یہ رقم کل سیلز میں سے خودکار مائنس ہو جائے گی</p>
+          </div>
+        </div>
+        <button id="btn-close-expense-modal" class="text-rose-200 hover:text-white p-1 text-xl font-bold">✕</button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs">
+        
+        <!-- Amount Input -->
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">خرچے کی رقم (روپے):</label>
+          <div class="flex items-center bg-slate-50 border-2 border-slate-200 focus-within:border-rose-500 rounded-2xl p-2.5">
+            <span class="text-xl font-bold text-slate-400 ml-2 font-mono">Rs.</span>
+            <input id="input-expense-amount" type="number" placeholder="0" class="w-full text-2xl font-black bg-transparent text-slate-900 outline-none font-mono" />
+          </div>
+        </div>
+
+        <!-- Quick Amount Presets -->
+        <div class="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar">
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="50">+50</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="100">+100</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="200">+200</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="500">+500</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="1000">+1000</button>
+        </div>
+
+        <!-- Expense Category Selection -->
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">خرچے کی تفصیل:</label>
+          <div class="grid grid-cols-2 gap-1.5" id="expense-cat-selector">
+            <button type="button" data-expcat="tea" class="exp-cat-btn active py-2 px-2 rounded-xl text-[11px] font-bold border border-rose-300 bg-rose-50 text-rose-900 flex items-center gap-1.5">
+              <span>☕</span>
+              <span>چائے / کھانا</span>
+            </button>
+            <button type="button" data-expcat="bills" class="exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5">
+              <span>💡</span>
+              <span>دوکان کے بل</span>
+            </button>
+            <button type="button" data-expcat="rent" class="exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5">
+              <span>🏢</span>
+              <span>دوکان کا کرایہ</span>
+            </button>
+            <button type="button" data-expcat="stock" class="exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5">
+              <span>📦</span>
+              <span>سامان / خریداری</span>
+            </button>
+            <button type="button" data-expcat="personal" class="exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5">
+              <span>👤</span>
+              <span>ذاتی / گھر کا خرچ</span>
+            </button>
+            <button type="button" data-expcat="misc" class="exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5">
+              <span>⚙️</span>
+              <span>متفرق خرچہ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Description Note -->
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">نوٹ (اختیاری):</label>
+          <input id="input-expense-note" type="text" placeholder="مثال: مہمانوں کی چائے، کھانا، بجلی بل..." class="w-full text-xs p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-rose-500" />
+        </div>
+
+        <button id="btn-submit-expense" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl text-sm shadow-md transition flex items-center justify-center gap-2 btn-press">
+          <span>✓</span>
+          <span>خرچہ محفوظ کریں (سیلز سے مائنس کریں)</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
 
   <!-- ========================================================================= -->
   <!-- 4. MODAL: DAY CLOSING BREAKDOWN                                           -->
@@ -1171,6 +1337,153 @@
       }
     }
 
+
+    
+    // ========================================================
+    // 💰 INDESTRUCTIBLE FINANCIAL ENGINE & EXPENSES TRACKER
+    // ========================================================
+    let activeExpenses = [];
+    let selectedExpenseCategory = 'tea';
+
+    function calculateFinancialSummary() {
+      // 1. Total Sales from all sales categories
+      let salesTotal = 0;
+      activeTransactions.forEach(t => {
+        salesTotal += (Number(t.amount) || 0);
+      });
+
+      // 2. Total Expenses
+      let totalExpenses = 0;
+      activeExpenses.forEach(e => {
+        totalExpenses += (Number(e.amount) || 0);
+      });
+
+      // 3. Net Cash in Hand (سیلز - خرچہ)
+      const netBalance = salesTotal - totalExpenses;
+
+      return {
+        salesTotal,
+        totalExpenses,
+        netBalance,
+        salesCount: activeTransactions.length,
+        expenseCount: activeExpenses.length
+      };
+    }
+
+    function renderFinancialCards() {
+      const fin = calculateFinancialSummary();
+      
+      const elTotalIncome = document.getElementById('card-total-income');
+      const elTotalExpense = document.getElementById('card-total-expense');
+      const elNetBalance = document.getElementById('card-net-balance');
+      const elExpenseCount = document.getElementById('card-expense-count');
+      const elNetStatus = document.getElementById('card-net-status');
+
+      if (elTotalIncome) elTotalIncome.textContent = fin.salesTotal.toLocaleString();
+      if (elTotalExpense) elTotalExpense.textContent = fin.totalExpenses.toLocaleString();
+      if (elNetBalance) elNetBalance.textContent = fin.netBalance.toLocaleString();
+      if (elExpenseCount) elExpenseCount.textContent = `${fin.expenseCount} اخراجات`;
+      
+      if (elNetStatus) {
+        elNetStatus.textContent = fin.netBalance >= 0 ? 'خالص دراز کیش' : 'خسارہ (خرچہ زیادہ ہے)';
+      }
+
+      renderTodayExpensesList();
+    }
+
+    function renderTodayExpensesList() {
+      const list = document.getElementById('today-expenses-mini-list');
+      const badge = document.getElementById('today-expenses-count-badge');
+      if (!list) return;
+
+      if (badge) badge.textContent = `${activeExpenses.length} اخراجات`;
+
+      if (activeExpenses.length === 0) {
+        list.innerHTML = '<div class="text-center text-slate-500 py-2 text-xs">آج کوئی خرچہ درج نہیں ہوا۔</div>';
+        return;
+      }
+
+      const reversed = [...activeExpenses].reverse();
+      list.innerHTML = reversed.map(e => {
+        const timeStr = formatTime12(new Date(e.timestamp));
+        const iconMap = {
+          tea: '☕',
+          bills: '💡',
+          rent: '🏢',
+          stock: '📦',
+          personal: '👤',
+          misc: '⚙️'
+        };
+        const icon = iconMap[e.category] || '💸';
+
+        return `
+          <div class="flex items-center justify-between p-2 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-700 transition shadow-inner">
+            <div class="flex items-center gap-2">
+              <span class="text-base">${icon}</span>
+              <div>
+                <span class="font-bold text-white text-xs block">${escapeHtml(e.note || 'دکان خرچہ')}</span>
+                <span class="text-[10px] text-slate-400 font-mono">${timeStr}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-rose-400 text-xs sm:text-sm">
+                -Rs. ${Number(e.amount).toLocaleString()}
+              </span>
+              <button onclick="deleteExpense('${e.id}')" title="خرچہ ڈیلیٹ کریں" class="p-1 text-slate-500 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition btn-press">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function addExpense(amount, category, note) {
+      if (isNaN(amount) || amount <= 0) {
+        showToast('درست رقم درج کریں!', '⚠️');
+        return;
+      }
+
+      const exp = {
+        id: 'exp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+        amount: amount,
+        category: category || 'misc',
+        note: note || 'دکان خرچہ',
+        timestamp: Date.now(),
+        date: getTodayDateStr()
+      };
+
+      activeExpenses.push(exp);
+      await dbAdd('active_expenses', exp);
+      localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses));
+      saveEmergencySnapshot();
+
+      playBeep('click');
+      showToast(`💸 خرچہ: Rs. ${amount.toLocaleString()} درج (سیلز سے مائنس)`, '✓');
+
+      refreshTodayDashboard();
+    }
+
+    async function deleteExpense(expId) {
+      if (!confirm('کیا آپ یہ خرچہ ڈیلیٹ کرنا چاہتے ہیں؟')) return;
+      activeExpenses = activeExpenses.filter(x => x.id !== expId);
+      await dbDelete('active_expenses', expId);
+      localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses));
+      saveEmergencySnapshot();
+      playBeep('click');
+      showToast('خرچہ ڈیلیٹ ہو گیا!', '🗑️');
+      refreshTodayDashboard();
+    }
+
+    function openExpenseModal() {
+      playBeep('click');
+      const modal = document.getElementById('modal-expense');
+      const input = document.getElementById('input-expense-amount');
+      const note = document.getElementById('input-expense-note');
+      if (input) input.value = '';
+      if (note) note.value = '';
+      if (modal) modal.classList.remove('hidden');
+    }
 
     // --- 1. CATEGORIES DEFINITION ---
     const CATEGORIES = {
@@ -1735,12 +2048,29 @@
 
       renderSubtotalsGrid(stats);
       renderRecentTransactions();
+      renderFinancialCards();
     }
 
+    
     async function logSale(categoryId) {
       const input = document.getElementById('input-amount');
       const noteInput = document.getElementById('input-note');
-      const amountVal = parseFloat(input.value.replace(/,/g, ''));
+      const rawVal = (input.value || '').replace(/,/g, '').trim();
+      const amountVal = parseFloat(rawVal);
+
+      // Dedicated 8th button: "دیگر / خرچہ"
+      if (categoryId === 'other') {
+        if (isNaN(amountVal) || amountVal <= 0) {
+          openExpenseModal();
+          return;
+        }
+        const note = (noteInput.value || '').trim() || 'دکان خرچہ';
+        await addExpense(amountVal, 'misc', note);
+        input.value = '';
+        noteInput.value = '';
+        document.getElementById('amount-in-words').textContent = 'صفر روپے';
+        return;
+      }
 
       if (isNaN(amountVal) || amountVal <= 0) {
         showToast('پہلے رقم درج کریں!', '⚠️');
@@ -1759,6 +2089,8 @@
 
       activeTransactions.push(tx);
       await dbAdd('active_transactions', tx);
+      localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions));
+      saveEmergencySnapshot();
 
       playBeep('sale');
       showToast(`${CATEGORIES[categoryId].nameUr}: Rs. ${amountVal.toLocaleString()} درج`, '✓');
@@ -1769,6 +2101,7 @@
 
       refreshTodayDashboard();
     }
+
 
     function openDeleteModal(txId) {
       const tx = activeTransactions.find(x => x.id === txId);
@@ -1868,8 +2201,10 @@
       document.getElementById('modal-closing').classList.remove('hidden');
     }
 
+    
     async function executeDayClosing() {
       const stats = calculateSubtotals(activeTransactions);
+      const fin = calculateFinancialSummary();
       const notes = (document.getElementById('input-closing-notes').value || '').trim();
       const dateStr = getTodayDateStr();
       const monthStr = getMonthStr();
@@ -1881,30 +2216,46 @@
         month: monthStr,
         year: yearStr,
         timestamp: Date.now(),
-        grandTotal: stats.total,
+        grandTotal: fin.salesTotal,
+        salesTotal: fin.salesTotal,
+        totalExpenses: fin.totalExpenses,
+        netBalance: fin.netBalance,
         txCount: activeTransactions.length,
+        expenseCount: activeExpenses.length,
         subtotals: stats.subtotals,
         counts: stats.counts,
         notes: notes,
-        transactionsArchive: [...activeTransactions]
+        transactionsArchive: [...activeTransactions],
+        expensesArchive: [...activeExpenses]
       };
 
+      // 1. Permanently archive closing record
       await dbAdd('closings', closingRecord);
       closingsList.push(closingRecord);
+      localStorage.setItem('mirza_closings', JSON.stringify(closingsList));
 
+      // 2. Full Zero Reset for Active Counters
       await dbClear('active_transactions');
       activeTransactions = [];
+      await dbClear('active_expenses');
+      activeExpenses = [];
+
+      localStorage.removeItem('mirza_active_transactions');
+      localStorage.removeItem('mirza_active_expenses');
+
+      saveEmergencySnapshot();
 
       document.getElementById('modal-closing').classList.add('hidden');
 
       playBeep('close');
-      showToast(`کلوزنگ محفوظ! کل رقم: Rs. ${stats.total.toLocaleString()}`, '🔒');
+      showToast(`کلوزنگ مکمل! کل سیل: Rs. ${fin.salesTotal.toLocaleString()} | خرچہ: Rs. ${fin.totalExpenses.toLocaleString()} | دراز کیش: Rs. ${fin.netBalance.toLocaleString()} (کاؤنٹر صفر پر ری سیٹ)`, '🔒');
 
       refreshTodayDashboard();
       renderLedgerView();
       renderYearlyView();
       openReceiptModal(closingRecord);
     }
+
 
     // --- 9. MONTHLY LEDGER ---
     function renderLedgerMonthSelector() {
@@ -2939,6 +3290,52 @@
       if (btnDismissReceipt) btnDismissReceipt.addEventListener('click', () => {
         document.getElementById('print-receipt-modal').classList.add('hidden');
       });
+
+      
+      // Expense Modal Listeners
+      const openExpBtn = document.getElementById('btn-open-expense-modal');
+      if (openExpBtn) openExpBtn.addEventListener('click', openExpenseModal);
+
+      const closeExpBtn = document.getElementById('btn-close-expense-modal');
+      if (closeExpBtn) closeExpBtn.addEventListener('click', () => {
+        document.getElementById('modal-expense').classList.add('hidden');
+      });
+
+      document.querySelectorAll('.preset-exp-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playBeep('click');
+          const addVal = parseInt(btn.dataset.val, 10);
+          const expInput = document.getElementById('input-expense-amount');
+          const cur = parseInt(expInput.value || '0', 10);
+          expInput.value = cur + addVal;
+        });
+      });
+
+      document.querySelectorAll('.exp-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          playBeep('click');
+          document.querySelectorAll('.exp-cat-btn').forEach(b => {
+            b.className = 'exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5';
+          });
+          btn.className = 'exp-cat-btn active py-2 px-2 rounded-xl text-[11px] font-bold border border-rose-300 bg-rose-50 text-rose-900 flex items-center gap-1.5';
+          selectedExpenseCategory = btn.dataset.expcat || 'misc';
+        });
+      });
+
+      const submitExpBtn = document.getElementById('btn-submit-expense');
+      if (submitExpBtn) {
+        submitExpBtn.addEventListener('click', async () => {
+          const expInput = document.getElementById('input-expense-amount');
+          const noteInput = document.getElementById('input-expense-note');
+          const val = parseFloat(expInput.value);
+          if (isNaN(val) || val <= 0) {
+            showToast('درست رقم درج کریں!', '⚠️');
+            return;
+          }
+          await addExpense(val, selectedExpenseCategory, (noteInput.value || '').trim());
+          document.getElementById('modal-expense').classList.add('hidden');
+        });
+      }
 
       // Receipt Modal Close Button
       (document.getElementById('btn-close-receipt') && document.getElementById('btn-close-receipt')).addEventListener('click', () => {
