@@ -9,11 +9,35 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-      <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
+  <script>
+    window.deferredPrompt = null;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(function(reg) {
+          console.log('[PWA Head] SW registered:', reg.scope);
+        }).catch(function(err) {
+          console.warn('[PWA Head] SW registration failed:', err);
+        });
+    }
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      window.deferredPrompt = e;
+      console.log('[PWA Head] beforeinstallprompt captured!');
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'flex';
+    });
+    window.addEventListener('appinstalled', function() {
+      window.deferredPrompt = null;
+      console.log('[PWA Head] App installed.');
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'none';
+    });
+  </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
