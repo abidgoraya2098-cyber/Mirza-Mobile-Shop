@@ -9,7 +9,7 @@
   "orientation": "portrait",
   "lang": "ur",
   "dir": "rtl",
-  "icons": [
+  "icons": [logo.png
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
