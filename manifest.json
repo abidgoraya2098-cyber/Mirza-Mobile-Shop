@@ -1,7 +1,7 @@
 {
   "name": "Mirza Shop",
   "short_name": "Mirza Shop",
-  "description": "Mirza Mobile & Diaper Shop - Sales & Accounts Ledger",
+  "description": "مرزا موبائل اینڈ ڈائیپر شاپ - ڈیلی سیلز، کلوزنگ اور کھاتہ لیجر",
   "id": "/",
   "start_url": "/",
   "scope": "/",
@@ -35,18 +35,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
     }
   ]
 }

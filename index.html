@@ -9,31 +9,28 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-  <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="/assets/icon-512.png" />
+    <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
     window.deferredPrompt = null;
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(function() {});
+      navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function() {});
     }
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       window.deferredPrompt = e;
-      console.log('[PWA] Chrome beforeinstallprompt event captured in head.');
+      console.log('[PWA] Chrome beforeinstallprompt event captured.');
       var banner = document.getElementById('pwa-install-banner');
-      var hdrBtn = document.getElementById('btn-header-install');
       if (banner) banner.style.display = 'flex';
-      if (hdrBtn) hdrBtn.style.display = 'inline-flex';
     });
     window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
+      console.log('[PWA] App successfully installed!');
       var banner = document.getElementById('pwa-install-banner');
-      var hdrBtn = document.getElementById('btn-header-install');
       if (banner) banner.style.display = 'none';
-      if (hdrBtn) hdrBtn.style.display = 'none';
     });
   </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
