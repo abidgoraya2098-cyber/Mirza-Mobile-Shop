@@ -124,6 +124,18 @@
       }
     }
   </style>
+  <script>
+    window.deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredPrompt = e;
+      console.log('[PWA Early] beforeinstallprompt captured.');
+      const banner = document.getElementById('pwa-install-banner');
+      const hdrBtn = document.getElementById('btn-header-install');
+      if (banner) banner.style.display = 'flex';
+      if (hdrBtn) hdrBtn.style.display = 'inline-flex';
+    });
+  </script>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
 
@@ -196,7 +208,7 @@
             <p class="text-[10px] text-emerald-100 truncate">1 کلک میں موبائل ہوم اسکرین پر حاصل کریں</p>
           </div>
         </div>
-        <button id="btn-pwa-install" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
+        <button id="btn-pwa-install" onclick="triggerDirectChromeInstall()" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
           <span>⚡</span>
           <span>ایپ انسٹال کریں</span>
         </button>
@@ -1268,10 +1280,11 @@
     }
 
     
+    
     // ========================================================
     // ⚡ 1-CLICK NATIVE GOOGLE CHROME INSTALLATION ENGINE
     // ========================================================
-    let deferredPrompt = null;
+    let deferredPrompt = window.deferredPrompt || null;
     let isAppInstalled = false;
 
     if ('serviceWorker' in navigator) {
@@ -1307,7 +1320,6 @@
       showToast('مرزا شاپ ہوم سکرین پر انسٹال ہو گئی!', '📲');
     });
 
-    
     function checkAppInstallStatus() {
       const banner = document.getElementById('pwa-install-banner');
       const headerBtn = document.getElementById('btn-header-install');
@@ -1321,23 +1333,29 @@
 
     async function triggerDirectChromeInstall() {
       playBeep('click');
-      const promptToUse = deferredPrompt || window.deferredPrompt;
-      if (promptToUse) {
-        promptToUse.prompt();
-        const choice = await promptToUse.userChoice;
-        console.log('[PWA] User response:', choice);
-        deferredPrompt = null;
-        window.deferredPrompt = null;
+      const promptToUse = window.deferredPrompt || deferredPrompt;
+      console.log('[PWA] Install button clicked. Prompt object:', promptToUse);
 
-        const banner = document.getElementById('pwa-install-banner');
-        const headerBtn = document.getElementById('btn-header-install');
-        if (banner) banner.style.display = 'none';
-        if (headerBtn) headerBtn.style.display = 'none';
+      if (promptToUse) {
+        try {
+          promptToUse.prompt();
+          const choiceResult = await promptToUse.userChoice;
+          console.log('[PWA] User choice outcome:', choiceResult);
+          window.deferredPrompt = null;
+          deferredPrompt = null;
+
+          const banner = document.getElementById('pwa-install-banner');
+          const headerBtn = document.getElementById('btn-header-install');
+          if (banner) banner.style.display = 'none';
+          if (headerBtn) headerBtn.style.display = 'none';
+        } catch (err) {
+          console.warn('[PWA] Install prompt error:', err);
+        }
+      } else {
+        showToast('کروم مینو (⋮) سے "Install app" یا "Add to Home screen" پر کلک کریں', '📲');
       }
     }
 
-
-    
     // ========================================================
     // 💰 INDESTRUCTIBLE FINANCIAL ENGINE & EXPENSES TRACKER
     // ========================================================
