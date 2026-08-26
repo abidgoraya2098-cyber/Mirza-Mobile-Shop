@@ -1288,81 +1288,6 @@
     // ========================================================
     // ⚡ 1-CLICK NATIVE GOOGLE CHROME INSTALLATION ENGINE
     // ========================================================
-    let deferredPrompt = window.deferredPrompt || null;
-    let isAppInstalled = false;
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => console.log('[SW] Registered:', reg.scope))
-          .catch(err => console.warn('[SW] Registration failed:', err));
-      });
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      window.deferredPrompt = e;
-      console.log('[PWA] Chrome beforeinstallprompt event captured.');
-
-      const banner = document.getElementById('pwa-install-banner');
-      const headerBtn = document.getElementById('btn-header-install');
-      if (banner) banner.style.display = 'flex';
-      if (headerBtn) headerBtn.style.display = 'inline-flex';
-    });
-
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      window.deferredPrompt = null;
-      isAppInstalled = true;
-      console.log('[PWA] App successfully installed on device.');
-
-      const banner = document.getElementById('pwa-install-banner');
-      const headerBtn = document.getElementById('btn-header-install');
-      if (banner) banner.style.display = 'none';
-      if (headerBtn) headerBtn.style.display = 'none';
-      showToast('مرزا شاپ ہوم سکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
-    });
-
-    function checkAppInstallStatus() {
-      const banner = document.getElementById('pwa-install-banner');
-      const headerBtn = document.getElementById('btn-header-install');
-      const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-
-      if (isStandalone) {
-        if (banner) banner.style.display = 'none';
-        if (headerBtn) headerBtn.style.display = 'none';
-      }
-    }
-
-    async function triggerDirectChromeInstall() {
-      playBeep('click');
-      const promptToUse = window.deferredPrompt || deferredPrompt;
-      console.log('[PWA] Install clicked. promptToUse:', promptToUse);
-
-      if (promptToUse) {
-        try {
-          promptToUse.prompt();
-          const choiceResult = await promptToUse.userChoice;
-          console.log('[PWA] User response:', choiceResult);
-          window.deferredPrompt = null;
-          deferredPrompt = null;
-
-          const banner = document.getElementById('pwa-install-banner');
-          const headerBtn = document.getElementById('btn-header-install');
-          if (banner) banner.style.display = 'none';
-          if (headerBtn) headerBtn.style.display = 'none';
-        } catch (err) {
-          console.warn('[PWA] Prompt execution error:', err);
-        }
-      } else {
-        const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
-        if (isStandalone) {
-          showToast('مرزا شاپ ایپ پہلے سے آپ کے موبائل پر انسٹال ہے!', '📲');
-        } else {
-          showToast('کروم مینو (⋮) پر کلک کر کے "Install app" منتخب کریں', '📲');
-        }
-      }
     }
 
     // ========================================================
@@ -3404,17 +3329,10 @@
       });
 
       // Install Button & Direct Chrome Prompt
-      (document.getElementById('btn-pwa-install') && document.getElementById('btn-pwa-install')).addEventListener('click', triggerDirectChromeInstall);
-            // Install Button & Direct Chrome Prompt
+      // Install Button & Direct Chrome Prompt
       const btnPwa = document.getElementById('btn-pwa-install');
-      if (btnPwa) btnPwa.addEventListener('click', triggerDirectChromeInstall);
-
       const btnHdr = document.getElementById('btn-header-install');
-      if (btnHdr) btnHdr.addEventListener('click', triggerDirectChromeInstall);
-
       const btnInst = document.getElementById('installAppBtn');
-      if (btnInst) btnInst.addEventListener('click', triggerDirectChromeInstall);
-      
       const copyLinkBtn = document.getElementById('btn-copy-app-link');
       if (copyLinkBtn) {
         copyLinkBtn.addEventListener('click', () => {
@@ -3567,7 +3485,6 @@
     });
   </script>
 
-  <script type="module" src="/src/main.tsx"></script>
   <!-- ========================================================================= -->
   <!-- 📲 PERMANENT INDESTRUCTIBLE 1-CLICK PWA INSTALLATION MODAL                  -->
   <!-- ========================================================================= -->
