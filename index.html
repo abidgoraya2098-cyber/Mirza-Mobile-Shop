@@ -10,12 +10,22 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/logo.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="/logo.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
+  <script>
+    window.deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      window.deferredPrompt = e;
+      console.log('[PWA] Chrome beforeinstallprompt event captured in head!');
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      if (banner) banner.style.display = 'flex';
+      if (headerBtn) headerBtn.style.display = 'inline-flex';
+    });
+  </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -154,7 +164,7 @@
         <div class="flex items-center gap-2.5 min-w-0">
           <!-- 3D Brand Logo Icon Button -->
           <button id="btn-open-logo-modal" title="مرزا شاپ 3D لوگو دیکھیں" class="relative p-0.5 rounded-xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-md transition hover:scale-105 btn-press shrink-0">
-            <img src="/header-logo.png" onerror="if(!this.dataset.fallback){this.dataset.fallback=1;this.src='/logo.png';}" style="width:42px; height:42px; object-fit:cover; border-radius:10px; border:1.5px solid #f59e0b;" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="shadow-sm block" />
+            <img src="/header-logo.png" onerror="if(!this.dataset.retry){this.dataset.retry=1;this.src='/icon-192.png';}else if(this.dataset.retry==1){this.dataset.retry=2;this.src='/logo.png';}" style="width: 42px; height: 42px; object-fit: cover; border-radius: 10px; border: 1.5px solid #f59e0b;" alt="مرزا موبائل اینڈ ڈائیپر شاپ لوگو" class="shadow-sm block" />
           </button>
 
           <!-- Full Shop Name in Ultra-Crisp High Contrast White (نو کٹنگ - مکمل نام) -->
@@ -202,14 +212,19 @@
       </div>
 
       <!-- High-Visibility Google Chrome 1-Click Install Banner (نمایاں کروم انسٹال بینر) -->
-      <div id="pwa-install-banner" class="mt-2 p-2 sm:p-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-2xl text-white shadow-lg flex items-center justify-between gap-2 border border-emerald-400/40">
+      <div id="pwa-install-banner" class="mt-2 p-2.5 sm:p-3 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-2xl text-white shadow-lg flex items-center justify-between gap-2 border border-emerald-400/40">
         <div class="flex items-center gap-2 min-w-0">
-          <span class="text-xl sm:text-2xl shrink-0 animate-bounce">📲</span>
+          <span class="text-2xl shrink-0 animate-bounce">📲</span>
           <div class="min-w-0">
             <h4 class="font-black text-xs sm:text-sm text-white leading-tight">مرزا شاپ موبائل ایپ انسٹال کریں</h4>
             <p class="text-[10px] text-emerald-100 truncate">1 کلک میں موبائل ہوم اسکرین پر حاصل کریں</p>
           </div>
         </div>
+        <button id="btn-pwa-install" onclick="triggerDirectChromeInstall()" class="px-4 py-2 bg-white hover:bg-emerald-50 text-emerald-900 font-black text-xs rounded-xl shadow-md active:scale-95 transition flex items-center gap-1.5 shrink-0 btn-press animate-pulse">
+          <span>⚡</span>
+          <span>ایپ انسٹال کریں</span>
+        </button>
+      </div>
         <button id="btn-pwa-install" onclick="triggerDirectChromeInstall()" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
           <span>⚡</span>
           <span>ایپ انسٹال کریں</span>
