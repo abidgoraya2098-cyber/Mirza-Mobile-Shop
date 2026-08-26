@@ -9,34 +9,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-        <link rel="manifest" href="/manifest.json" />
+          <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
-    window.deferredPrompt = null;
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' })
-        .then(function(reg) {
-          console.log('[PWA Head] SW registered:', reg.scope);
-        }).catch(function(err) {
-          console.warn('[PWA Head] SW registration failed:', err);
-        });
+      navigator.serviceWorker.register('/sw.js', { scope: '/' });
     }
-    window.addEventListener('beforeinstallprompt', function(e) {
-      e.preventDefault();
-      window.deferredPrompt = e;
-      console.log('[PWA Head] beforeinstallprompt captured!');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'flex';
-    });
-    window.addEventListener('appinstalled', function() {
-      window.deferredPrompt = null;
-      console.log('[PWA Head] App installed.');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'none';
-    });
   </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -235,7 +216,7 @@
             <p class="text-[10px] text-emerald-100 truncate">1 کلک میں موبائل ہوم اسکرین پر حاصل کریں</p>
           </div>
         </div>
-        <button id="btn-pwa-install" onclick="triggerDirectChromeInstall()" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
+        <button id="btn-pwa-install" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
           <span>⚡</span>
           <span>ایپ انسٹال کریں</span>
         </button>
@@ -1295,130 +1276,51 @@
   </div>
 
   
+  
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /**
-     * Mirza Mobile & Diaper Shop - Global Master Controllers
+     * Mirza Mobile & Diaper Shop - Native PWA Engine
      */
-    window.deferredPrompt = null;
+    let deferredPrompt;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const installButton = document.getElementById('btn-pwa-install');
 
-    // Capture Native Chrome Install Event
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
-      window.deferredPrompt = e;
-      console.log('[PWA] Chrome beforeinstallprompt event captured and ready!');
-      const banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'flex';
+      deferredPrompt = e;
+      if (installBanner) installBanner.style.display = 'flex';
+      console.log('[PWA] beforeinstallprompt captured!');
     });
+
+    if (installButton) {
+      installButton.addEventListener('click', async () => {
+        try { if (typeof playBeep === 'function') playBeep('click'); } catch (err) {}
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log('[PWA] Install outcome:', outcome);
+          if (outcome === 'accepted') {
+            deferredPrompt = null;
+            if (installBanner) installBanner.style.display = 'none';
+          }
+        } else {
+          const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+          if (isStandalone) {
+            showToast('مرزا شاپ ایپ پہلے سے آپ کے موبائل پر انسٹال ہے!', '📲');
+          } else {
+            showToast('کروم کے 3 ڈاٹس (⋮) پر کلک کر کے "Install app" منتخب کریں', '📲');
+          }
+        }
+      });
+    }
 
     window.addEventListener('appinstalled', () => {
-      window.deferredPrompt = null;
-      console.log('[PWA] App successfully installed on device.');
-      const banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'none';
-      if (typeof closeInstallGuideModal === 'function') closeInstallGuideModal();
-      if (typeof showToast === 'function') showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
+      deferredPrompt = null;
+      if (installBanner) installBanner.style.display = 'none';
+      showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
     });
-
-    async function triggerDirectChromeInstall() {
-      try {
-        if (typeof playBeep === 'function') playBeep('click');
-      } catch (e) {}
-      
-      console.log('[PWA] triggerDirectChromeInstall clicked. deferredPrompt:', window.deferredPrompt);
-
-      // If Chrome native prompt is ready -> Trigger native popup directly
-      if (window.deferredPrompt) {
-        try {
-          window.deferredPrompt.prompt();
-          const choiceResult = await window.deferredPrompt.userChoice;
-          console.log('[PWA] User response:', choiceResult);
-          if (choiceResult && choiceResult.outcome === 'accepted') {
-            window.deferredPrompt = null;
-            const banner = document.getElementById('pwa-install-banner');
-            if (banner) banner.style.display = 'none';
-          }
-          return;
-        } catch (err) {
-          console.warn('[PWA] Prompt error:', err);
-        }
-      }
-
-      // If Chrome native prompt is in cooldown/not ready -> Open Dedicated In-App Install Center Modal
-      openInstallGuideModal();
-    }
-
-    async function triggerNativeOrGuideInstall() {
-      if (window.deferredPrompt) {
-        try {
-          window.deferredPrompt.prompt();
-          const choiceResult = await window.deferredPrompt.userChoice;
-          if (choiceResult && choiceResult.outcome === 'accepted') {
-            window.deferredPrompt = null;
-            closeInstallGuideModal();
-            const banner = document.getElementById('pwa-install-banner');
-            if (banner) banner.style.display = 'none';
-          }
-          return;
-        } catch (err) {}
-      }
-      if (typeof showToast === 'function') {
-        showToast('براؤزر مینو (⋮) پر جا کر "Install app" یا "Add to Home screen" دبائیں', '📲');
-      } else {
-        alert('موبائل پر انسٹال کرنے کے لیے کروم کے 3 ڈاٹس (⋮) دبا کر "Install app" یا "Add to Home screen" پر کلک کریں!');
-      }
-    }
-
-    function openInstallGuideModal() {
-      const modal = document.getElementById('modal-install-guide');
-      if (!modal) {
-        alert('موبائل پر انسٹال کرنے کے لیے کروم کے 3 ڈاٹس (⋮) دبا کر "Install app" یا "Add to Home screen" پر کلک کریں!');
-        return;
-      }
-      modal.classList.remove('hidden');
-      modal.style.display = 'flex';
-      setTimeout(() => {
-        modal.classList.remove('opacity-0');
-        const box = modal.querySelector('div');
-        if (box) box.classList.remove('scale-95');
-      }, 10);
-    }
-
-    function closeInstallGuideModal() {
-      const modal = document.getElementById('modal-install-guide');
-      if (!modal) return;
-      modal.classList.add('opacity-0');
-      const box = modal.querySelector('div');
-      if (box) box.classList.add('scale-95');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.style.display = 'none';
-      }, 300);
-    }
-
-    function copyAppLiveLink() {
-      try {
-        if (typeof playBeep === 'function') playBeep('click');
-      } catch (e) {}
-      const url = window.location.origin || window.location.href;
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(() => {
-          if (typeof showToast === 'function') showToast('ایپ کا لائیو لنک کاپی ہو گیا ہے!', '📋');
-        }).catch(() => {
-          if (typeof showToast === 'function') showToast(url, '📋');
-        });
-      } else {
-        if (typeof showToast === 'function') showToast(url, '📋');
-      }
-    }
-
-    window.triggerDirectChromeInstall = triggerDirectChromeInstall;
-    window.triggerNativeOrGuideInstall = triggerNativeOrGuideInstall;
-    window.openInstallGuideModal = openInstallGuideModal;
-    window.closeInstallGuideModal = closeInstallGuideModal;
-    window.copyAppLiveLink = copyAppLiveLink;
-
-    function safeListen(id, event, handler) {
+function safeListen(id, event, handler) {
       const el = document.getElementById(id);
       if (el) el.addEventListener(event, handler);
     }
