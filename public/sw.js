@@ -1,6 +1,6 @@
-// Mirza Mobile & Diaper Shop PWA Service Worker (v50-native-reliable)
-const CACHE_NAME = 'mirza-shop-v50-live';
-const PRECACHE = [
+// Mirza Mobile & Diaper Shop Service Worker (v60-pure-native)
+const CACHE_NAME = 'mirza-shop-v60';
+const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
@@ -9,28 +9,30 @@ const PRECACHE = [
   '/logo.png'
 ];
 
-self.addEventListener('install', (e) => {
+self.addEventListener('install', (event) => {
   self.skipWaiting();
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE)).catch(() => {})
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(() => {})
   );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.map((k) => k !== CACHE_NAME ? caches.delete(k) : null)))
-      .then(() => self.clients.claim())
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then((keys) => Promise.all(keys.map((k) => k !== CACHE_NAME ? caches.delete(k) : null)))
+    ])
   );
 });
 
-self.addEventListener('fetch', (e) => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    caches.match(e.request).then((cached) => {
-      return cached || fetch(e.request).then((res) => {
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      return cached || fetch(event.request).then((res) => {
         if (res && res.status === 200) {
           const clone = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return res;
       }).catch(() => caches.match('/index.html') || caches.match('/'));
