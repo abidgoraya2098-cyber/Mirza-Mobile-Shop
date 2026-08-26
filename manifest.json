@@ -1,7 +1,7 @@
 {
-  "name": "مرزا موبائل اینڈ ڈائیپر شاپ",
-  "short_name": "مرزا شاپ",
-  "description": "مرزا موبائل اینڈ ڈائیپر شاپ - ڈیلی سیلز، کلوزنگ اور کھاتہ لیجر",
+  "name": "Mirza Shop",
+  "short_name": "Mirza Shop",
+  "description": "Mirza Mobile & Diaper Shop - Sales & Accounts Ledger",
   "id": "/",
   "start_url": "/",
   "scope": "/",
@@ -9,33 +9,9 @@
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "orientation": "portrait",
-  "lang": "ur",
-  "dir": "rtl",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
-    {
-      "src": "/assets/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/assets/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/assets/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/assets/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
@@ -43,7 +19,31 @@
       "purpose": "any"
     },
     {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
