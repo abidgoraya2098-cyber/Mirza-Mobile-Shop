@@ -1,10 +1,13 @@
-// Mirza Mobile & Diaper Shop PWA Service Worker (v30-pure-svg-live)
-const CACHE_NAME = 'mirza-shop-v30-live';
+// Mirza Mobile & Diaper Shop PWA Service Worker (v31-user-3d-logo-live)
+const CACHE_NAME = 'mirza-shop-v31-live';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/logo.svg'
+  '/header-logo.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/assets/mirza_shop_full_3d.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -53,7 +56,7 @@ self.addEventListener('fetch', (event) => {
         }
         return res;
       }).catch(async () => {
-        return caches.match('/logo.svg');
+        return caches.match('/header-logo.png') || caches.match('/icon-192.png');
       });
     })
   );
