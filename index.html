@@ -10,38 +10,26 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
   <link rel="manifest" href="/manifest.json" />
-      <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
-  <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
-    <!-- Instant Service Worker & beforeinstallprompt Early Registration -->
+        <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/assets/icon-512.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="/assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/assets/icon-512.png" />
   <script>
     window.deferredPrompt = null;
-
-    // Register Service Worker immediately without waiting for window.load
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' })
-        .then(function(reg) {
-          console.log('[PWA] Service Worker registered immediately with scope:', reg.scope);
-        })
-        .catch(function(err) {
-          console.warn('[PWA] Service Worker registration:', err);
-        });
+      navigator.serviceWorker.register('/sw.js').catch(function() {});
     }
-
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       window.deferredPrompt = e;
-      console.log('[PWA] Chrome beforeinstallprompt event captured in head!');
+      console.log('[PWA] Chrome beforeinstallprompt event captured in head.');
       var banner = document.getElementById('pwa-install-banner');
       var hdrBtn = document.getElementById('btn-header-install');
       if (banner) banner.style.display = 'flex';
       if (hdrBtn) hdrBtn.style.display = 'inline-flex';
     });
-
     window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
-      console.log('[PWA] App successfully installed on device!');
       var banner = document.getElementById('pwa-install-banner');
       var hdrBtn = document.getElementById('btn-header-install');
       if (banner) banner.style.display = 'none';
