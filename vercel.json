@@ -1,11 +1,5 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/sw.js",
@@ -17,6 +11,10 @@
         {
           "key": "Service-Worker-Allowed",
           "value": "/"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
         }
       ]
     },
@@ -25,7 +23,7 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/manifest+json"
+          "value": "application/manifest+json; charset=utf-8"
         },
         {
           "key": "Access-Control-Allow-Origin",
@@ -38,7 +36,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/(.*)\\.(png|jpg|jpeg|svg|ico)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
