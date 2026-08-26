@@ -382,7 +382,7 @@
             </div>
           </div>
 
-                              <!-- 8 BIG CATEGORY BUTTONS (بڑے، خوبصورت اور 1-کلک تیز رفتار سیل بٹن) -->
+                                        <!-- 8 BIG CATEGORY BUTTONS (بڑے، خوبصورت اور 1-کلک فوری سیل بٹن) -->
           <div>
             <div class="mb-2 px-1">
               <span class="text-xs font-bold text-slate-500">
@@ -390,55 +390,55 @@
               </span>
             </div>
 
-            <!-- 8 Categories Grid (2 Columns on mobile, 4 Columns on desktop) -->
+            <!-- 8 Categories Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               
               <!-- 1. Diapers -->
-              <button onclick="handleCategorySaleClick('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">👶</span>
-                <span class="font-black text-rose-950 text-sm sm:text-base">پیمپر</span>
+              <button type="button" data-cat="diapers" onclick="handleCategorySaleClick('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">👶</span>
+                <span class="font-black text-rose-950 text-sm sm:text-base pointer-events-none">پیمپر</span>
               </button>
 
               <!-- 2. Computer -->
-              <button onclick="handleCategorySaleClick('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">💻</span>
-                <span class="font-black text-blue-950 text-sm sm:text-base">کمپیوٹر</span>
+              <button type="button" data-cat="computer" onclick="handleCategorySaleClick('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">💻</span>
+                <span class="font-black text-blue-950 text-sm sm:text-base pointer-events-none">کمپیوٹر</span>
               </button>
 
               <!-- 3. Mobile Accessories -->
-              <button onclick="handleCategorySaleClick('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">🎧</span>
-                <span class="font-black text-emerald-950 text-sm sm:text-base">اسیسریز</span>
+              <button type="button" data-cat="accessories" onclick="handleCategorySaleClick('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">🎧</span>
+                <span class="font-black text-emerald-950 text-sm sm:text-base pointer-events-none">اسیسریز</span>
               </button>
 
               <!-- 4. Devices -->
-              <button onclick="handleCategorySaleClick('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">📱</span>
-                <span class="font-black text-violet-950 text-sm sm:text-base">ڈیوائسز</span>
+              <button type="button" data-cat="devices" onclick="handleCategorySaleClick('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">📱</span>
+                <span class="font-black text-violet-950 text-sm sm:text-base pointer-events-none">ڈیوائسز</span>
               </button>
 
               <!-- 5. JazzCash -->
-              <button onclick="handleCategorySaleClick('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">💳</span>
-                <span class="font-black text-amber-950 text-sm sm:text-base">جاز کیش</span>
+              <button type="button" data-cat="jazzcash" onclick="handleCategorySaleClick('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">💳</span>
+                <span class="font-black text-amber-950 text-sm sm:text-base pointer-events-none">جاز کیش</span>
               </button>
 
               <!-- 6. Easypaisa -->
-              <button onclick="handleCategorySaleClick('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">💸</span>
-                <span class="font-black text-teal-950 text-sm sm:text-base">ایزی پیسہ</span>
+              <button type="button" data-cat="easypaisa" onclick="handleCategorySaleClick('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">💸</span>
+                <span class="font-black text-teal-950 text-sm sm:text-base pointer-events-none">ایزی پیسہ</span>
               </button>
 
               <!-- 7. Easyload -->
-              <button onclick="handleCategorySaleClick('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">⚡</span>
-                <span class="font-black text-fuchsia-950 text-sm sm:text-base">ایزی لوڈ</span>
+              <button type="button" data-cat="easyload" onclick="handleCategorySaleClick('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">⚡</span>
+                <span class="font-black text-fuchsia-950 text-sm sm:text-base pointer-events-none">ایزی لوڈ</span>
               </button>
 
               <!-- 8. Other / Expense -->
-              <button onclick="handleCategorySaleClick('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl">⚙️</span>
-                <span class="font-black text-slate-900 text-sm sm:text-base">دیگر</span>
+              <button type="button" data-cat="other" onclick="handleCategorySaleClick('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+                <span class="text-3xl sm:text-4xl pointer-events-none">⚙️</span>
+                <span class="font-black text-slate-900 text-sm sm:text-base pointer-events-none">دیگر / خرچہ</span>
               </button>
 
             </div>
@@ -1519,6 +1519,17 @@
       } catch (e) {}
       showToast('کیٹیگری بٹن اصل حالت پر واپس آ گئے!', '↺');
     }
+
+    
+    // ⚡ Global 1-Click Instant Sales Entry Bridge
+    function handleCategorySaleClick(cat) {
+      if (cat === 'other') {
+        openAddExpenseModal();
+        return;
+      }
+      logSale(cat);
+    }
+    window.handleCategorySaleClick = handleCategorySaleClick;
 
     // 💰 INDESTRUCTIBLE FINANCIAL ENGINE & EXPENSES TRACKER
     // ========================================================
