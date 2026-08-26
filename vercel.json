@@ -36,7 +36,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.(png|jpg|jpeg|svg|ico)",
+      "source": "/(.*).(png|jpg|jpeg|svg|ico)",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
@@ -44,7 +44,7 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
         }
       ]
     }
