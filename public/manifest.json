@@ -1,7 +1,7 @@
 {
   "name": "مرزا موبائل اینڈ ڈائیپر شاپ",
   "short_name": "مرزا شاپ",
-  "description": "مرزا موبائل اینڈ ڈائیپر شاپ - ڈیلی سیلز، کلوزنگ اور ماہانہ و سالانہ لیجر رپورٹنگ",
+  "description": "مرزا موبائل اینڈ ڈائیپر شاپ - ڈیلی سیلز، کلوزنگ اور کھاتہ لیجر",
   "id": "/",
   "start_url": "/",
   "scope": "/",
@@ -35,12 +35,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "/assets/mirza_shop_logo.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
     }
   ]
 }

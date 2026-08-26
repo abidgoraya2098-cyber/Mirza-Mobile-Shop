@@ -13,14 +13,45 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
   <link rel="apple-touch-icon" href="/assets/icon-192.png" />
 
-  <script>
-    // Early capture for Chrome PWA install prompt
-    window.deferredPrompt = null;
-    window.isAppInstalled = false;
+    <script>
+    // سروس ورکر کو رجسٹر کرنا
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+
+    let deferredPrompt;
+
+    // کروم جب ایپ کو پاس کرے گا تو یہ ایونٹ چلے گا
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // کروم کو خود پاپ اپ لانے سے روکیں
+      deferredPrompt = e; // ایونٹ کو سیو کر لیں
       window.deferredPrompt = e;
-      console.log('Google Chrome PWA prompt captured successfully');
+      console.log('[PWA] Native Chrome beforeinstallprompt event captured.');
+
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      const floating = document.getElementById('floating-install-wrapper');
+
+      if (banner) banner.style.display = 'flex';
+      if (headerBtn) headerBtn.style.display = 'inline-flex';
+      if (floating) floating.style.display = 'block';
+    });
+
+    // انسٹال مکمل ہونے کے بعد کی سیٹنگ
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      window.deferredPrompt = null;
+      console.log('[PWA] App successfully installed on device.');
+
+      const banner = document.getElementById('pwa-install-banner');
+      const headerBtn = document.getElementById('btn-header-install');
+      const floating = document.getElementById('floating-install-wrapper');
+
+      if (banner) banner.style.display = 'none';
+      if (headerBtn) headerBtn.style.display = 'none';
+      if (floating) floating.style.display = 'none';
     });
   </script>
 
@@ -697,72 +728,6 @@
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- 3. MODAL: GOOGLE CHROME / PWA INSTALL POPUP                               -->
-  <!-- ========================================================================= -->
-  <div id="modal-install" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
-    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-150">
-      
-      <!-- Modal Header with App Icon -->
-      <div class="bg-slate-950 text-white p-4 flex items-center justify-between border-b border-slate-800">
-        <div class="flex items-center gap-3">
-          <img src="./assets/icon-192.png" alt="Icon" class="w-11 h-11 rounded-2xl border border-amber-300/40 shadow-sm shrink-0" />
-          <div class="min-w-0">
-            <h3 class="font-black text-sm sm:text-base text-white leading-snug">مرزا موبائل اینڈ ڈائیپر شاپ</h3>
-            <p class="text-[11px] text-amber-300">Mirza Shop • آفیشل کروم ایپ انسٹال</p>
-          </div>
-        </div>
-        <button id="btn-close-install-modal" class="text-slate-400 hover:text-white p-1 text-xl font-bold">✕</button>
-      </div>
-
-      <!-- Modal Body -->
-      <div class="p-4 space-y-3 text-xs">
-        
-        <!-- Big Chrome Direct Action Button -->
-        <button id="btn-modal-direct-install" class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-black rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2 btn-press animate-pulse">
-          <span class="text-xl">📲</span>
-          <span id="btn-modal-direct-install-text">گوگل کروم انسٹال پاپ اپ کھولیں</span>
-        </button>
-
-        <!-- 3-Step Clear Visual Installation Guide (ہمیشہ فعال اور آسان رہنمائی) -->
-        <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5 text-slate-800">
-          <div class="font-black text-xs text-indigo-900 flex items-center gap-1.5 border-b border-slate-200/80 pb-1.5">
-            <span>💡</span>
-            <span>کروم سے 5 سیکنڈ میں انسٹال کرنے کا طریقہ:</span>
-          </div>
-          <div class="space-y-2 text-[11px]">
-            <div class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">1</span>
-              <span>کروم کے اوپر دائیں کونے میں <strong>3 ڈاٹس (⋮)</strong> کے بٹن پر کلک کریں۔</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">2</span>
-              <span>فہرست میں سے <strong>"Install app" (یا Add to Home screen)</strong> منتخب کریں۔</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0 text-[10px]">3</span>
-              <span><strong>"Install"</strong> دبائیں، ایپ فوراً موبائل ہوم سکرین پر انسٹال ہو جائے گی۔</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Copy Link Option (In case opened inside WhatsApp browser) -->
-        <button id="btn-copy-app-link" class="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition btn-press">
-          <span>📋</span>
-          <span>ایپ کا لنک کاپی کریں (Copy Link)</span>
-        </button>
-
-      </div>
-
-      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
-        <button id="btn-dismiss-install-modal" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200 transition">
-          بند کریں
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ========================================================================= -->
   <!-- 4. MODAL: DAY CLOSING BREAKDOWN                                           -->
   <!-- ========================================================================= -->
   <div id="modal-closing" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 hidden">
@@ -1197,8 +1162,7 @@
       isAppInstalled = true;
       deferredPrompt = null;
       checkAppInstallStatus();
-      const modal = document.getElementById('modal-install');
-      if (modal) modal.classList.add('hidden');
+      const modal = 
       showToast('مرزا شاپ ہوم سکرین پر انسٹال ہو گئی!', '📲');
     });
 
@@ -1482,66 +1446,30 @@
       return `${num} روپے`;
     }
 
-    // --- 5. PWA & DIRECT CHROME INSTALLATION ---
-    function checkAppInstallStatus() {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-                           window.navigator.standalone === true ||
-                           document.referrer.includes('android-app://');
-      
-      const installBanner = document.getElementById('pwa-install-banner');
-      const installBtn = document.getElementById('btn-pwa-install');
-
-      if (isStandalone) {
-        isAppInstalled = true;
-        if (installBanner) installBanner.classList.add('hidden');
-        if (installBtn) installBtn.classList.add('hidden');
-      } else {
-        if (installBanner) installBanner.classList.remove('hidden');
-        if (installBtn) installBtn.classList.remove('hidden');
-      }
-    }
-
-    // Direct Instant One-Click Chrome Pop-up Install
+    
+    // ========================================================
+    // ⚡ DIRECT 1-CLICK NATIVE CHROME INSTALL TRIGGER
+    // ========================================================
     async function triggerDirectChromeInstall() {
       playBeep('click');
       const promptToUse = deferredPrompt || window.deferredPrompt;
       if (promptToUse) {
-        try {
-          promptToUse.prompt();
-          const choiceResult = await promptToUse.userChoice;
-          if (choiceResult && choiceResult.outcome === 'accepted') {
-            isAppInstalled = true;
-            window.isAppInstalled = true;
-            checkAppInstallStatus();
-            const modal = document.getElementById('modal-install');
-            if (modal) modal.classList.add('hidden');
-            showToast('مرزا شاپ کامیابی کے ساتھ انسٹال ہو گئی!', '📲');
-          }
-          deferredPrompt = null;
-          window.deferredPrompt = null;
-          checkAppInstallStatus();
-        } catch (err) {
-          console.warn('Install prompt error:', err);
-          openInstallModal();
-        }
-      } else {
-        openInstallModal();
+        promptToUse.prompt(); // کروم کا نیٹو ڈائریکٹ پاپ اپ لائیں
+        const choice = await promptToUse.userChoice; // یوزر کے کلک کا انتظار کریں
+        console.log('[PWA] User response:', choice);
+        deferredPrompt = null;
+        window.deferredPrompt = null;
+
+        const banner = document.getElementById('pwa-install-banner');
+        const headerBtn = document.getElementById('btn-header-install');
+        const floating = document.getElementById('floating-install-wrapper');
+
+        if (banner) banner.style.display = 'none';
+        if (headerBtn) headerBtn.style.display = 'none';
+        if (floating) floating.style.display = 'none';
       }
     }
 
-    function openInstallModal() {
-      playBeep('click');
-      const modal = document.getElementById('modal-install');
-      const btnText = document.getElementById('btn-modal-direct-install-text');
-      
-      if (deferredPrompt) {
-        if (btnText) btnText.textContent = 'ابھی ایپ انسٹال کریں';
-      } else {
-        if (btnText) btnText.textContent = 'کروم مینو (3 ڈاٹس) سے انسٹال کریں';
-      }
-
-      if (modal) modal.classList.remove('hidden');
-    }
 
     // --- 6. PAGE NAVIGATION ---
     function setPage(index) {
@@ -1869,7 +1797,7 @@
       await dbDelete('active_transactions', pendingDeleteTxId);
 
       const modal = document.getElementById('modal-delete-confirm');
-      if (modal) modal.classList.add('hidden');
+      
       pendingDeleteTxId = null;
 
       playBeep('click');
@@ -2947,11 +2875,9 @@
       // Install Button & Direct Chrome Prompt
       document.getElementById('btn-pwa-install').addEventListener('click', triggerDirectChromeInstall);
       document.getElementById('btn-close-install-modal').addEventListener('click', () => {
-        document.getElementById('modal-install').classList.add('hidden');
-      });
+        });
       document.getElementById('btn-dismiss-install-modal').addEventListener('click', () => {
-        document.getElementById('modal-install').classList.add('hidden');
-      });
+        });
       document.getElementById('btn-modal-direct-install').addEventListener('click', triggerDirectChromeInstall);
       
       const copyLinkBtn = document.getElementById('btn-copy-app-link');
