@@ -3587,5 +3587,73 @@
   </script>
 
   <script type="module" src="/src/main.tsx"></script>
+  <!-- ========================================================================= -->
+  <!-- 📲 PERMANENT INDESTRUCTIBLE 1-CLICK PWA INSTALLATION MODAL                  -->
+  <!-- ========================================================================= -->
+  <div id="modal-install-guide" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 max-w-sm w-full text-white shadow-2xl flex flex-col gap-4 transform scale-95 transition-transform duration-300">
+      
+      <!-- Modal Header with 3D App Icon -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 p-0.5 shadow-md flex items-center justify-center shrink-0">
+            <img src="/icon-192.png" alt="Mirza Shop" class="w-full h-full object-cover rounded-xl bg-slate-950" />
+          </div>
+          <div>
+            <h3 class="font-black text-base text-white">مرزا شاپ ایپ انسٹال کریں</h3>
+            <p class="text-xs text-amber-400 font-bold">Mirza Mobile & Diaper Shop</p>
+          </div>
+        </div>
+        <button onclick="closeInstallGuideModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm transition btn-press">
+          ✕
+        </button>
+      </div>
+
+      <!-- Installation Options -->
+      <div class="flex flex-col gap-3 text-xs">
+        
+        <!-- Primary Action Button (Direct Prompt Retry) -->
+        <button id="btn-modal-direct-prompt" onclick="triggerNativeOrGuideInstall()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black rounded-2xl shadow-lg flex items-center justify-center gap-2 btn-press transition">
+          <span class="text-lg">📲</span>
+          <span>1-کلک انسٹال پرامپٹ لائیں</span>
+        </button>
+
+        <!-- Visual Step 1: Android Chrome Menu -->
+        <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-start gap-2.5">
+          <span class="text-xl shrink-0">📱</span>
+          <div class="min-w-0">
+            <h4 class="font-black text-amber-300 text-xs mb-0.5">موبائل پر انسٹال کرنے کا طریقہ:</h4>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              کروم براؤزر کے اوپر دائیں کونے میں <b>تین ڈاٹس (⋮)</b> پر کلک کریں اور <b>"Install app"</b> یا <b>"Add to Home screen"</b> دبائیں۔
+            </p>
+          </div>
+        </div>
+
+        <!-- Visual Step 2: Desktop / Computer -->
+        <div class="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl flex items-start gap-2.5">
+          <span class="text-xl shrink-0">💻</span>
+          <div class="min-w-0">
+            <h4 class="font-black text-cyan-300 text-xs mb-0.5">کمپیوٹر پر انسٹال کرنے کا طریقہ:</h4>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              کروم کے اوپر ایڈریس بار (URL) کے دائیں جانب موجود <b>Install آئیکون (⊕)</b> پر کلک کریں۔
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex items-center gap-2 pt-1">
+        <button onclick="copyAppLiveLink()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition btn-press">
+          <span>📋</span>
+          <span>لنک کاپی کریں</span>
+        </button>
+        <button onclick="closeInstallGuideModal()" class="py-2 px-4 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white font-bold rounded-xl text-xs transition btn-press">
+          بند کریں
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
