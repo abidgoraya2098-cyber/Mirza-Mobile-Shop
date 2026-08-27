@@ -9,29 +9,28 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-                  <link rel="manifest" href="/manifest.json" />
+                    <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
-    window.deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', function(e) {
-      e.preventDefault();
-      window.deferredPrompt = e;
-      console.log('[PWA] Chrome native beforeinstallprompt captured!');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'flex';
-    });
+    let deferredPrompt;
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
+      });
     }
-    window.addEventListener('appinstalled', function() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      window.deferredPrompt = e;
+      console.log('[PWA] Chrome beforeinstallprompt event captured successfully.');
+    });
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
       window.deferredPrompt = null;
-      console.log('[PWA] App installed successfully!');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'none';
-      if (typeof showToast === 'function') showToast('مرزا شاپ ایپ کامیابی سے انسٹال ہو گئی!', '📲');
+      console.log('[PWA] App installed successfully.');
     });
   </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
@@ -3246,40 +3245,6 @@ function safeListen(id, event, handler) {
 
   </script>
 
-  <!-- ========================================================================= -->
-  <!-- 🌟 AL-SHEHZAD DWAKHANA STYLE EXACT CHROME "INSTALL APP" POPUP DIALOG       -->
-  <!-- ========================================================================= -->
-  <div id="modal-chrome-install-popup" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
-    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-200 flex flex-col gap-5 transform scale-95 transition-transform duration-200 text-slate-900" dir="ltr">
-      
-      <!-- Dialog Title -->
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Install app</h3>
-        <button onclick="closeChromeInstallModal()" class="text-slate-400 hover:text-slate-700 text-lg p-1 transition btn-press">✕</button>
-      </div>
-
-      <!-- App Info Row -->
-      <div class="flex items-center gap-3.5 my-1">
-        <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-sm shrink-0 border border-amber-200 bg-slate-950 flex items-center justify-center p-0.5">
-          <img src="/icon-192.png" alt="Mirza Shop" class="w-full h-full object-cover rounded-xl" />
-        </div>
-        <div class="min-w-0 flex-1">
-          <h4 class="font-bold text-base text-slate-900 leading-snug truncate">Mirza Shop</h4>
-          <p class="text-xs text-slate-500 truncate" id="chrome-popup-domain">mirza-mobile-shop.vercel.app</p>
-        </div>
-      </div>
-
-      <!-- Action Buttons Row (Right Aligned matching Google Chrome) -->
-      <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100">
-        <button id="btn-chrome-popup-install" onclick="executeChromeAppInstall()" class="px-5 py-2 rounded-full font-bold text-sm bg-blue-100 hover:bg-blue-200 text-blue-800 transition active:scale-95 btn-press shadow-xs">
-          Install
-        </button>
-        <button onclick="closeChromeInstallModal()" class="px-5 py-2 rounded-full font-bold text-sm border border-blue-600 text-blue-600 hover:bg-blue-50 transition active:scale-95 btn-press">
-          Cancel
-        </button>
-      </div>
-
-    </div>
-  </div>
+  
 </body>
 </html>
