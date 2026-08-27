@@ -3233,6 +3233,8 @@ function safeListen(id, event, handler) {
               const banner = document.getElementById('pwa-install-banner');
               if (banner) banner.style.display = 'none';
             }
+          } else {
+            showToast('گوگل کروم پاپ اپ تیار کر رہا ہے، چند لمحے بعد دوبارہ دبائیں', '📲');
           }
         });
       }

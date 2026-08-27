@@ -1,5 +1,5 @@
-// Mirza Mobile & Diaper Shop Service Worker (v70-fresh-pwa)
-const CACHE_NAME = 'mirza-shop-v70';
+// Mirza Mobile & Diaper Shop Service Worker (v80-offline-pass)
+const CACHE_NAME = 'mirza-shop-v80';
 const ASSETS = [
   '/',
   '/index.html',
@@ -27,15 +27,19 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      return cached || fetch(event.request).then((res) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((res) => {
         if (res && res.status === 200) {
           const clone = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return res;
-      }).catch(() => caches.match('/index.html') || caches.match('/'));
+      }).catch(() => {
+        return caches.match('/index.html') || caches.match('/');
+      });
     })
   );
 });
