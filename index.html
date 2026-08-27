@@ -3076,121 +3076,101 @@ function safeListen(id, event, handler) {
       else pad.classList.add('hidden');
     }
 
-    // --- 13. APP INITIALIZATION & SERVICE WORKER ---
-    document.addEventListener('DOMContentLoaded', async () => {
-      // Register Service Worker
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      }
-
-      // Check Install status & Request Persistent Storage from Chrome
-      checkAppInstallStatus();
-      ensurePersistentStorage();
-
-      await initDB();
-      
-      // Multi-layer safe data loading
-      let idbTx = await dbGetAll('active_transactions');
-      let idbClosings = await dbGetAll('closings');
-
-      let lsTx = [];
-      let lsClosings = [];
-      try { lsTx = JSON.parse(localStorage.getItem('mirza_active_transactions') || '[]'); } catch {}
-      try { lsClosings = JSON.parse(localStorage.getItem('mirza_closings') || '[]'); } catch {}
-
-      let snapshot = null;
-      try { snapshot = JSON.parse(localStorage.getItem('mirza_emergency_snapshot') || 'null'); } catch {}
-
-      if (idbTx.length > 0) {
-        activeTransactions = idbTx;
-      } else if (lsTx.length > 0) {
-        activeTransactions = lsTx;
-        for (const t of lsTx) await dbAdd('active_transactions', t);
-      } else if (snapshot && snapshot.activeTransactions) {
-        activeTransactions = snapshot.activeTransactions;
-      } else {
-        activeTransactions = [];
-      }
-
-      if (idbClosings.length > 0) {
-        closingsList = idbClosings;
-      } else if (lsClosings.length > 0) {
-        closingsList = lsClosings;
-        for (const c of lsClosings) await dbAdd('closings', c);
-      } else if (snapshot && snapshot.closings) {
-        closingsList = snapshot.closings;
-      } else {
-        closingsList = [];
-      }
-
-      saveEmergencySnapshot();
-
+    
+    // --- 13. IMMEDIATE NON-BLOCKING APP INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Immediate Live Clock & Date Tick (Runs every 1 second)
       updateLiveDateTime();
-      setInterval(updateLiveDateTime, 10000);
+      setInterval(updateLiveDateTime, 1000);
 
-      initSwipeGestures();
-
+      // 2. Sound settings
       const soundIcon = document.getElementById('sound-icon');
       if (soundIcon) {
         soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
       }
 
+      // 3. Immediate synchronous data load from LocalStorage (0ms latency)
+      try {
+        const savedTx = localStorage.getItem('mirza_active_transactions');
+        if (savedTx) activeTransactions = JSON.parse(savedTx);
+      } catch (e) {}
+
+      try {
+        const savedClosings = localStorage.getItem('mirza_closings');
+        if (savedClosings) closingsList = JSON.parse(savedClosings);
+      } catch (e) {}
+
+      // Render Dashboard & Ledgers Immediately
       refreshTodayDashboard();
       renderLedgerView();
       renderYearlyView();
+      initSwipeGestures();
 
+      // 4. Setup Keypad & Amount Inputs
       const amountInput = document.getElementById('input-amount');
       const amountInWords = document.getElementById('amount-in-words');
 
       function updateAmountDisplay(val) {
+        if (!amountInput) return;
         amountInput.value = val;
         const num = parseFloat(val) || 0;
-        amountInWords.textContent = numberToUrduWords(num);
+        if (amountInWords) amountInWords.textContent = numberToUrduWords(num);
       }
 
-      amountInput.addEventListener('click', () => {
-        playBeep('click');
-        toggleNumpad(true);
-      });
+      if (amountInput) {
+        amountInput.addEventListener('click', () => {
+          try { playBeep('click'); } catch (e) {}
+          toggleNumpad(true);
+        });
+      }
 
-      (document.getElementById('btn-toggle-keypad') && document.getElementById('btn-toggle-keypad')).addEventListener('click', () => {
-        playBeep('click');
-        toggleNumpad();
-      });
+      const btnToggleKeypad = document.getElementById('btn-toggle-keypad');
+      if (btnToggleKeypad) {
+        btnToggleKeypad.addEventListener('click', () => {
+          try { playBeep('click'); } catch (e) {}
+          toggleNumpad();
+        });
+      }
 
-      (document.getElementById('btn-hide-keypad') && document.getElementById('btn-hide-keypad')).addEventListener('click', () => {
-        playBeep('click');
-        toggleNumpad(false);
-      });
+      const btnHideKeypad = document.getElementById('btn-hide-keypad');
+      if (btnHideKeypad) {
+        btnHideKeypad.addEventListener('click', () => {
+          try { playBeep('click'); } catch (e) {}
+          toggleNumpad(false);
+        });
+      }
 
-      (document.getElementById('btn-clear-amount') && document.getElementById('btn-clear-amount')).addEventListener('click', () => {
-        playBeep('click');
-        updateAmountDisplay('');
-      });
+      const btnClearAmount = document.getElementById('btn-clear-amount');
+      if (btnClearAmount) {
+        btnClearAmount.addEventListener('click', () => {
+          try { playBeep('click'); } catch (e) {}
+          updateAmountDisplay('');
+        });
+      }
 
       const backspaceBtn = document.getElementById('btn-backspace');
       if (backspaceBtn) {
         backspaceBtn.addEventListener('click', () => {
-          playBeep('click');
-          const current = amountInput.value || '';
+          try { playBeep('click'); } catch (e) {}
+          const current = amountInput ? amountInput.value || '' : '';
           updateAmountDisplay(current.slice(0, -1));
         });
       }
 
       document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          playBeep('click');
-          const addVal = parseInt(btn.dataset.val, 10);
-          const current = parseInt(amountInput.value || '0', 10);
+          try { playBeep('click'); } catch (e) {}
+          const addVal = parseInt(btn.dataset.val, 10) || 0;
+          const current = parseInt(amountInput ? amountInput.value || '0' : '0', 10);
           updateAmountDisplay(String(current + addVal));
         });
       });
 
       document.querySelectorAll('.numpad-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          playBeep('click');
+          try { playBeep('click'); } catch (e) {}
           const key = btn.dataset.key;
-          const current = amountInput.value || '';
+          const current = amountInput ? amountInput.value || '' : '';
 
           if (key === 'done') {
             toggleNumpad(false);
@@ -3203,199 +3183,75 @@ function safeListen(id, event, handler) {
         });
       });
 
-      // Clean category buttons click listener
+      // 5. Setup Category Sales Buttons
       document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.onclick = (e) => {
+        btn.addEventListener('click', (e) => {
           e.preventDefault();
           const cat = btn.dataset.cat || btn.getAttribute('data-cat');
           if (cat) logSale(cat);
-        };
+        });
       });
 
-      // Carousel Page Switches
-      (document.getElementById('tab-page-1') && document.getElementById('tab-page-1')).addEventListener('click', () => { playBeep('click'); setPage(0); });
-      (document.getElementById('tab-page-2') && document.getElementById('tab-page-2')).addEventListener('click', () => { playBeep('click'); setPage(1); });
-      (document.getElementById('nav-btn-prev') && document.getElementById('nav-btn-prev')).addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
-      (document.getElementById('nav-btn-next') && document.getElementById('nav-btn-next')).addEventListener('click', () => { playBeep('click'); setPage(currentPageIndex === 0 ? 1 : 0); });
-      (document.getElementById('btn-goto-page-2') && document.getElementById('btn-goto-page-2')).addEventListener('click', () => { playBeep('click'); setPage(1); });
-      (document.getElementById('btn-goto-page-1') && document.getElementById('btn-goto-page-1')).addEventListener('click', () => { playBeep('click'); setPage(0); });
+      // 6. Navigation Tabs
+      safeListen('tab-page-1', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(0); });
+      safeListen('tab-page-2', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(1); });
+      safeListen('nav-btn-prev', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(currentPageIndex === 0 ? 1 : 0); });
+      safeListen('nav-btn-next', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(currentPageIndex === 0 ? 1 : 0); });
+      safeListen('btn-goto-page-2', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(1); });
+      safeListen('btn-goto-page-1', 'click', () => { try { playBeep('click'); } catch (e) {} setPage(0); });
 
-      // Page 2 Subtabs (Daily / Monthly / Yearly)
-      (document.getElementById('subtab-daily') && document.getElementById('subtab-daily')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('daily'); });
-      (document.getElementById('subtab-monthly') && document.getElementById('subtab-monthly')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('monthly'); });
-      (document.getElementById('subtab-yearly') && document.getElementById('subtab-yearly')).addEventListener('click', () => { playBeep('click'); switchPage2Subtab('yearly'); });
+      // 7. Page 2 Subtabs
+      safeListen('subtab-daily', 'click', () => { try { playBeep('click'); } catch (e) {} switchPage2Subtab('daily'); });
+      safeListen('subtab-monthly', 'click', () => { try { playBeep('click'); } catch (e) {} switchPage2Subtab('monthly'); });
+      safeListen('subtab-yearly', 'click', () => { try { playBeep('click'); } catch (e) {} switchPage2Subtab('yearly'); });
 
-      // Month & Year select triggers
-      const selectMonth = document.getElementById('select-ledger-month');
-      if (selectMonth) selectMonth.addEventListener('change', renderLedgerView);
-      const selectYear = document.getElementById('select-ledger-year');
-      if (selectYear) selectYear.addEventListener('change', renderYearlyView);
+      // 8. Select dropdown triggers
+      safeListen('select-ledger-month', 'change', renderLedgerView);
+      safeListen('select-ledger-year', 'change', renderYearlyView);
 
-      // Sound toggle
-      (document.getElementById('btn-sound-toggle') && document.getElementById('btn-sound-toggle')).addEventListener('click', () => {
+      // 9. Sound toggle
+      safeListen('btn-sound-toggle', 'click', () => {
         isSoundEnabled = !isSoundEnabled;
-        localStorage.setItem('mirza_sound', isSoundEnabled ? 'true' : 'false');
-        soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
+        try { localStorage.setItem('mirza_sound', isSoundEnabled ? 'true' : 'false'); } catch (e) {}
+        if (soundIcon) soundIcon.textContent = isSoundEnabled ? '🔊' : '🔇';
         showToast(isSoundEnabled ? 'آواز آن' : 'آواز بند', '🔊');
       });
 
-      // Install Button & Direct Chrome Prompt
-      // Install Button & Direct Chrome Prompt
+      // 10. Native Google Chrome Install Button
       const btnPwa = document.getElementById('btn-pwa-install');
-      const btnHdr = document.getElementById('btn-header-install');
-      const btnInst = document.getElementById('installAppBtn');
-      const copyLinkBtn = document.getElementById('btn-copy-app-link');
-      if (copyLinkBtn) {
-        copyLinkBtn.addEventListener('click', () => {
-          playBeep('click');
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(window.location.href);
+      if (btnPwa) {
+        btnPwa.addEventListener('click', async () => {
+          try { playBeep('click'); } catch (e) {}
+          if (window.deferredPrompt) {
+            window.deferredPrompt.prompt();
+            const choice = await window.deferredPrompt.userChoice;
+            console.log('[PWA] User choice:', choice);
+            if (choice && choice.outcome === 'accepted') {
+              window.deferredPrompt = null;
+              const banner = document.getElementById('pwa-install-banner');
+              if (banner) banner.style.display = 'none';
+            }
+          } else {
+            showToast('کروم کے اوپر ۳ ڈاٹس (⋮) سے "Install app" منتخب کریں', '📲');
           }
-          showToast('ایپ کا لنک کاپی ہو گیا! کروم میں کھولیں', '📋');
         });
       }
 
-      // Closing Modal
-      (document.getElementById('btn-trigger-closing') && document.getElementById('btn-trigger-closing')).addEventListener('click', openClosingModal);
-      (document.getElementById('btn-close-closing-modal') && document.getElementById('btn-close-closing-modal')).addEventListener('click', () => {
-        document.getElementById('modal-closing').classList.add('hidden');
-      });
-      (document.getElementById('btn-cancel-closing') && document.getElementById('btn-cancel-closing')).addEventListener('click', () => {
-        document.getElementById('modal-closing').classList.add('hidden');
-      });
-      (document.getElementById('btn-confirm-closing') && document.getElementById('btn-confirm-closing')).addEventListener('click', executeDayClosing);
-
-      // Receipt & Image Save Triggers (روزانہ، ماہانہ، سالانہ رسیدیں)
-      const btnTodayReceipt = document.getElementById('btn-view-today-receipt');
-      if (btnTodayReceipt) btnTodayReceipt.addEventListener('click', openTodayLiveReceipt);
-
-      const btnMonthlyReceipt = document.getElementById('btn-view-monthly-receipt');
-      if (btnMonthlyReceipt) btnMonthlyReceipt.addEventListener('click', openMonthlyReceipt);
-
-      const btnYearlyReceipt = document.getElementById('btn-view-yearly-receipt');
-      if (btnYearlyReceipt) btnYearlyReceipt.addEventListener('click', openYearlyReceipt);
-
-      const btnSaveReceiptImg = document.getElementById('btn-save-receipt-image');
-      if (btnSaveReceiptImg) btnSaveReceiptImg.addEventListener('click', saveReceiptAsImage);
-
-      const btnShareReceiptWA = document.getElementById('btn-share-receipt-whatsapp');
-      if (btnShareReceiptWA) btnShareReceiptWA.addEventListener('click', shareReceiptWhatsApp);
-
-      const btnPrintReceipt = document.getElementById('btn-print-receipt');
-      if (btnPrintReceipt) btnPrintReceipt.addEventListener('click', () => { playBeep('click'); window.print(); });
-
-      const btnDismissReceipt = document.getElementById('btn-dismiss-receipt');
-      if (btnDismissReceipt) btnDismissReceipt.addEventListener('click', () => {
-        document.getElementById('print-receipt-modal').classList.add('hidden');
-      });
-
-      
-      // Expense Modal Listeners
-      const openExpBtn = document.getElementById('btn-open-expense-modal');
-      if (openExpBtn) openExpBtn.addEventListener('click', openExpenseModal);
-
-      const closeExpBtn = document.getElementById('btn-close-expense-modal');
-      if (closeExpBtn) closeExpBtn.addEventListener('click', () => {
-        document.getElementById('modal-expense').classList.add('hidden');
-      });
-
-      document.querySelectorAll('.preset-exp-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          playBeep('click');
-          const addVal = parseInt(btn.dataset.val, 10);
-          const expInput = document.getElementById('input-expense-amount');
-          const cur = parseInt(expInput.value || '0', 10);
-          expInput.value = cur + addVal;
-        });
-      });
-
-      document.querySelectorAll('.exp-cat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          playBeep('click');
-          document.querySelectorAll('.exp-cat-btn').forEach(b => {
-            b.className = 'exp-cat-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-slate-200 bg-slate-50 text-slate-700 flex items-center gap-1.5';
-          });
-          btn.className = 'exp-cat-btn active py-2 px-2 rounded-xl text-[11px] font-bold border border-rose-300 bg-rose-50 text-rose-900 flex items-center gap-1.5';
-          selectedExpenseCategory = btn.dataset.expcat || 'misc';
-        });
-      });
-
-      const submitExpBtn = document.getElementById('btn-submit-expense');
-      if (submitExpBtn) {
-        submitExpBtn.addEventListener('click', async () => {
-          const expInput = document.getElementById('input-expense-amount');
-          const noteInput = document.getElementById('input-expense-note');
-          const val = parseFloat(expInput.value);
-          if (isNaN(val) || val <= 0) {
-            showToast('درست رقم درج کریں!', '⚠️');
-            return;
+      // 11. Background Async Database Sync
+      (async () => {
+        try {
+          await initDB();
+          let idbTx = await dbGetAll('active_transactions');
+          if (idbTx && idbTx.length > 0) {
+            activeTransactions = idbTx;
+            refreshTodayDashboard();
           }
-          await addExpense(val, selectedExpenseCategory, (noteInput.value || '').trim());
-          document.getElementById('modal-expense').classList.add('hidden');
-        });
-      }
-
-      // Receipt Modal Close Button
-      (document.getElementById('btn-close-receipt') && document.getElementById('btn-close-receipt')).addEventListener('click', () => {
-        document.getElementById('print-receipt-modal').classList.add('hidden');
-      });
-
-      // Backup & Settings Modal
-      (document.getElementById('btn-open-backup') && document.getElementById('btn-open-backup')).addEventListener('click', () => {
-        document.getElementById('modal-backup').classList.remove('hidden');
-      });
-      (document.getElementById('btn-close-backup-modal') && document.getElementById('btn-close-backup-modal')).addEventListener('click', () => {
-        document.getElementById('modal-backup').classList.add('hidden');
-      });
-      (document.getElementById('btn-share-whatsapp-backup') && document.getElementById('btn-share-whatsapp-backup')).addEventListener('click', shareWhatsAppBackup);
-      (document.getElementById('btn-export-json') && document.getElementById('btn-export-json')).addEventListener('click', exportJSONBackup);
-      (document.getElementById('btn-export-csv-all') && document.getElementById('btn-export-csv-all')).addEventListener('click', () => exportCSV(false));
-      (document.getElementById('btn-export-excel-filtered') && document.getElementById('btn-export-excel-filtered')).addEventListener('click', () => exportCSV(true));
-      (document.getElementById('btn-export-yearly-csv') && document.getElementById('btn-export-yearly-csv')).addEventListener('click', exportYearlyCSV);
-      (document.getElementById('btn-export-today-csv') && document.getElementById('btn-export-today-csv')).addEventListener('click', exportTodayCSV);
-
-      // Undo & Delete Modal Listeners
-      const undoBtn = document.getElementById('btn-undo-last-tx');
-      if (undoBtn) undoBtn.addEventListener('click', undoLastSale);
-
-      const closeDeleteBtn = document.getElementById('btn-close-delete-modal');
-      if (closeDeleteBtn) closeDeleteBtn.addEventListener('click', () => {
-        document.getElementById('modal-delete-confirm').classList.add('hidden');
-        pendingDeleteTxId = null;
-      });
-
-      const cancelDeleteBtn = document.getElementById('btn-cancel-delete');
-      if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => {
-        document.getElementById('modal-delete-confirm').classList.add('hidden');
-        pendingDeleteTxId = null;
-      });
-
-      const confirmDeleteBtn = document.getElementById('btn-confirm-delete-action');
-      if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDeleteAction);
-
-      // 3D Logo Showcase Modal
-      const openLogoBtn = document.getElementById('btn-open-logo-modal');
-      if (openLogoBtn) openLogoBtn.addEventListener('click', () => {
-        playBeep('click');
-        document.getElementById('modal-logo-showcase').classList.remove('hidden');
-      });
-
-      const closeLogoBtn = document.getElementById('btn-close-logo-modal');
-      if (closeLogoBtn) closeLogoBtn.addEventListener('click', () => {
-        document.getElementById('modal-logo-showcase').classList.add('hidden');
-      });
-
-      const dismissLogoBtn = document.getElementById('btn-dismiss-logo-modal');
-      if (dismissLogoBtn) dismissLogoBtn.addEventListener('click', () => {
-        document.getElementById('modal-logo-showcase').classList.add('hidden');
-      });
-
-      const restoreInput = document.getElementById('input-restore-file');
-      (document.getElementById('btn-trigger-restore') && document.getElementById('btn-trigger-restore')).addEventListener('click', () => restoreInput.click());
-      restoreInput.addEventListener('change', restoreBackupFromFile);
+        } catch (err) {
+          console.warn('[DB] Async sync error:', err);
+        }
+      })();
     });
-  </script>
 
-  
+  </script>
 </body>
 </html>
