@@ -3218,7 +3218,7 @@ function safeListen(id, event, handler) {
         showToast(isSoundEnabled ? 'آواز آن' : 'آواز بند', '🔊');
       });
 
-      // 10. Direct Native Google Chrome Install Popup
+      // 10. Direct Native Google Chrome Install Popup Trigger
       const btnPwa = document.getElementById('btn-pwa-install');
       if (btnPwa) {
         btnPwa.addEventListener('click', async () => {
@@ -3227,26 +3227,12 @@ function safeListen(id, event, handler) {
           if (window.deferredPrompt) {
             window.deferredPrompt.prompt();
             const choice = await window.deferredPrompt.userChoice;
-            console.log('[PWA] Native Install Outcome:', choice);
+            console.log('[PWA] User response:', choice);
             if (choice && choice.outcome === 'accepted') {
               window.deferredPrompt = null;
               const banner = document.getElementById('pwa-install-banner');
               if (banner) banner.style.display = 'none';
             }
-          } else {
-            showToast('گوگل کروم پاپ اپ کھولا جا رہا ہے...', '📲');
-            // Check again in 300ms
-            setTimeout(async () => {
-              if (window.deferredPrompt) {
-                window.deferredPrompt.prompt();
-                const choice = await window.deferredPrompt.userChoice;
-                if (choice && choice.outcome === 'accepted') {
-                  window.deferredPrompt = null;
-                  const banner = document.getElementById('pwa-install-banner');
-                  if (banner) banner.style.display = 'none';
-                }
-              }
-            }, 300);
           }
         });
       }

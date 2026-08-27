@@ -1,5 +1,5 @@
-// Mirza Mobile & Diaper Shop Service Worker (v60-pure-native)
-const CACHE_NAME = 'mirza-shop-v60';
+// Mirza Mobile & Diaper Shop Service Worker (v70-fresh-pwa)
+const CACHE_NAME = 'mirza-shop-v70';
 const ASSETS = [
   '/',
   '/index.html',
