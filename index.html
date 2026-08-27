@@ -9,30 +9,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-              <link rel="manifest" href="/manifest.json" />
+                <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
     window.deferredPrompt = null;
-    
-    // Register Service Worker with Immediate Claim Controller
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
-        if (reg.installing) {
-          reg.installing.addEventListener('statechange', function(e) {
-            if (e.target.state === 'activated' && !navigator.serviceWorker.controller) {
-              window.location.reload();
-            }
-          });
-        }
-      }).catch(function(err) {
-        console.warn('[PWA] SW error:', err);
-      });
-    }
-
-    // Capture Native Google Chrome Install Event Instantly
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       window.deferredPrompt = e;
@@ -40,10 +23,12 @@
       var banner = document.getElementById('pwa-install-banner');
       if (banner) banner.style.display = 'flex';
     });
-
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' });
+    }
     window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
-      console.log('[PWA] App successfully installed!');
+      console.log('[PWA] App successfully installed on device!');
       var banner = document.getElementById('pwa-install-banner');
       if (banner) banner.style.display = 'none';
     });
@@ -406,49 +391,49 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               
               <!-- 1. Diapers -->
-              <button type="button" data-cat="diapers" onclick="handleCategorySaleClick('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="diapers" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">👶</span>
                 <span class="font-black text-rose-950 text-sm sm:text-base pointer-events-none">پیمپر</span>
               </button>
 
               <!-- 2. Computer -->
-              <button type="button" data-cat="computer" onclick="handleCategorySaleClick('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="computer" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💻</span>
                 <span class="font-black text-blue-950 text-sm sm:text-base pointer-events-none">کمپیوٹر</span>
               </button>
 
               <!-- 3. Mobile Accessories -->
-              <button type="button" data-cat="accessories" onclick="handleCategorySaleClick('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="accessories" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">🎧</span>
                 <span class="font-black text-emerald-950 text-sm sm:text-base pointer-events-none">اسیسریز</span>
               </button>
 
               <!-- 4. Devices -->
-              <button type="button" data-cat="devices" onclick="handleCategorySaleClick('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="devices" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">📱</span>
                 <span class="font-black text-violet-950 text-sm sm:text-base pointer-events-none">ڈیوائسز</span>
               </button>
 
               <!-- 5. JazzCash -->
-              <button type="button" data-cat="jazzcash" onclick="handleCategorySaleClick('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="jazzcash" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💳</span>
                 <span class="font-black text-amber-950 text-sm sm:text-base pointer-events-none">جاز کیش</span>
               </button>
 
               <!-- 6. Easypaisa -->
-              <button type="button" data-cat="easypaisa" onclick="handleCategorySaleClick('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="easypaisa" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💸</span>
                 <span class="font-black text-teal-950 text-sm sm:text-base pointer-events-none">ایزی پیسہ</span>
               </button>
 
               <!-- 7. Easyload -->
-              <button type="button" data-cat="easyload" onclick="handleCategorySaleClick('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="easyload" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">⚡</span>
                 <span class="font-black text-fuchsia-950 text-sm sm:text-base pointer-events-none">ایزی لوڈ</span>
               </button>
 
               <!-- 8. Other / Expense -->
-              <button type="button" data-cat="other" onclick="handleCategorySaleClick('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="other" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">⚙️</span>
                 <span class="font-black text-slate-900 text-sm sm:text-base pointer-events-none">دیگر / خرچہ</span>
               </button>
@@ -2057,54 +2042,66 @@ function safeListen(id, event, handler) {
     }
 
     
+    let isLoggingSale = false;
     async function logSale(categoryId) {
-      const input = document.getElementById('input-amount');
-      const noteInput = document.getElementById('input-note');
-      const rawVal = (input.value || '').replace(/,/g, '').trim();
-      const amountVal = parseFloat(rawVal);
+      if (isLoggingSale) return;
+      isLoggingSale = true;
+      try {
+        const input = document.getElementById('input-amount');
+        const noteInput = document.getElementById('input-note');
+        const rawVal = (input ? input.value : '').replace(/,/g, '').trim();
+        const amountVal = parseFloat(rawVal);
 
-      // Dedicated 8th button: "دیگر / خرچہ"
-      if (categoryId === 'other') {
-        if (isNaN(amountVal) || amountVal <= 0) {
-          openExpenseModal();
+        // Dedicated 8th button: "دیگر / خرچہ"
+        if (categoryId === 'other') {
+          if (isNaN(amountVal) || amountVal <= 0) {
+            openExpenseModal();
+            return;
+          }
+          const note = (noteInput ? noteInput.value : '').trim() || 'دکان خرچہ';
+          await addExpense(amountVal, 'misc', note);
+          if (input) input.value = '';
+          if (noteInput) noteInput.value = '';
+          const words = document.getElementById('amount-in-words');
+          if (words) words.textContent = 'صفر روپے';
           return;
         }
-        const note = (noteInput.value || '').trim() || 'دکان خرچہ';
-        await addExpense(amountVal, 'misc', note);
-        input.value = '';
-        noteInput.value = '';
-        document.getElementById('amount-in-words').textContent = 'صفر روپے';
-        return;
+
+        if (isNaN(amountVal) || amountVal <= 0) {
+          showToast('پہلے رقم درج کریں!', '⚠️');
+          toggleNumpad(true);
+          return;
+        }
+
+        const catInfo = CATEGORIES[categoryId] || { nameUr: categoryId };
+        const catName = catInfo.nameUr || categoryId;
+
+        const tx = {
+          id: 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          amount: amountVal,
+          category: categoryId,
+          note: (noteInput ? noteInput.value : '').trim(),
+          timestamp: Date.now(),
+          date: getTodayDateStr()
+        };
+
+        activeTransactions.push(tx);
+        try { await dbAdd('active_transactions', tx); } catch (e) {}
+        try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
+        saveEmergencySnapshot();
+
+        try { playBeep('sale'); } catch (e) {}
+        showToast(`${catName}: Rs. ${amountVal.toLocaleString()} درج ہو گیا!`, '✓');
+
+        if (input) input.value = '';
+        if (noteInput) noteInput.value = '';
+        const words = document.getElementById('amount-in-words');
+        if (words) words.textContent = 'صفر روپے';
+
+        refreshTodayDashboard();
+      } finally {
+        setTimeout(() => { isLoggingSale = false; }, 150);
       }
-
-      if (isNaN(amountVal) || amountVal <= 0) {
-        showToast('پہلے رقم درج کریں!', '⚠️');
-        toggleNumpad(true);
-        return;
-      }
-
-      const tx = {
-        id: 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-        amount: amountVal,
-        category: categoryId,
-        note: (noteInput.value || '').trim(),
-        timestamp: Date.now(),
-        date: getTodayDateStr()
-      };
-
-      activeTransactions.push(tx);
-      await dbAdd('active_transactions', tx);
-      localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions));
-      saveEmergencySnapshot();
-
-      playBeep('sale');
-      showToast(`${CATEGORIES[categoryId].nameUr}: Rs. ${amountVal.toLocaleString()} درج`, '✓');
-
-      input.value = '';
-      noteInput.value = '';
-      document.getElementById('amount-in-words').textContent = 'صفر روپے';
-
-      refreshTodayDashboard();
     }
 
 
@@ -3206,10 +3203,13 @@ function safeListen(id, event, handler) {
         });
       });
 
+      // Clean category buttons click listener
       document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          logSale(btn.dataset.cat);
-        });
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const cat = btn.dataset.cat || btn.getAttribute('data-cat');
+          if (cat) logSale(cat);
+        };
       });
 
       // Carousel Page Switches
