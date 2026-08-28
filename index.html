@@ -9,28 +9,40 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-                    <link rel="manifest" href="/manifest.json" />
+                      <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
-    let deferredPrompt;
+    window.deferredPrompt = null;
+    
+    // Register Service Worker IMMEDIATELY (Do not delay with window.load)
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
-      });
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(function(reg) {
+          console.log('[PWA] SW registered immediately:', reg.scope);
+        })
+        .catch(function(err) {
+          console.warn('[PWA] SW registration failed:', err);
+        });
     }
-    window.addEventListener('beforeinstallprompt', (e) => {
+
+    // Capture Native Chrome Install Event
+    window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
-      deferredPrompt = e;
       window.deferredPrompt = e;
-      console.log('[PWA] Chrome beforeinstallprompt event captured successfully.');
+      console.log('[PWA] Native beforeinstallprompt captured!');
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'flex';
     });
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
+
+    window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
-      console.log('[PWA] App installed successfully.');
+      console.log('[PWA] App successfully installed on device.');
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'none';
+      if (typeof showToast === 'function') showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
     });
   </script>
 <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
@@ -1297,25 +1309,7 @@
     /**
      * Mirza Mobile & Diaper Shop - Pure Native Google Chrome Install Engine
      */
-    const installBanner = document.getElementById('pwa-install-banner');
-    const installButton = document.getElementById('btn-pwa-install');
-
-    if (installButton) {
-      installButton.addEventListener('click', async () => {
-        try { if (typeof playBeep === 'function') playBeep('click'); } catch (e) {}
-        
-        if (window.deferredPrompt) {
-          window.deferredPrompt.prompt();
-          const { outcome } = await window.deferredPrompt.userChoice;
-          console.log('[PWA] Native Install Prompt Choice:', outcome);
-          if (outcome === 'accepted') {
-            window.deferredPrompt = null;
-            if (installBanner) installBanner.style.display = 'none';
-          }
-        }
-      });
-    }
-function safeListen(id, event, handler) {
+    function safeListen(id, event, handler) {
       const el = document.getElementById(id);
       if (el) el.addEventListener(event, handler);
     }
