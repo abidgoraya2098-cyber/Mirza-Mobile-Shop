@@ -1211,17 +1211,16 @@
         </p>
       </div>
 
-      <!-- Footer Buttons -->
+            <!-- Footer Buttons -->
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-        <button id="btn-cancel-delete" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-2xl text-xs transition btn-press">
+        <button id="btn-cancel-delete" onclick="closeDeleteModal()" class="flex-1 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-2xl text-xs transition btn-press">
           منسوخ کریں
         </button>
-        <button id="btn-confirm-delete-action" class="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white font-black rounded-2xl text-xs shadow-sm transition flex items-center justify-center gap-1.5 btn-press">
+        <button id="btn-confirm-delete-action" onclick="confirmDeleteAction()" class="flex-1 py-3 bg-rose-600 hover:bg-rose-700 text-white font-black rounded-2xl text-xs shadow-sm transition flex items-center justify-center gap-1.5 btn-press">
           <span>🗑️</span>
           <span>ہاں، ڈیلیٹ کریں</span>
         </button>
       </div>
-
     </div>
   </div>
 
@@ -2110,7 +2109,7 @@ function safeListen(id, event, handler) {
       if (!tx) return;
 
       pendingDeleteTxId = txId;
-      playBeep('click');
+      try { playBeep('click'); } catch (e) {}
 
       const cat = CATEGORIES[tx.category] || CATEGORIES.other;
       const timeStr = formatTime12(new Date(tx.timestamp));
@@ -2132,40 +2131,38 @@ function safeListen(id, event, handler) {
       if (modal) modal.classList.remove('hidden');
     }
 
+    function closeDeleteModal() {
+      try { playBeep('click'); } catch (e) {}
+      const modal = document.getElementById('modal-delete-confirm');
+      if (modal) modal.classList.add('hidden');
+      pendingDeleteTxId = null;
+    }
+
     async function confirmDeleteAction() {
-      if (!pendingDeleteTxId) return;
+      if (!pendingDeleteTxId) {
+        closeDeleteModal();
+        return;
+      }
 
       const txToDelete = activeTransactions.find(x => x.id === pendingDeleteTxId);
       const catName = txToDelete ? (CATEGORIES[txToDelete.category]?.nameUr || '') : '';
       const amtVal = txToDelete ? Number(txToDelete.amount).toLocaleString() : '';
 
       activeTransactions = activeTransactions.filter(x => x.id !== pendingDeleteTxId);
-      await dbDelete('active_transactions', pendingDeleteTxId);
+      try { await dbDelete('active_transactions', pendingDeleteTxId); } catch (e) {}
+      try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
+      saveEmergencySnapshot();
 
-      const modal = document.getElementById('modal-delete-confirm');
-      
-      pendingDeleteTxId = null;
+      closeDeleteModal();
 
-      playBeep('click');
+      try { playBeep('click'); } catch (e) {}
       showToast(`اندراج (Rs. ${amtVal} ${catName}) حذف کر دیا گیا`, '🗑️');
       refreshTodayDashboard();
     }
 
-    function undoLastSale() {
-      if (activeTransactions.length === 0) {
-        showToast('آج کوئی اندراج موجود نہیں ہے', 'ℹ️');
-        return;
-      }
-      const lastTx = [...activeTransactions].sort((a, b) => b.timestamp - a.timestamp)[0];
-      if (lastTx) {
-        openDeleteModal(lastTx.id);
-      }
-    }
-
-    // Keep backwards compatible function
-    async function deleteTransaction(txId) {
-      openDeleteModal(txId);
-    }
+    window.openDeleteModal = openDeleteModal;
+    window.closeDeleteModal = closeDeleteModal;
+    window.confirmDeleteAction = confirmDeleteAction;
 
     // --- 8. DAY CLOSING ---
     function openClosingModal() {
