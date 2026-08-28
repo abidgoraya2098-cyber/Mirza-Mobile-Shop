@@ -1,25 +1,51 @@
 {
-  "name": "Mirza Shop",
-  "short_name": "Mirza Shop",
-  "description": "Mirza Mobile & Diaper Shop - Daily Sales & Accounts Ledger",
-  "start_url": "/",
+  "name": "\u0645\u0631\u0632\u0627 \u0645\u0648\u0628\u0627\u0626\u0644 \u0627\u06cc\u0646\u0688 \u0688\u0627\u0626\u067e\u0631 \u0634\u0627\u067e",
+  "short_name": "\u0645\u0631\u0632\u0627 \u0634\u0627\u067e",
+  "description": "\u0645\u0631\u0632\u0627 \u0645\u0648\u0628\u0627\u0626\u0644 \u0627\u06cc\u0646\u0688 \u0688\u0627\u0626\u067e\u0631 \u0634\u0627\u067e - \u0688\u06cc\u0644\u06cc \u0633\u06cc\u0644\u0632 \u0648 \u06a9\u06be\u0627\u062a\u06c1 \u0644\u06cc\u062c\u0631",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "orientation": "portrait",
+  "lang": "ur",
+  "dir": "rtl",
+  "categories": ["finance", "business", "productivity"],
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "\u0633\u06cc\u0644\u0632 \u06a9\u06be\u0627\u062a\u06c1",
+      "short_name": "\u06a9\u06be\u0627\u062a\u06c1",
+      "description": "\u0622\u062c \u06a9\u0627 \u06a9\u0627\u0624\u0646\u0679\u0631 \u06a9\u06be\u0648\u0644\u06cc\u06ba",
+      "url": "/?source=shortcut",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

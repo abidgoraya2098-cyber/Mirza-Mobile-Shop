@@ -3,62 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>مرزا موبائل اینڈ ڈائیپر شاپ - Mirza Shop</title>
-  <meta name="description" content="مرزا موبائل اینڈ ڈائیپر شاپ - سیلز، کلوزنگ و کھاتہ لیجر ایپ" />
-  <meta name="theme-color" content="#4f46e5" />
+  <title>مرزا موبائل اینڈ ڈائپر شاپ - Mirza Shop</title>
+  <meta name="description" content="مرزا موبائل اینڈ ڈائپر شاپ - سیلز، کلوزنگ و کھاتہ لیجر ایپ" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Mirza Shop" />
-                      <link rel="manifest" href="/manifest.json" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="مرزا شاپ" />
+  <meta name="application-name" content="مرزا شاپ" />
+  <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
     window.deferredPrompt = null;
-    
-    // Register Service Worker IMMEDIATELY (Do not delay with window.load)
+    window.isAppInstalled = false;
+
+    function checkStandaloneMode() {
+      return window.matchMedia('(display-mode: standalone)').matches ||
+             window.matchMedia('(display-mode: window-controls-overlay)').matches ||
+             window.navigator.standalone === true;
+    }
+
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(function(reg) {
-          console.log('[PWA] SW registered immediately:', reg.scope);
+          console.log('[PWA] SW registered successfully:', reg.scope);
         })
         .catch(function(err) {
           console.warn('[PWA] SW registration failed:', err);
         });
     }
 
-    // Capture Native Chrome Install Event
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       window.deferredPrompt = e;
-      console.log('[PWA] Native beforeinstallprompt captured!');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'flex';
+      console.log('[PWA] Native Chrome beforeinstallprompt captured!');
+      var btn = document.getElementById('btn-mirza-single-install');
+      if (btn) btn.classList.add('animate-pulse');
     });
 
     window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
+      window.isAppInstalled = true;
       console.log('[PWA] App successfully installed on device.');
-      var banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'none';
       if (typeof showToast === 'function') showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
     });
-  
-    // ========================================================
-    // 🌟 PWA 1-CLICK POPUP CONTROLLER (100% BULLETPROOF)
-    // ========================================================
+
     function openMirzaChromeInstallPopup() {
       try { playBeep('click'); } catch (e) {}
-      
-      const hostEl = document.getElementById('mirza-popup-host-domain');
-      if (hostEl) hostEl.textContent = window.location.host || 'mirza-mobile-shop.vercel.app';
 
-      // If Chrome native deferredPrompt is ready -> trigger native dialog
+      if (checkStandaloneMode()) {
+        if (typeof showToast === 'function') showToast('ایپ پہلے سے آپ کے فون میں انسٹال ہے!', '✓');
+        return;
+      }
+
       if (window.deferredPrompt) {
         window.deferredPrompt.prompt();
         window.deferredPrompt.userChoice.then(function(choice) {
-          console.log('[PWA] Native choice:', choice);
+          console.log('[PWA] User choice:', choice);
           if (choice && choice.outcome === 'accepted') {
             window.deferredPrompt = null;
             closeMirzaChromeInstallPopup();
@@ -67,40 +73,40 @@
         return;
       }
 
-      // Open the Al-Shehzad style Chrome Popup Modal
-      const modal = document.getElementById('mirza-chrome-install-modal');
+      var hostEl = document.getElementById('mirza-popup-host-domain');
+      if (hostEl) hostEl.textContent = window.location.host || 'mirza-mobile-shop.vercel.app';
+      var modal = document.getElementById('mirza-chrome-install-modal');
       if (modal) modal.classList.remove('hidden');
     }
 
     function closeMirzaChromeInstallPopup() {
       try { playBeep('click'); } catch (e) {}
-      const modal = document.getElementById('mirza-chrome-install-modal');
+      var modal = document.getElementById('mirza-chrome-install-modal');
       if (modal) modal.classList.add('hidden');
     }
 
-    async function executeMirzaPwaInstall() {
+    function executeMirzaPwaInstall() {
       try { playBeep('sale'); } catch (e) {}
-      
       if (window.deferredPrompt) {
         window.deferredPrompt.prompt();
-        const choice = await window.deferredPrompt.userChoice;
-        if (choice && choice.outcome === 'accepted') {
-          window.deferredPrompt = null;
-          closeMirzaChromeInstallPopup();
-          return;
-        }
+        window.deferredPrompt.userChoice.then(function(choice) {
+          if (choice && choice.outcome === 'accepted') {
+            window.deferredPrompt = null;
+            closeMirzaChromeInstallPopup();
+          }
+        });
+        return;
       }
-
       closeMirzaChromeInstallPopup();
-      showToast('کروم مینو (⋮) سے "Install app" منتخب کریں', '📲');
+      if (typeof showToast === 'function') showToast('کروم مینو (⋮) سے "Install app" منتخب کریں', '📲');
     }
 
     window.openMirzaChromeInstallPopup = openMirzaChromeInstallPopup;
     window.closeMirzaChromeInstallPopup = closeMirzaChromeInstallPopup;
     window.executeMirzaPwaInstall = executeMirzaPwaInstall;
-
   </script>
-<!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
+
+  <!-- Google Fonts: Noto Sans Arabic & Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@500;700&family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
