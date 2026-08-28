@@ -2219,11 +2219,9 @@
     let lastSaleTimestamp = 0;
     async function logSale(categoryId) {
       const now = Date.now();
-      if (isLoggingSale || (now - lastSaleTimestamp < 350)) return;
+      if (isLoggingSale || (now - lastSaleTimestamp < 150)) return;
       isLoggingSale = true;
       lastSaleTimestamp = now;
-      if (isLoggingSale) return;
-      isLoggingSale = true;
       try {
         const input = document.getElementById('input-amount');
         const noteInput = document.getElementById('input-note');
