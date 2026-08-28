@@ -295,13 +295,16 @@
           </div>
         </div>
 
-        <!-- Left side: Cloud Sync Pill, Sound Toggle & Settings -->
+        <!-- Left side: Install Button, Sound Toggle & Settings -->
         <div class="flex items-center gap-1.5 shrink-0">
-          <!-- Cloud Sync Status Pill (Multi-Device PC & Mobile) -->
-          <button id="header-cloud-sync-btn" onclick="triggerManualCloudSync()" class="hidden">
-            <span id="cloud-sync-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span id="cloud-sync-label">کلاؤڈ سنک</span>
+          <!-- 📲 PWA Chrome Install Button (Visible in browser, auto-hidden when installed) -->
+          <button id="btn-header-install" onclick="openMirzaChromeInstallPopup()" title="گوگل کروم ایپ انسٹال کریں" class="px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs rounded-xl shadow-md transition active:scale-95 flex items-center gap-1 shrink-0 btn-press cursor-pointer">
+            <span>📲</span>
+            <span>انسٹال کریں</span>
           </button>
+
+          <!-- Cloud Sync Status Pill (Hidden in UI, active in background) -->
+          <button id="header-cloud-sync-btn" onclick="triggerManualCloudSync()" class="hidden"></button>
 
           <!-- Sound Toggle -->
           <button id="btn-sound-toggle" title="آواز آن / آف" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press cursor-pointer">
@@ -2215,7 +2218,12 @@
     // ⚡ INSTANT SALE ENTRY ENGINE (100% NON-BLOCKING & BULLETPROOF)
     // ========================================================
     let isLoggingSale = false;
+    let lastSaleTimestamp = 0;
     async function logSale(categoryId) {
+      const now = Date.now();
+      if (isLoggingSale || (now - lastSaleTimestamp < 350)) return;
+      isLoggingSale = true;
+      lastSaleTimestamp = now;
       if (isLoggingSale) return;
       isLoggingSale = true;
       try {
@@ -3203,13 +3211,16 @@
                              window.isAppInstalled === true ||
                              localStorage.getItem('mirza_pwa_installed') === 'true';
 
-        const installBar = document.getElementById('mirza-app-installer-card');
-        if (installBar) {
-          if (isStandalone) {
-            installBar.style.display = 'none';
-          } else {
-            installBar.style.display = 'flex';
-          }
+        const hdrInstallBtn = document.getElementById('btn-header-install');
+        const installCard = document.getElementById('mirza-app-installer-card');
+
+        if (isStandalone) {
+          document.documentElement.classList.add('app-standalone');
+          if (hdrInstallBtn) hdrInstallBtn.style.display = 'none';
+          if (installCard) installCard.style.display = 'none';
+        } else {
+          document.documentElement.classList.remove('app-standalone');
+          if (hdrInstallBtn) hdrInstallBtn.style.display = 'inline-flex';
         }
       } catch (err) {}
     }
