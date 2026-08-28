@@ -233,15 +233,25 @@
 
       </div>
 
-      <!-- High-Visibility Google Chrome 1-Click Install Banner (نمایاں کروم انسٹال بینر) -->
-      <div id="pwa-install-banner" class="p-2 sm:p-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-2xl text-white shadow-lg flex items-center justify-between gap-2 border border-emerald-400/40">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="text-xl sm:text-2xl shrink-0 animate-bounce">📲</span>
+            <!-- 🌟 BRAND NEW 1-CLICK PWA INSTALL BAR (نئے سرے سے بنایا گیا جدید انسٹالر) -->
+      <div id="mirza-app-installer-card" class="p-2.5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl border border-indigo-500/40 shadow-xl flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-slate-950 border border-amber-400/40 p-0.5 shrink-0 flex items-center justify-center shadow-md">
+            <img src="/icon-192.png" alt="Mirza Shop" class="w-full h-full object-cover rounded-lg" />
+          </div>
           <div class="min-w-0">
-            <h4 class="font-black text-xs sm:text-sm text-white leading-tight">مرزا شاپ موبائل ایپ انسٹال کریں</h4>
-            <p class="text-[10px] text-emerald-100 truncate">1 کلک میں موبائل ہوم اسکرین پر حاصل کریں</p>
+            <h4 class="font-black text-xs sm:text-sm text-white leading-tight flex items-center gap-1.5">
+              <span>Mirza Shop</span>
+              <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 text-[9px] font-mono rounded border border-emerald-500/30">PWA</span>
+            </h4>
+            <p class="text-[10px] text-slate-300 truncate">آفیشل گوگل کروم ایپ انسٹال کریں</p>
           </div>
         </div>
+        <button id="btn-mirza-install-trigger" onclick="openMirzaChromeInstallPopup()" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-lg shadow-emerald-500/30 active:scale-95 transition flex items-center gap-1.5 shrink-0 btn-press cursor-pointer">
+          <span>📲</span>
+          <span>انسٹال کریں</span>
+        </button>
+      </div>
         <button id="btn-pwa-install" class="px-3.5 py-1.5 sm:py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1 shrink-0 btn-press animate-pulse">
           <span>⚡</span>
           <span>ایپ انسٹال کریں</span>
@@ -3237,5 +3247,41 @@
   </script>
 
   
+
+  <!-- ========================================================================= -->
+  <!-- 🌟 AL-SHEHZAD DWAKHANA STYLE EXACT GOOGLE CHROME "INSTALL APP" POPUP       -->
+  <!-- ========================================================================= -->
+  <div id="mirza-chrome-install-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-200 flex flex-col gap-4 text-slate-900 animate-in fade-in zoom-in-95 duration-150" dir="ltr">
+      
+      <!-- Top Title -->
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-slate-900 tracking-tight">Install app</h3>
+        <button onclick="closeMirzaChromeInstallPopup()" class="text-slate-400 hover:text-slate-700 text-lg p-1 transition btn-press">✕</button>
+      </div>
+
+      <!-- App Details Row -->
+      <div class="flex items-center gap-3.5 my-1">
+        <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-sm shrink-0 border border-amber-300 bg-slate-950 flex items-center justify-center p-0.5">
+          <img src="/icon-192.png" alt="Mirza Shop" class="w-full h-full object-cover rounded-xl" />
+        </div>
+        <div class="min-w-0 flex-1">
+          <h4 class="font-bold text-base text-slate-900 leading-snug">Mirza Shop</h4>
+          <p class="text-xs text-slate-500 truncate" id="mirza-popup-host-domain">mirza-mobile-shop.vercel.app</p>
+        </div>
+      </div>
+
+      <!-- Google Chrome Buttons (Install / Cancel) -->
+      <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+        <button id="btn-execute-pwa-install" onclick="executeMirzaPwaInstall()" class="px-5 py-2 rounded-full font-bold text-sm bg-blue-100 hover:bg-blue-200 text-blue-800 transition active:scale-95 btn-press shadow-xs cursor-pointer">
+          Install
+        </button>
+        <button onclick="closeMirzaChromeInstallPopup()" class="px-5 py-2 rounded-full font-bold text-sm border border-blue-600 text-blue-600 hover:bg-blue-50 transition active:scale-95 btn-press cursor-pointer">
+          Cancel
+        </button>
+      </div>
+
+    </div>
+  </div>
 </body>
 </html>
