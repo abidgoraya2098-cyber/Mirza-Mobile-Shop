@@ -51,6 +51,7 @@
       window.isAppInstalled = true;
       try { localStorage.setItem('mirza_pwa_installed', 'true'); } catch(e) {}
       if (typeof updatePwaInstallVisibility === 'function') updatePwaInstallVisibility();
+      pullFromCloudSync(false);
       console.log('[PWA] App successfully installed on device.');
       if (typeof showToast === 'function') showToast('مرزا شاپ ہوم اسکرین پر کامیابی سے انسٹال ہو گئی!', '📲');
     });
@@ -258,7 +259,13 @@
           </div>
         </div>
 
-        <!-- Left side: Sound Toggle & Settings -->
+        <!-- Left side: Cloud Sync Pill, Sound Toggle & Settings -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- Cloud Sync Status Pill (Multi-Device PC & Mobile) -->
+          <button id="header-cloud-sync-btn" onclick="triggerManualCloudSync()" title="کلاؤڈ سنکنگ: موبائل اور کمپیوٹر کا ڈیٹا ہم آہنگ ہے (کلک کر کے فوری سنک کریں)" class="px-2 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold flex items-center gap-1 transition active:scale-95 shadow-xs cursor-pointer btn-press">
+            <span id="cloud-sync-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="cloud-sync-label">کلاؤڈ سنک</span>
+          </button>
         <div class="flex items-center gap-1.5 shrink-0">
           <button id="btn-sound-toggle" title="آواز آن / آف" class="w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white flex items-center justify-center text-xs transition shadow-xs btn-press">
             <span id="sound-icon">🔊</span>
@@ -1478,12 +1485,14 @@
       await dbAdd('active_expenses', exp);
       localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses));
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       playBeep('click');
       showToast(`💸 خرچہ: Rs. ${amount.toLocaleString()} درج (سیلز سے مائنس)`, '✓');
 
       refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
     }
 
     async function deleteExpense(expId) {
@@ -1492,10 +1501,12 @@
       await dbDelete('active_expenses', expId);
       localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses));
       saveEmergencySnapshot();
+        pushToCloudSync();
       playBeep('click');
       showToast('خرچہ ڈیلیٹ ہو گیا!', '🗑️');
       refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
     }
 
     function openExpenseModal() {
@@ -1583,6 +1594,7 @@
     async function dbAdd(storeName, item) {
       fallbackAdd(storeName, item);
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       if (!db) return true;
       return new Promise((resolve) => {
@@ -1622,6 +1634,7 @@
     async function dbDelete(storeName, id) {
       fallbackDelete(storeName, id);
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       if (!db) return true;
       return new Promise((resolve) => {
@@ -1640,6 +1653,7 @@
     async function dbClear(storeName) {
       fallbackClear(storeName);
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       if (!db) return true;
       return new Promise((resolve) => {
@@ -2122,6 +2136,7 @@
         try { await dbAdd('active_transactions', tx); } catch (e) {}
         try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
         saveEmergencySnapshot();
+        pushToCloudSync();
 
         try { playBeep('sale'); } catch (e) {}
         showToast(`${catName}: Rs. ${amountVal.toLocaleString()} درج ہو گیا!`, '✓');
@@ -2133,6 +2148,7 @@
 
         refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
       } finally {
         setTimeout(() => { isLoggingSale = false; }, 150);
       }
@@ -2242,6 +2258,7 @@
       try { await dbDelete('active_transactions', pendingDeleteTxId); } catch (e) {}
       try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       closeDeleteModal();
 
@@ -2249,6 +2266,7 @@
       showToast(`اندراج (Rs. ${amtVal} ${catName}) حذف کر دیا گیا`, '🗑️');
       refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
     }
 
     window.openDeleteModal = openDeleteModal;
@@ -2334,6 +2352,7 @@
       localStorage.removeItem('mirza_active_expenses');
 
       saveEmergencySnapshot();
+        pushToCloudSync();
 
       document.getElementById('modal-closing').classList.add('hidden');
 
@@ -2342,6 +2361,7 @@
 
       refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
       renderLedgerView();
       renderYearlyView();
       openReceiptModal(closingRecord);
@@ -2583,6 +2603,71 @@
 
     // 1. Daily Closed Day Receipt
     function openReceiptModal(closingRecord) {
+      try { playBeep('click'); } catch (e) {}
+      const timeStr = formatTime12(new Date(closingRecord.timestamp || Date.now()));
+      const dateStr = formatUrduDate(closingRecord.date || getTodayDateStr());
+      
+      const salesVal = closingRecord.salesTotal !== undefined ? closingRecord.salesTotal : (closingRecord.grandTotal || 0);
+      const expenseVal = closingRecord.totalExpenses || 0;
+      const netVal = closingRecord.netBalance !== undefined ? closingRecord.netBalance : (salesVal - expenseVal);
+
+      currentReceiptMeta = {
+        type: 'daily',
+        title: `روزانہ کلوزنگ رسید (${dateStr})`,
+        dateText: `${dateStr} - ${timeStr}`,
+        grandTotalText: `Rs. ${netVal.toLocaleString()}`,
+        salesText: `Rs. ${salesVal.toLocaleString()}`,
+        expenseText: `Rs. ${expenseVal.toLocaleString()}`,
+        filename: `MirzaShop_Daily_${closingRecord.date || getTodayDateStr()}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n🧾 *روزانہ کلوزنگ رسید*\n📅 *تاریخ:* ${dateStr} (${timeStr})\n🟢 *کل سیلز:* Rs. ${salesVal.toLocaleString()}\n🔴 *کل خرچہ:* Rs. ${expenseVal.toLocaleString()}\n💎 *صافی دراز کیش:* Rs. ${netVal.toLocaleString()}\n🔒 محفوظ شدہ کھاتہ`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = 'روزانہ کلوزنگ رسید';
+      document.getElementById('receipt-report-badge').textContent = 'روزانہ کلوزنگ رپورٹ';
+      document.getElementById('receipt-date-time').textContent = `${dateStr} - ${timeStr}`;
+      
+      const elSales = document.getElementById('receipt-sales-total');
+      if (elSales) elSales.textContent = `Rs. ${salesVal.toLocaleString()}`;
+      const elExp = document.getElementById('receipt-expense-total');
+      if (elExp) elExp.textContent = `-Rs. ${expenseVal.toLocaleString()}`;
+      const elNet = document.getElementById('receipt-net-balance');
+      if (elNet) elNet.textContent = `Rs. ${netVal.toLocaleString()}`;
+      const elGrand = document.getElementById('receipt-grand-total');
+      if (elGrand) elGrand.textContent = `Rs. ${salesVal.toLocaleString()}`;
+      
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) extraStats.classList.add('hidden');
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = (closingRecord.subtotals && closingRecord.subtotals[key]) || 0;
+        const count = (closingRecord.counts && closingRecord.counts[key]) || 0;
+        if (amt === 0 && count === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold text-xs">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${count}):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900 text-xs">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      if (closingRecord.notes) {
+        notesBox.classList.remove('hidden');
+        document.getElementById('receipt-notes-text').textContent = closingRecord.notes;
+      } else {
+        notesBox.classList.add('hidden');
+      }
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    function _old_openReceiptModal_unused(
       playBeep('click');
       const timeStr = formatTime12(new Date(closingRecord.timestamp));
       const dateStr = formatUrduDate(closingRecord.date);
@@ -2636,6 +2721,70 @@
 
     // 2. Daily Live Sales Receipt (آج کی لائیو سیلز رسید)
     function openTodayLiveReceipt() {
+      try { playBeep('click'); } catch (e) {}
+      const dateStr = formatUrduDate(getTodayDateStr());
+      const timeStr = formatTime12(new Date());
+      const stats = calculateSubtotals(activeTransactions);
+      const fin = calculateFinancialSummary();
+
+      if (fin.salesTotal === 0 && activeTransactions.length === 0 && fin.totalExpenses === 0) {
+        showToast('آج ابھی تک کوئی سیل یا خرچہ درج نہیں ہوا!', '⚠️');
+        return;
+      }
+
+      currentReceiptMeta = {
+        type: 'daily-live',
+        title: `آج کی لائیو سیلز رسید (${dateStr})`,
+        dateText: `${dateStr} - ${timeStr}`,
+        grandTotalText: `Rs. ${fin.netBalance.toLocaleString()}`,
+        salesText: `Rs. ${fin.salesTotal.toLocaleString()}`,
+        expenseText: `Rs. ${fin.totalExpenses.toLocaleString()}`,
+        filename: `MirzaShop_Today_${getTodayDateStr()}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n🧾 *آج کی لائیو سیلز و دراز رپورٹ*\n📅 *تاریخ:* ${dateStr} (${timeStr})\n🟢 *کل سیلز:* Rs. ${fin.salesTotal.toLocaleString()}\n🔴 *کل خرچہ:* Rs. ${fin.totalExpenses.toLocaleString()}\n💎 *صافی دراز کیش:* Rs. ${fin.netBalance.toLocaleString()}\n📊 *کل انٹریز:* ${activeTransactions.length}`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = 'آج کی لائیو سیلز رسید';
+      document.getElementById('receipt-report-badge').textContent = 'آج کی لائیو سیلز رپورٹ';
+      document.getElementById('receipt-date-time').textContent = `${dateStr} - ${timeStr}`;
+      
+      const elSales = document.getElementById('receipt-sales-total');
+      if (elSales) elSales.textContent = `Rs. ${fin.salesTotal.toLocaleString()}`;
+      const elExp = document.getElementById('receipt-expense-total');
+      if (elExp) elExp.textContent = `-Rs. ${fin.totalExpenses.toLocaleString()}`;
+      const elNet = document.getElementById('receipt-net-balance');
+      if (elNet) elNet.textContent = `Rs. ${fin.netBalance.toLocaleString()}`;
+      const elGrand = document.getElementById('receipt-grand-total');
+      if (elGrand) elGrand.textContent = `Rs. ${fin.salesTotal.toLocaleString()}`;
+
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) extraStats.classList.add('hidden');
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = stats.subtotals ? (stats.subtotals[key] || 0) : (stats[key] || 0);
+        const count = stats.counts ? (stats.counts[key] || 0) : 0;
+        if (amt === 0 && count === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold text-xs">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${count}):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900 text-xs">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      notesBox.classList.remove('hidden');
+      document.getElementById('receipt-notes-text').textContent = `آج کل ${activeTransactions.length} سیل انٹریز اور ${activeExpenses.length} اخراجات درج ہیں۔`;
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    function _old_openTodayLiveReceipt_unused(
       playBeep('click');
       const dateStr = formatUrduDate(getTodayDateStr());
       const timeStr = formatTime12(new Date());
@@ -2690,6 +2839,101 @@
 
     // 3. Monthly Receipt Report (ماہانہ رپورٹ رسید)
     function openMonthlyReceipt() {
+      try { playBeep('click'); } catch (e) {}
+      const select = document.getElementById('select-ledger-month');
+      const selMonth = select ? select.value : getMonthStr();
+      const monthClosings = closingsList.filter(c => c.month === selMonth);
+
+      const parts = selMonth.split('-');
+      const year = parts[0];
+      const mNum = parts[1];
+      const monthName = URDU_MONTHS[parseInt(mNum, 10) - 1] || selMonth;
+      const monthTitle = `${monthName} ${year}`;
+
+      let totalSales = 0;
+      let totalExpenses = 0;
+      let totalNet = 0;
+      const daysCount = monthClosings.length;
+
+      monthClosings.forEach(c => {
+        const s = c.salesTotal !== undefined ? c.salesTotal : (c.grandTotal || 0);
+        const exp = c.totalExpenses || 0;
+        const n = c.netBalance !== undefined ? c.netBalance : (s - exp);
+        totalSales += s;
+        totalExpenses += exp;
+        totalNet += n;
+      });
+
+      const avgSale = daysCount > 0 ? Math.round(totalSales / daysCount) : 0;
+
+      const catTotals = {};
+      Object.keys(CATEGORIES).forEach(k => { catTotals[k] = 0; });
+      monthClosings.forEach(c => {
+        if (c.subtotals) {
+          Object.keys(CATEGORIES).forEach(k => {
+            catTotals[k] += (c.subtotals[k] || 0);
+          });
+        }
+      });
+
+      currentReceiptMeta = {
+        type: 'monthly',
+        title: `ماہانہ کھاتہ رپورٹ (${monthTitle})`,
+        dateText: `ماہ: ${monthTitle}`,
+        grandTotalText: `Rs. ${totalNet.toLocaleString()}`,
+        salesText: `Rs. ${totalSales.toLocaleString()}`,
+        expenseText: `Rs. ${totalExpenses.toLocaleString()}`,
+        filename: `MirzaShop_Monthly_${selMonth}.png`,
+        summaryText: `🏪 *مرزا موبائل اینڈ ڈائیپر شاپ*\n📊 *ماہانہ کھاتہ سمری:* ${monthTitle}\n📅 *کام کے دن:* ${daysCount} دن\n🟢 *ماہانہ کل سیل:* Rs. ${totalSales.toLocaleString()}\n🔴 *ماہانہ کل خرچہ:* Rs. ${totalExpenses.toLocaleString()}\n💎 *خالص بچت/کیش:* Rs. ${totalNet.toLocaleString()}\n📈 *روزانہ اوسط سیل:* Rs. ${avgSale.toLocaleString()}`
+      };
+
+      document.getElementById('modal-receipt-heading').textContent = `ماہانہ رپورٹ (${monthTitle})`;
+      document.getElementById('receipt-report-badge').textContent = `ماہانہ کھاتہ سمری (${monthTitle})`;
+      document.getElementById('receipt-date-time').textContent = `مہینہ: ${monthTitle} • پرنٹ وقت: ${formatTime12(new Date())}`;
+      
+      const elSales = document.getElementById('receipt-sales-total');
+      if (elSales) elSales.textContent = `Rs. ${totalSales.toLocaleString()}`;
+      const elExp = document.getElementById('receipt-expense-total');
+      if (elExp) elExp.textContent = `-Rs. ${totalExpenses.toLocaleString()}`;
+      const elNet = document.getElementById('receipt-net-balance');
+      if (elNet) elNet.textContent = `Rs. ${totalNet.toLocaleString()}`;
+      const elGrand = document.getElementById('receipt-grand-total');
+      if (elGrand) elGrand.textContent = `Rs. ${totalSales.toLocaleString()}`;
+
+      // Extra Stats
+      const extraStats = document.getElementById('receipt-extra-stats');
+      if (extraStats) {
+        extraStats.classList.remove('hidden');
+        document.getElementById('receipt-stat-days').textContent = `${daysCount} دن`;
+        document.getElementById('receipt-stat-avg').textContent = `Rs. ${avgSale.toLocaleString()}`;
+      }
+
+      const contentRows = document.getElementById('receipt-content-rows');
+      contentRows.innerHTML = Object.keys(CATEGORIES).map(key => {
+        const cat = CATEGORIES[key];
+        const amt = catTotals[key] || 0;
+        const pct = totalSales > 0 ? Math.round((amt / totalSales) * 100) : 0;
+        if (amt === 0) return '';
+
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-slate-100">
+            <span class="text-slate-700 flex items-center gap-1.5 font-bold text-xs">
+              <span>${cat.icon}</span>
+              <span>${cat.nameUr} (${pct}%):</span>
+            </span>
+            <span class="font-mono font-black text-slate-900 text-xs">Rs. ${amt.toLocaleString()}</span>
+          </div>
+        `;
+      }).filter(Boolean).join('');
+
+      const notesBox = document.getElementById('receipt-notes-box');
+      notesBox.classList.remove('hidden');
+      document.getElementById('receipt-notes-text').textContent = `اس ماہ کل ${daysCount} دنوں کی کلوزنگز ریکارڈ ہوئیں۔`;
+
+      document.getElementById('print-receipt-modal').classList.remove('hidden');
+    }
+
+    function _old_openMonthlyReceipt_unused(
       playBeep('click');
       const select = document.getElementById('select-ledger-month');
       const selMonth = select ? select.value : getMonthStr();
@@ -3024,6 +3268,168 @@
     window.exportCSV = exportCSV;
     window.updatePwaInstallVisibility = updatePwaInstallVisibility;
 
+    // ========================================================
+    // 🌐 REAL-TIME MULTI-DEVICE CLOUD SYNC & OFFLINE ENGINE
+    // ========================================================
+    let isCloudSyncing = false;
+    let lastCloudSyncTimestamp = 0;
+    const CLOUD_SYNC_ENDPOINT = '/api/sync';
+
+    function updateCloudSyncUI(status, label) {
+      const dot = document.getElementById('cloud-sync-dot');
+      const text = document.getElementById('cloud-sync-label');
+      const btn = document.getElementById('header-cloud-sync-btn');
+      if (!dot || !text) return;
+
+      if (status === 'online') {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        text.textContent = label || 'کلاؤڈ سنک (ایکٹو)';
+        if (btn) btn.className = 'px-2 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold flex items-center gap-1 transition active:scale-95 shadow-xs cursor-pointer btn-press';
+      } else if (status === 'syncing') {
+        dot.className = 'w-2 h-2 rounded-full bg-indigo-400 animate-ping';
+        text.textContent = label || 'سنکنگ...';
+        if (btn) btn.className = 'px-2 py-1 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-[10px] font-bold flex items-center gap-1 transition shadow-xs';
+      } else if (status === 'offline') {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        text.textContent = label || 'آف لائن (محفوظ)';
+        if (btn) btn.className = 'px-2 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-[10px] font-bold flex items-center gap-1 transition active:scale-95 shadow-xs cursor-pointer btn-press';
+      }
+    }
+
+    async function pushToCloudSync() {
+      if (!navigator.onLine) {
+        updateCloudSyncUI('offline');
+        return;
+      }
+      try {
+        updateCloudSyncUI('syncing', 'کلاؤڈ محفوظ...');
+        const payload = {
+          clientTimestamp: Date.now(),
+          activeTransactions: activeTransactions || [],
+          activeExpenses: activeExpenses || [],
+          closings: closingsList || []
+        };
+        const response = await fetch(CLOUD_SYNC_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+          const resData = await response.json();
+          lastCloudSyncTimestamp = resData.lastUpdated || Date.now();
+          updateCloudSyncUI('online', 'کلاؤڈ سنک ✓');
+        } else {
+          updateCloudSyncUI('online', 'کلاؤڈ سنک');
+        }
+      } catch (err) {
+        console.warn('[CloudSync] Push warning:', err);
+        updateCloudSyncUI(navigator.onLine ? 'online' : 'offline');
+      }
+    }
+
+    async function pullFromCloudSync(showToastOnUpdate = false) {
+      if (!navigator.onLine || isCloudSyncing) return;
+      isCloudSyncing = true;
+      try {
+        const response = await fetch(CLOUD_SYNC_ENDPOINT, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.lastUpdated && data.lastUpdated > lastCloudSyncTimestamp) {
+            let hasChanges = false;
+            
+            // Merge Active Transactions
+            if (Array.isArray(data.activeTransactions)) {
+              const currentIds = new Set(activeTransactions.map(x => x.id));
+              const remoteNew = data.activeTransactions.filter(x => !currentIds.has(x.id));
+              if (remoteNew.length > 0 || activeTransactions.length !== data.activeTransactions.length) {
+                activeTransactions = data.activeTransactions;
+                try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
+                hasChanges = true;
+              }
+            }
+
+            // Merge Active Expenses
+            if (Array.isArray(data.activeExpenses)) {
+              if (activeExpenses.length !== data.activeExpenses.length) {
+                activeExpenses = data.activeExpenses;
+                try { localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses)); } catch (e) {}
+                hasChanges = true;
+              }
+            }
+
+            // Merge Closings
+            if (Array.isArray(data.closings)) {
+              if (closingsList.length !== data.closings.length) {
+                closingsList = data.closings;
+                try { localStorage.setItem('mirza_closings', JSON.stringify(closingsList)); } catch (e) {}
+                hasChanges = true;
+              }
+            }
+
+            lastCloudSyncTimestamp = data.lastUpdated;
+
+            if (hasChanges) {
+              refreshTodayDashboard();
+              renderLedgerView();
+              renderYearlyView();
+              updatePwaInstallVisibility();
+      pullFromCloudSync(false);
+              if (showToastOnUpdate) {
+                showToast('کمپیوٹر/موبائل سے نیا ڈیٹا کلاؤڈ پر ہم آہنگ ہو گیا!', '🔄');
+              }
+            }
+          }
+          updateCloudSyncUI('online', 'کلاؤڈ سنک ✓');
+        }
+      } catch (err) {
+        console.warn('[CloudSync] Pull warning:', err);
+        updateCloudSyncUI(navigator.onLine ? 'online' : 'offline');
+      } finally {
+        isCloudSyncing = false;
+      }
+    }
+
+    async function triggerManualCloudSync() {
+      try { playBeep('click'); } catch (e) {}
+      if (!navigator.onLine) {
+        showToast('انٹرنیٹ بند ہے! ڈیٹا موبائل میں محفوظ ہے۔', '🟡');
+        updateCloudSyncUI('offline');
+        return;
+      }
+      showToast('کلاؤڈ کے ساتھ سنکنگ جاری ہے...', '🔄');
+      updateCloudSyncUI('syncing', 'سنکنگ...');
+      await pushToCloudSync();
+      await pullFromCloudSync(true);
+      showToast('موبائل اور کمپیوٹر کا کھاتہ کلاؤڈ پر ہم آہنگ ہے!', '✓');
+    }
+
+    // Auto sync on online reconnect and periodic background poller
+    window.addEventListener('online', () => {
+      updateCloudSyncUI('syncing', 'آن لائن سنکنگ...');
+      pushToCloudSync().then(() => pullFromCloudSync(true));
+      showToast('انٹرنیٹ بحال! کلاؤڈ سنک مکمل۔', '🟢');
+    });
+
+    window.addEventListener('offline', () => {
+      updateCloudSyncUI('offline', 'آف لائن موڈ');
+      showToast('آف لائن موڈ: تمام ریکارڈ محفوظ ہو رہا ہے۔', '🟡');
+    });
+
+    // Background poller: Every 8 seconds checks cloud when online
+    setInterval(() => {
+      if (navigator.onLine && !document.hidden) {
+        pullFromCloudSync(false);
+      }
+    }, 8000);
+
+    window.triggerManualCloudSync = triggerManualCloudSync;
+    window.pushToCloudSync = pushToCloudSync;
+    window.pullFromCloudSync = pullFromCloudSync;
+
+
     function exportCSV(filteredOnly = false) {
       let dataToExport = closingsList;
       if (filteredOnly) {
@@ -3173,11 +3579,13 @@
           for (const c of closingsList) await dbAdd('closings', c);
 
           saveEmergencySnapshot();
+        pushToCloudSync();
 
           document.getElementById('modal-backup').classList.add('hidden');
           showToast('ڈیٹا کامیابی سے بحال ہو گیا!', '✓');
           refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
           renderLedgerView();
           renderYearlyView();
         } catch (err) {
@@ -3249,6 +3657,7 @@
       // Render Dashboard & Ledgers Immediately
       refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
       renderLedgerView();
       renderYearlyView();
       initSwipeGestures();
@@ -3384,6 +3793,7 @@
             activeTransactions = idbTx;
             refreshTodayDashboard();
       updatePwaInstallVisibility();
+      pullFromCloudSync(false);
           }
         } catch (err) {
           console.warn('[DB] Async sync error:', err);

@@ -43,5 +43,6 @@ rootIcons.forEach(icon => {
 if (fs.existsSync('assets')) copyFolderSync('assets', 'dist/assets');
 if (fs.existsSync('public')) copyFolderSync('public', 'dist/public');
 if (fs.existsSync('public/assets')) copyFolderSync('public/assets', 'dist/assets');
+if (fs.existsSync('api')) copyFolderSync('api', 'dist/api');
 
 console.log('Static PWA dist build generated successfully with all icons!');

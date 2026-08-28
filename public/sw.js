@@ -1,5 +1,5 @@
-// Mirza Mobile & Diaper Shop PWA Service Worker (V3)
-const CACHE_NAME = 'mirza-shop-v3';
+// Mirza Mobile & Diaper Shop PWA Service Worker (V4 - Cloud Sync & Full Offline)
+const CACHE_NAME = 'mirza-shop-v4';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -35,7 +35,12 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const requestUrl = new URL(event.request.url);
 
-  // HTML page navigations
+  // 1. Always bypass API & Cloud Sync requests (Network Only)
+  if (requestUrl.pathname.startsWith('/api/')) {
+    return;
+  }
+
+  // 2. HTML page navigations (Network first with cache fallback)
   if (event.request.mode === 'navigate' || requestUrl.origin === location.origin && requestUrl.pathname === '/') {
     event.respondWith(
       fetch(event.request).then((networkRes) => {
@@ -51,7 +56,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static Assets / Images / Manifest
+  // 3. Static Assets / Images / Manifest
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
