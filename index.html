@@ -20,6 +20,39 @@
   <link rel="apple-touch-icon" sizes="512x512" href="/icon-512.png" />
   <script>
     window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
     window.isAppInstalled = false;
 
     function checkStandaloneMode() {
@@ -48,6 +81,39 @@
 
     window.addEventListener('appinstalled', function() {
       window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
       window.isAppInstalled = true;
       try { localStorage.setItem('mirza_pwa_installed', 'true'); } catch(e) {}
       if (typeof updatePwaInstallVisibility === 'function') updatePwaInstallVisibility();
@@ -70,6 +136,39 @@
           console.log('[PWA] User choice:', choice);
           if (choice && choice.outcome === 'accepted') {
             window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
             closeMirzaChromeInstallPopup();
           }
         });
@@ -95,6 +194,39 @@
         window.deferredPrompt.userChoice.then(function(choice) {
           if (choice && choice.outcome === 'accepted') {
             window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
             closeMirzaChromeInstallPopup();
           }
         });
@@ -221,6 +353,39 @@
   </style>
   <script>
     window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       window.deferredPrompt = e;
@@ -1497,6 +1662,7 @@
 
     async function deleteExpense(expId) {
       if (!confirm('کیا آپ یہ خرچہ ڈیلیٹ کرنا چاہتے ہیں؟')) return;
+      markIdAsDeleted('exp', expId);
       activeExpenses = activeExpenses.filter(x => x.id !== expId);
       await dbDelete('active_expenses', expId);
       localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses));
@@ -1815,6 +1981,39 @@
         console.log('[PWA] User response:', choice);
         deferredPrompt = null;
         window.deferredPrompt = null;
+
+    // ========================================================
+    // 🛡️ PERMANENT DATA VAULT (کوئی ڈیٹا خود بخود ڈیلیٹ نہیں ہو گا)
+    // ========================================================
+    async function initPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persist();
+          console.log('[Storage] Persistent Storage active:', isPersisted);
+        } catch (e) {}
+      }
+    }
+    initPersistentStorage();
+
+    // Track explicitly deleted IDs so they don't resurrect during sync
+    function getDeletedIds() {
+      try {
+        const raw = localStorage.getItem('mirza_deleted_ids');
+        return raw ? JSON.parse(raw) : { tx: [], exp: [], closings: [] };
+      } catch (e) {
+        return { tx: [], exp: [], closings: [] };
+      }
+    }
+
+    function markIdAsDeleted(type, id) {
+      try {
+        const del = getDeletedIds();
+        if (!del[type]) del[type] = [];
+        if (!del[type].includes(id)) del[type].push(id);
+        localStorage.setItem('mirza_deleted_ids', JSON.stringify(del));
+      } catch (e) {}
+    }
+
 
         const banner = document.getElementById('pwa-install-banner');
         const headerBtn = document.getElementById('btn-header-install');
@@ -2254,6 +2453,7 @@
       const catName = txToDelete ? (CATEGORIES[txToDelete.category]?.nameUr || '') : '';
       const amtVal = txToDelete ? Number(txToDelete.amount).toLocaleString() : '';
 
+      markIdAsDeleted('tx', pendingDeleteTxId);
       activeTransactions = activeTransactions.filter(x => x.id !== pendingDeleteTxId);
       try { await dbDelete('active_transactions', pendingDeleteTxId); } catch (e) {}
       try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
@@ -3328,6 +3528,106 @@
     }
 
     async function pullFromCloudSync(showToastOnUpdate = false) {
+      if (!navigator.onLine || isCloudSyncing) return;
+      isCloudSyncing = true;
+      try {
+        const response = await fetch(CLOUD_SYNC_ENDPOINT, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data && (Array.isArray(data.activeTransactions) || Array.isArray(data.activeExpenses) || Array.isArray(data.closings))) {
+            let hasChanges = false;
+            const del = getDeletedIds();
+            const deletedTxSet = new Set(del.tx || []);
+            const deletedExpSet = new Set(del.exp || []);
+
+            // 1. Non-Destructive Union Merge for Active Transactions (PC + Mobile)
+            if (Array.isArray(data.activeTransactions)) {
+              const txMap = new Map();
+              // First add current local transactions
+              activeTransactions.forEach(t => { if (t && t.id && !deletedTxSet.has(t.id)) txMap.set(t.id, t); });
+              // Then merge cloud transactions without dropping anything
+              data.activeTransactions.forEach(t => {
+                if (t && t.id && !deletedTxSet.has(t.id)) {
+                  if (!txMap.has(t.id)) {
+                    txMap.set(t.id, t);
+                    hasChanges = true;
+                  }
+                }
+              });
+              const mergedTx = Array.from(txMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+              if (mergedTx.length !== activeTransactions.length || hasChanges) {
+                activeTransactions = mergedTx;
+                try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
+                for (const t of activeTransactions) { try { await dbAdd('active_transactions', t); } catch (e) {} }
+                hasChanges = true;
+              }
+            }
+
+            // 2. Non-Destructive Union Merge for Active Expenses
+            if (Array.isArray(data.activeExpenses)) {
+              const expMap = new Map();
+              activeExpenses.forEach(e => { if (e && e.id && !deletedExpSet.has(e.id)) expMap.set(e.id, e); });
+              data.activeExpenses.forEach(e => {
+                if (e && e.id && !deletedExpSet.has(e.id)) {
+                  if (!expMap.has(e.id)) {
+                    expMap.set(e.id, e);
+                    hasChanges = true;
+                  }
+                }
+              });
+              const mergedExp = Array.from(expMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+              if (mergedExp.length !== activeExpenses.length || hasChanges) {
+                activeExpenses = mergedExp;
+                try { localStorage.setItem('mirza_active_expenses', JSON.stringify(activeExpenses)); } catch (e) {}
+                for (const ex of activeExpenses) { try { await dbAdd('active_expenses', ex); } catch (e) {} }
+                hasChanges = true;
+              }
+            }
+
+            // 3. Non-Destructive Union Merge for Closings Records
+            if (Array.isArray(data.closings)) {
+              const closingMap = new Map();
+              closingsList.forEach(c => { if (c && c.id) closingMap.set(c.id, c); });
+              data.closings.forEach(c => {
+                if (c && c.id && !closingMap.has(c.id)) {
+                  closingMap.set(c.id, c);
+                  hasChanges = true;
+                }
+              });
+              const mergedClosings = Array.from(closingMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+              if (mergedClosings.length !== closingsList.length || hasChanges) {
+                closingsList = mergedClosings;
+                try { localStorage.setItem('mirza_closings', JSON.stringify(closingsList)); } catch (e) {}
+                for (const cl of closingsList) { try { await dbAdd('closings', cl); } catch (e) {} }
+                hasChanges = true;
+              }
+            }
+
+            if (hasChanges) {
+              saveEmergencySnapshot();
+              refreshTodayDashboard();
+              renderLedgerView();
+              renderYearlyView();
+              updatePwaInstallVisibility();
+              if (showToastOnUpdate) {
+                showToast('کمپیوٹر/موبائل سے نیا ڈیٹا کامیابی سے محفوظ و یکجا ہو گیا!', '🔄');
+              }
+            }
+          }
+          updateCloudSyncUI('online', 'کلاؤڈ سنک ✓');
+        }
+      } catch (err) {
+        console.warn('[CloudSync] Pull warning:', err);
+        updateCloudSyncUI(navigator.onLine ? 'online' : 'offline');
+      } finally {
+        isCloudSyncing = false;
+      }
+    }
+
+    function _old_pullSync_unused(
       if (!navigator.onLine || isCloudSyncing) return;
       isCloudSyncing = true;
       try {
