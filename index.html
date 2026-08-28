@@ -401,7 +401,7 @@
               <span class="text-xl sm:text-2xl font-bold text-slate-400 ml-2 font-mono">Rs.</span>
               
               <input
-                id="input-amount"
+                id="input-amount" onclick="toggleNumpad(true)"
                 type="text"
                 inputmode="none"
                 readonly
@@ -413,18 +413,18 @@
 
               <div class="mr-auto flex items-center gap-1.5 shrink-0">
                 <!-- Toggle Keypad Button -->
-                <button id="btn-toggle-keypad" title="کی پیڈ" class="h-11 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl text-xs flex items-center gap-1 transition btn-press">
+                <button id="btn-toggle-keypad" onclick="toggleNumpad()" title="کی پیڈ" class="h-11 px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl text-xs flex items-center gap-1 transition btn-press">
                   <span class="text-base">⌨️</span>
                   <span id="keypad-toggle-label" class="hidden sm:inline">بورڈ</span>
                 </button>
 
                 <!-- Backspace -->
-                <button id="btn-backspace" title="ایک ہندسہ مٹائیں" class="w-11 h-11 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl flex items-center justify-center text-base transition btn-press">
+                <button id="btn-backspace" onclick="pressBackspace()" title="ایک ہندسہ مٹائیں" class="w-11 h-11 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl flex items-center justify-center text-base transition btn-press">
                   ⌫
                 </button>
 
                 <!-- Clear -->
-                <button id="btn-clear-amount" title="صاف کریں" class="w-11 h-11 bg-rose-100 hover:bg-rose-200 text-rose-600 font-black rounded-xl flex items-center justify-center text-sm transition btn-press">
+                <button id="btn-clear-amount" onclick="clearAmountInput()" title="صاف کریں" class="w-11 h-11 bg-rose-100 hover:bg-rose-200 text-rose-600 font-black rounded-xl flex items-center justify-center text-sm transition btn-press">
                   C
                 </button>
               </div>
@@ -445,13 +445,13 @@
           <!-- Quick Presets (+50, +100, +200, +500, +1000, +2000, +5000) - بڑے اور آرام دہ بٹن -->
           <div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs border-b border-slate-100 pt-1">
             <span class="text-[11px] text-slate-400 font-bold whitespace-nowrap ml-1 shrink-0">فوری:</span>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="50">+50</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="100">+100</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="200">+200</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="500">+500</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="1000">+1000</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="2000">+2000</button>
-            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" data-val="5000">+5000</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(50)" data-val="50">+50</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(100)" data-val="100">+100</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(200)" data-val="200">+200</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(500)" data-val="500">+500</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(1000)" data-val="1000">+1000</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(2000)" data-val="2000">+2000</button>
+            <button class="preset-btn px-3 py-2 bg-slate-50 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded-xl border border-slate-200 font-bold whitespace-nowrap btn-press transition text-xs" onclick="addPresetAmount(5000)" data-val="5000">+5000</button>
           </div>
 
           <!-- COLLAPSIBLE NUMPAD (بڑے بٹن) -->
@@ -461,27 +461,27 @@
                 <span>⌨️</span>
                 <span>ٹائپنگ بورڈ</span>
               </span>
-              <button id="btn-hide-keypad" class="text-indigo-600 hover:text-indigo-800 font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-slate-200 btn-press">
+              <button id="btn-hide-keypad" onclick="toggleNumpad(false)" class="text-indigo-600 hover:text-indigo-800 font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-slate-200 btn-press">
                 بند کریں ✕
               </button>
             </div>
 
             <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto">
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="1">1</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="2">2</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="3">3</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('1')" data-key="1">1</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('2')" data-key="2">2</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('3')" data-key="3">3</button>
 
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="4">4</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="5">5</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="6">6</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('4')" data-key="4">4</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('5')" data-key="5">5</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('6')" data-key="6">6</button>
 
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="7">7</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="8">8</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="9">9</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('7')" data-key="7">7</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('8')" data-key="8">8</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('9')" data-key="9">9</button>
 
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="00">00</button>
-              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" data-key="0">0</button>
-              <button class="numpad-btn bg-indigo-600 border border-indigo-600 hover:bg-indigo-500 text-white btn-press rounded-2xl text-sm font-black py-3 shadow-xs transition" data-key="done">✓ مکمل</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('00')" data-key="00">00</button>
+              <button class="numpad-btn bg-white border border-slate-200 hover:bg-slate-100 btn-press rounded-2xl text-2xl font-bold py-3 text-slate-800 shadow-2xs transition" onclick="pressNumpadKey('0')" data-key="0">0</button>
+              <button class="numpad-btn bg-indigo-600 border border-indigo-600 hover:bg-indigo-500 text-white btn-press rounded-2xl text-sm font-black py-3 shadow-xs transition" onclick="pressNumpadKey('done')" data-key="done">✓ مکمل</button>
             </div>
           </div>
 
@@ -497,49 +497,49 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               
               <!-- 1. Diapers -->
-              <button type="button" data-cat="diapers" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="diapers" onclick="logSale('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">👶</span>
                 <span class="font-black text-rose-950 text-sm sm:text-base pointer-events-none">پیمپر</span>
               </button>
 
               <!-- 2. Computer -->
-              <button type="button" data-cat="computer" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="computer" onclick="logSale('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💻</span>
                 <span class="font-black text-blue-950 text-sm sm:text-base pointer-events-none">کمپیوٹر</span>
               </button>
 
               <!-- 3. Mobile Accessories -->
-              <button type="button" data-cat="accessories" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="accessories" onclick="logSale('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">🎧</span>
                 <span class="font-black text-emerald-950 text-sm sm:text-base pointer-events-none">اسیسریز</span>
               </button>
 
               <!-- 4. Devices -->
-              <button type="button" data-cat="devices" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="devices" onclick="logSale('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">📱</span>
                 <span class="font-black text-violet-950 text-sm sm:text-base pointer-events-none">ڈیوائسز</span>
               </button>
 
               <!-- 5. JazzCash -->
-              <button type="button" data-cat="jazzcash" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="jazzcash" onclick="logSale('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💳</span>
                 <span class="font-black text-amber-950 text-sm sm:text-base pointer-events-none">جاز کیش</span>
               </button>
 
               <!-- 6. Easypaisa -->
-              <button type="button" data-cat="easypaisa" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="easypaisa" onclick="logSale('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">💸</span>
                 <span class="font-black text-teal-950 text-sm sm:text-base pointer-events-none">ایزی پیسہ</span>
               </button>
 
               <!-- 7. Easyload -->
-              <button type="button" data-cat="easyload" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="easyload" onclick="logSale('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">⚡</span>
                 <span class="font-black text-fuchsia-950 text-sm sm:text-base pointer-events-none">ایزی لوڈ</span>
               </button>
 
               <!-- 8. Other / Expense -->
-              <button type="button" data-cat="other" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
+              <button type="button" data-cat="other" onclick="logSale('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
                 <span class="text-3xl sm:text-4xl pointer-events-none">⚙️</span>
                 <span class="font-black text-slate-900 text-sm sm:text-base pointer-events-none">دیگر / خرچہ</span>
               </button>
@@ -939,11 +939,11 @@
 
         <!-- Quick Amount Presets -->
         <div class="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar">
-          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="50">+50</button>
-          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="100">+100</button>
-          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="200">+200</button>
-          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="500">+500</button>
-          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" data-val="1000">+1000</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" onclick="addPresetAmount(50)" data-val="50">+50</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" onclick="addPresetAmount(100)" data-val="100">+100</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" onclick="addPresetAmount(200)" data-val="200">+200</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" onclick="addPresetAmount(500)" data-val="500">+500</button>
+          <button type="button" class="preset-exp-btn px-2.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-700 rounded-lg text-xs font-bold border border-slate-200" onclick="addPresetAmount(1000)" data-val="1000">+1000</button>
         </div>
 
         <!-- Expense Category Selection -->
@@ -2143,7 +2143,144 @@
     }
 
     
+    
+    // ========================================================
+    // ⌨️ NUMPAD & AMOUNT CONTROLLER HELPERS
+    // ========================================================
+    function updateAmountDisplay(val) {
+      const amountInput = document.getElementById('input-amount');
+      const amountInWords = document.getElementById('amount-in-words');
+      if (!amountInput) return;
+      amountInput.value = val;
+      const num = parseFloat(val) || 0;
+      if (amountInWords) amountInWords.textContent = numberToUrduWords(num);
+    }
+
+    function addPresetAmount(val) {
+      try { playBeep('click'); } catch (e) {}
+      const amountInput = document.getElementById('input-amount');
+      const current = parseInt(amountInput ? amountInput.value || '0' : '0', 10) || 0;
+      updateAmountDisplay(String(current + val));
+    }
+
+    function pressNumpadKey(key) {
+      try { playBeep('click'); } catch (e) {}
+      const amountInput = document.getElementById('input-amount');
+      const current = amountInput ? amountInput.value || '' : '';
+
+      if (key === 'done') {
+        toggleNumpad(false);
+      } else if (key === '00') {
+        if (current && current !== '0') updateAmountDisplay(current + '00');
+      } else {
+        if (current === '0') updateAmountDisplay(String(key));
+        else updateAmountDisplay(current + String(key));
+      }
+    }
+
+    function pressBackspace() {
+      try { playBeep('click'); } catch (e) {}
+      const amountInput = document.getElementById('input-amount');
+      const current = amountInput ? amountInput.value || '' : '';
+      updateAmountDisplay(current.slice(0, -1));
+    }
+
+    function clearAmountInput() {
+      try { playBeep('click'); } catch (e) {}
+      updateAmountDisplay('');
+    }
+
+    window.updateAmountDisplay = updateAmountDisplay;
+    window.addPresetAmount = addPresetAmount;
+    window.pressNumpadKey = pressNumpadKey;
+    window.pressBackspace = pressBackspace;
+    window.clearAmountInput = clearAmountInput;
+
+    // ========================================================
+    // ⚡ INSTANT SALE ENTRY ENGINE (100% NON-BLOCKING & BULLETPROOF)
+    // ========================================================
     let isLoggingSale = false;
+    async function logSale(categoryId) {
+      if (isLoggingSale) return;
+      isLoggingSale = true;
+      try {
+        const input = document.getElementById('input-amount');
+        const noteInput = document.getElementById('input-note');
+        const rawVal = (input ? input.value : '').replace(/,/g, '').trim();
+        const amountVal = parseFloat(rawVal);
+
+        // Dedicated 8th button: 'دیگر / خرچہ'
+        if (categoryId === 'other') {
+          if (isNaN(amountVal) || amountVal <= 0) {
+            openExpenseModal();
+            return;
+          }
+          const note = (noteInput ? noteInput.value : '').trim() || 'دکان خرچہ';
+          addExpense(amountVal, 'misc', note);
+          if (input) input.value = '';
+          if (noteInput) noteInput.value = '';
+          const words = document.getElementById('amount-in-words');
+          if (words) words.textContent = 'صفر روپے';
+          return;
+        }
+
+        if (isNaN(amountVal) || amountVal <= 0) {
+          showToast('پہلے رقم درج کریں!', '⚠️');
+          toggleNumpad(true);
+          return;
+        }
+
+        const catInfo = CATEGORIES[categoryId] || { nameUr: categoryId };
+        const catName = catInfo.nameUr || categoryId;
+
+        const tx = {
+          id: 'tx_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          amount: amountVal,
+          category: categoryId,
+          note: (noteInput ? noteInput.value : '').trim(),
+          timestamp: Date.now(),
+          date: getTodayDateStr()
+        };
+
+        // 1. Immediately push to in-memory active list
+        activeTransactions.unshift(tx);
+
+        // 2. Immediately save to LocalStorage (0ms latency guarantee)
+        try { localStorage.setItem('mirza_active_transactions', JSON.stringify(activeTransactions)); } catch (e) {}
+
+        // 3. Immediately save emergency snapshot
+        try { saveEmergencySnapshot(); } catch (e) {}
+
+        // 4. Save to IndexedDB asynchronously in background
+        try { dbAdd('active_transactions', tx); } catch (e) {}
+
+        // 5. Trigger sound effect and toast
+        try { playBeep('sale'); } catch (e) {}
+        showToast(`${catName}: Rs. ${amountVal.toLocaleString()} درج ہو گیا!`, '✓');
+
+        // 6. Reset amount field
+        if (input) input.value = '';
+        if (noteInput) noteInput.value = '';
+        const words = document.getElementById('amount-in-words');
+        if (words) words.textContent = 'صفر روپے';
+
+        // 7. Refresh UI Dashboard
+        refreshTodayDashboard();
+        updatePwaInstallVisibility();
+
+        // 8. Background Cloud Sync (Non-blocking)
+        try { pushToCloudSync(); } catch (e) {}
+
+      } catch (err) {
+        console.error('[Sale Entry Error]', err);
+        showToast('انٹری درج کرنے میں خرابی', '⚠️');
+      } finally {
+        isLoggingSale = false;
+      }
+    }
+
+    window.logSale = logSale;
+    function _old_logSale_unused(
     async function logSale(categoryId) {
       if (isLoggingSale) return;
       isLoggingSale = true;
