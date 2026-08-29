@@ -1423,8 +1423,11 @@
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /**
-     * Mirza Mobile & Diaper Shop - Pure Native Google Chrome Install Engine
+     * Mirza Mobile & Diaper Shop - Production Engine
      */
+    // ========================================================
+    // 🌟 GLOBAL STATE VARIABLES (All declared at top of scope)
+    // ========================================================
     function safeListen(id, event, handler) {
       const el = document.getElementById(id);
       if (el) el.addEventListener(event, handler);
@@ -1441,8 +1444,6 @@
 
     // 💰 INDESTRUCTIBLE FINANCIAL ENGINE & EXPENSES TRACKER
     // ========================================================
-    let activeExpenses = [];
-    let selectedExpenseCategory = 'tea';
 
     function calculateFinancialSummary() {
       // 1. Total Sales from all sales categories
@@ -1489,8 +1490,6 @@
 
       renderTodayExpensesList();
     }
-
-    let selectedExpenseCategory = 'tea';
 
     function selectExpenseCategory(cat) {
       try { playBeep('click'); } catch (e) {}
@@ -1882,12 +1881,9 @@
     }
 
     // --- 3. STATE ---
-    let activeTransactions = [];
-    let closingsList = [];
     let isSoundEnabled = localStorage.getItem('mirza_sound') !== 'false';
     let currentPageIndex = 0; // 0 = Page 1, 1 = Page 2
     let page2ActiveSubtab = 'daily'; // 'daily', 'monthly', 'yearly'
-    let pendingDeleteTxId = null;
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(type = 'click') {
@@ -2377,8 +2373,6 @@
     // ========================================================
     // ⚡ INSTANT SALE ENTRY ENGINE (100% NON-BLOCKING & BULLETPROOF)
     // ========================================================
-    let isLoggingSale = false;
-    let lastSaleTimestamp = 0;
     async function logSale(categoryId) {
       const now = Date.now();
       if (isLoggingSale || (now - lastSaleTimestamp < 150)) return;
@@ -3401,8 +3395,6 @@
     // ========================================================
     // 🌐 REAL-TIME MULTI-DEVICE CLOUD SYNC & OFFLINE ENGINE
     // ========================================================
-    let isCloudSyncing = false;
-    let lastCloudSyncTimestamp = 0;
     const CLOUD_SYNC_ENDPOINT = '/api/sync';
 
     function updateCloudSyncUI(status, label) {
