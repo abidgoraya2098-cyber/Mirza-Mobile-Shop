@@ -515,55 +515,63 @@
               </span>
             </div>
 
-            <!-- 8 Categories Grid -->
+            <!-- 8 Categories Grid with Live Badges & Bachat Income -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               
               <!-- 1. Diapers -->
-              <button type="button" data-cat="diapers" onclick="logSale('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">👶</span>
+              <button type="button" data-cat="diapers" onclick="logSale('diapers')" class="cat-btn btn-press bg-rose-50 hover:bg-rose-100/90 border-2 border-rose-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">👶</span>
                 <span class="font-black text-rose-950 text-sm sm:text-base pointer-events-none">پیمپر</span>
+                <span id="cat-badge-diapers" class="text-[10px] font-mono font-black text-rose-700 bg-white/90 px-2 py-0.5 rounded-lg border border-rose-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 2. Computer -->
-              <button type="button" data-cat="computer" onclick="logSale('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">💻</span>
+              <button type="button" data-cat="computer" onclick="logSale('computer')" class="cat-btn btn-press bg-blue-50 hover:bg-blue-100/90 border-2 border-blue-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">💻</span>
                 <span class="font-black text-blue-950 text-sm sm:text-base pointer-events-none">کمپیوٹر</span>
+                <span id="cat-badge-computer" class="text-[10px] font-mono font-black text-blue-700 bg-white/90 px-2 py-0.5 rounded-lg border border-blue-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 3. Mobile Accessories -->
-              <button type="button" data-cat="accessories" onclick="logSale('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">🎧</span>
+              <button type="button" data-cat="accessories" onclick="logSale('accessories')" class="cat-btn btn-press bg-emerald-50 hover:bg-emerald-100/90 border-2 border-emerald-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">🎧</span>
                 <span class="font-black text-emerald-950 text-sm sm:text-base pointer-events-none">اسیسریز</span>
+                <span id="cat-badge-accessories" class="text-[10px] font-mono font-black text-emerald-700 bg-white/90 px-2 py-0.5 rounded-lg border border-emerald-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 4. Devices -->
-              <button type="button" data-cat="devices" onclick="logSale('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">📱</span>
+              <button type="button" data-cat="devices" onclick="logSale('devices')" class="cat-btn btn-press bg-violet-50 hover:bg-violet-100/90 border-2 border-violet-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">📱</span>
                 <span class="font-black text-violet-950 text-sm sm:text-base pointer-events-none">ڈیوائسز</span>
+                <span id="cat-badge-devices" class="text-[10px] font-mono font-black text-violet-700 bg-white/90 px-2 py-0.5 rounded-lg border border-violet-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
-              <!-- 5. JazzCash -->
-              <button type="button" data-cat="jazzcash" onclick="logSale('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">💳</span>
-                <span class="font-black text-amber-950 text-sm sm:text-base pointer-events-none">جاز کیش</span>
+              <!-- 5. Bachat Income (سابقہ جاز کیش - اب خالص بچت انکم) -->
+              <button type="button" data-cat="jazzcash" onclick="logSale('jazzcash')" class="cat-btn btn-press bg-amber-50 hover:bg-amber-100/90 border-2 border-amber-300 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">💰</span>
+                <span class="font-black text-amber-950 text-sm sm:text-base pointer-events-none">بچت انکم</span>
+                <span id="cat-badge-jazzcash" class="text-[10px] font-mono font-black text-amber-800 bg-white/90 px-2 py-0.5 rounded-lg border border-amber-300 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 6. Easypaisa -->
-              <button type="button" data-cat="easypaisa" onclick="logSale('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">💸</span>
+              <button type="button" data-cat="easypaisa" onclick="logSale('easypaisa')" class="cat-btn btn-press bg-teal-50 hover:bg-teal-100/90 border-2 border-teal-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">💸</span>
                 <span class="font-black text-teal-950 text-sm sm:text-base pointer-events-none">ایزی پیسہ</span>
+                <span id="cat-badge-easypaisa" class="text-[10px] font-mono font-black text-teal-700 bg-white/90 px-2 py-0.5 rounded-lg border border-teal-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 7. Easyload -->
-              <button type="button" data-cat="easyload" onclick="logSale('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">⚡</span>
+              <button type="button" data-cat="easyload" onclick="logSale('easyload')" class="cat-btn btn-press bg-fuchsia-50 hover:bg-fuchsia-100/90 border-2 border-fuchsia-200 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">⚡</span>
                 <span class="font-black text-fuchsia-950 text-sm sm:text-base pointer-events-none">ایزی لوڈ</span>
+                <span id="cat-badge-easyload" class="text-[10px] font-mono font-black text-fuchsia-700 bg-white/90 px-2 py-0.5 rounded-lg border border-fuchsia-200 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
               <!-- 8. Other / Expense -->
-              <button type="button" data-cat="other" onclick="logSale('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-4 px-2 flex flex-col items-center justify-center gap-1.5 transition shadow-xs">
-                <span class="text-3xl sm:text-4xl pointer-events-none">⚙️</span>
+              <button type="button" data-cat="other" onclick="logSale('other')" class="cat-btn btn-press bg-slate-100 hover:bg-slate-200/90 border-2 border-slate-300 rounded-2xl py-3 px-2 flex flex-col items-center justify-center gap-1 transition shadow-xs relative">
+                <span class="text-3xl pointer-events-none">⚙️</span>
                 <span class="font-black text-slate-900 text-sm sm:text-base pointer-events-none">دیگر / خرچہ</span>
+                <span id="cat-badge-other" class="text-[10px] font-mono font-black text-slate-700 bg-white/90 px-2 py-0.5 rounded-lg border border-slate-300 shadow-2xs opacity-60">Rs. 0</span>
               </button>
 
             </div>
@@ -590,46 +598,59 @@
               </button>
             </div>
 
-            <!-- 3-Column Financial Overview Cards -->
-            <div class="grid grid-cols-3 gap-2">
+            <!-- 4-Column Financial Overview Cards (دکان سیلز، خرچہ، دراز کیش اور الگ بچت انکم) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
               
-              <!-- 1. Total Sales -->
-              <div class="bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-inner">
+              <!-- 1. Total Sales (Excludes Bachat) -->
+              <div class="bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-2.5 text-center sm:text-right shadow-inner">
                 <div class="flex items-center justify-between mb-0.5">
-                  <span class="text-[10px] sm:text-xs font-bold text-emerald-400">🟢 کل سیلز</span>
+                  <span class="text-[10px] sm:text-xs font-bold text-emerald-400">🟢 دکان کل سیلز</span>
                   <span class="text-xs hidden sm:inline">📈</span>
                 </div>
                 <div class="flex items-baseline justify-center sm:justify-start gap-1">
                   <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
-                  <span id="card-total-income" class="text-xs sm:text-lg md:text-xl font-black text-emerald-300 font-mono">0</span>
+                  <span id="card-total-income" class="text-xs sm:text-base md:text-lg font-black text-emerald-300 font-mono">0</span>
                 </div>
-                <span class="text-[8px] sm:text-[9px] text-slate-400 block mt-0.5" id="card-income-breakdown">تمام کیٹیگریز کی سیل</span>
+                <span class="text-[8px] sm:text-[9px] text-slate-400 block mt-0.5">دکان سیلز</span>
               </div>
 
-              <!-- 2. Total Expense (Deducted from sales) -->
-              <div class="bg-slate-900/90 border border-rose-500/40 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-inner">
+              <!-- 2. Total Expense -->
+              <div class="bg-slate-900/90 border border-rose-500/40 rounded-2xl p-2.5 text-center sm:text-right shadow-inner">
                 <div class="flex items-center justify-between mb-0.5">
-                  <span class="text-[10px] sm:text-xs font-bold text-rose-400">🔴 کل خرچہ</span>
+                  <span class="text-[10px] sm:text-xs font-bold text-rose-400">🔴 دکان خرچہ</span>
                   <span class="text-xs hidden sm:inline">📉</span>
                 </div>
                 <div class="flex items-baseline justify-center sm:justify-start gap-1">
                   <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
-                  <span id="card-total-expense" class="text-xs sm:text-lg md:text-xl font-black text-rose-300 font-mono">0</span>
+                  <span id="card-total-expense" class="text-xs sm:text-base md:text-lg font-black text-rose-300 font-mono">0</span>
                 </div>
                 <span class="text-[8px] sm:text-[9px] text-slate-400 block mt-0.5" id="card-expense-count">0 اخراجات</span>
               </div>
 
               <!-- 3. Net Cash in Hand (Sales - Expense) -->
-              <div class="bg-gradient-to-tr from-indigo-950 to-slate-900 border-2 border-amber-400/60 rounded-2xl p-2.5 sm:p-3 text-center sm:text-right shadow-lg">
+              <div class="bg-slate-900/90 border border-indigo-500/40 rounded-2xl p-2.5 text-center sm:text-right shadow-inner">
                 <div class="flex items-center justify-between mb-0.5">
-                  <span class="text-[10px] sm:text-xs font-black text-amber-300">💎 دراز میں کیش</span>
+                  <span class="text-[10px] sm:text-xs font-black text-indigo-300">💎 صافی دراز کیش</span>
                   <span class="text-xs hidden sm:inline">💵</span>
                 </div>
                 <div class="flex items-baseline justify-center sm:justify-start gap-1">
                   <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
-                  <span id="card-net-balance" class="text-xs sm:text-lg md:text-xl font-black text-amber-400 font-mono">0</span>
+                  <span id="card-net-balance" class="text-xs sm:text-base md:text-lg font-black text-indigo-300 font-mono">0</span>
                 </div>
-                <span class="text-[8px] sm:text-[9px] text-amber-200/90 block mt-0.5 font-bold" id="card-net-status">سیلز - خرچہ</span>
+                <span class="text-[8px] sm:text-[9px] text-indigo-200/80 block mt-0.5 font-bold" id="card-net-status">سیلز - خرچہ</span>
+              </div>
+
+              <!-- 4. Dedicated Bachat / Savings Card -->
+              <div class="bg-gradient-to-tr from-amber-950/80 to-slate-900 border-2 border-amber-400/70 rounded-2xl p-2.5 text-center sm:text-right shadow-lg">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-[10px] sm:text-xs font-black text-amber-300">💰 بچت انکم</span>
+                  <span class="text-xs hidden sm:inline">✨</span>
+                </div>
+                <div class="flex items-baseline justify-center sm:justify-start gap-1">
+                  <span class="text-[9px] text-slate-400 font-mono">Rs.</span>
+                  <span id="card-total-savings" class="text-xs sm:text-base md:text-lg font-black text-amber-400 font-mono">0</span>
+                </div>
+                <span class="text-[8px] sm:text-[9px] text-amber-200/90 block mt-0.5 font-bold">الگ محفوظ بچت</span>
               </div>
 
             </div>
@@ -1564,14 +1585,14 @@
 
     // --- 1. CATEGORIES DEFINITION ---
     const CATEGORIES = {
-      diapers: { id: 'diapers', nameUr: 'پیمپر', nameEn: 'Diapers', icon: '👶', bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200', badge: 'bg-rose-100 text-rose-800' },
-      computer: { id: 'computer', nameUr: 'کمپیوٹر', nameEn: 'Computer', icon: '💻', bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-800' },
-      accessories: { id: 'accessories', nameUr: 'اسیسریز', nameEn: 'Accessories', icon: '🎧', bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800' },
-      devices: { id: 'devices', nameUr: 'ڈیوائسز', nameEn: 'Devices', icon: '📱', bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-800' },
-      jazzcash: { id: 'jazzcash', nameUr: 'جاز کیش', nameEn: 'JazzCash', icon: '💳', bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200', badge: 'bg-amber-100 text-amber-800' },
-      easypaisa: { id: 'easypaisa', nameUr: 'ایزی پیسہ', nameEn: 'Easypaisa', icon: '💸', bg: 'bg-teal-50', text: 'text-teal-900', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-800' },
-      easyload: { id: 'easyload', nameUr: 'ایزی لوڈ', nameEn: 'Easyload', icon: '⚡', bg: 'bg-fuchsia-50', text: 'text-fuchsia-900', border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800' },
-      other: { id: 'other', nameUr: 'دیگر', nameEn: 'Other', icon: '⚙️', bg: 'bg-slate-100', text: 'text-slate-800', border: 'border-slate-200', badge: 'bg-slate-200 text-slate-800' }
+      diapers: { id: 'diapers', nameUr: 'پیمپر', nameEn: 'Diapers', icon: '👶', bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200', badge: 'bg-rose-100 text-rose-800', isSavings: false },
+      computer: { id: 'computer', nameUr: 'کمپیوٹر', nameEn: 'Computer', icon: '💻', bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-800', isSavings: false },
+      accessories: { id: 'accessories', nameUr: 'اسیسریز', nameEn: 'Accessories', icon: '🎧', bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800', isSavings: false },
+      devices: { id: 'devices', nameUr: 'ڈیوائسز', nameEn: 'Devices', icon: '📱', bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-800', isSavings: false },
+      jazzcash: { id: 'jazzcash', nameUr: 'بچت انکم', nameEn: 'Savings', icon: '💰', bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-300', badge: 'bg-amber-100 text-amber-900', isSavings: true },
+      easypaisa: { id: 'easypaisa', nameUr: 'ایزی پیسہ', nameEn: 'Easypaisa', icon: '💸', bg: 'bg-teal-50', text: 'text-teal-900', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-800', isSavings: false },
+      easyload: { id: 'easyload', nameUr: 'ایزی لوڈ', nameEn: 'Easyload', icon: '⚡', bg: 'bg-fuchsia-50', text: 'text-fuchsia-900', border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800', isSavings: false },
+      other: { id: 'other', nameUr: 'دیگر', nameEn: 'Other', icon: '⚙️', bg: 'bg-slate-100', text: 'text-slate-800', border: 'border-slate-200', badge: 'bg-slate-200 text-slate-800', isSavings: false }
     };
 
     // --- 2. INDEXED DB & PERSISTENT DUAL-LAYER STORAGE ENGINE ---
@@ -2008,7 +2029,8 @@
     function calculateSubtotals(transactions) {
       const subtotals = {};
       const counts = {};
-      let total = 0;
+      let totalSales = 0; // Excludes Bachat Income
+      let savingsTotal = 0; // Bachat Income only
 
       Object.keys(CATEGORIES).forEach(key => {
         subtotals[key] = 0;
@@ -2020,19 +2042,42 @@
         const cat = t.category || 'other';
         subtotals[cat] = (subtotals[cat] || 0) + amt;
         counts[cat] = (counts[cat] || 0) + 1;
-        total += amt;
+
+        if (cat === 'jazzcash') {
+          savingsTotal += amt;
+        } else {
+          totalSales += amt;
+        }
       });
 
       let maxCat = 'کوئی نہیں';
       let maxAmt = 0;
       Object.keys(subtotals).forEach(cat => {
-        if (subtotals[cat] > maxAmt) {
+        if (cat !== 'jazzcash' && subtotals[cat] > maxAmt) {
           maxAmt = subtotals[cat];
           maxCat = `${CATEGORIES[cat].nameUr} (Rs. ${maxAmt.toLocaleString()})`;
         }
       });
 
-      return { subtotals, counts, total, maxCat };
+      return { subtotals, counts, total: totalSales, savingsTotal, maxCat };
+    }
+
+    function updateCategoryButtonBadges(stats) {
+      Object.keys(CATEGORIES).forEach(key => {
+        const badge = document.getElementById('cat-badge-' + key);
+        if (badge) {
+          const amt = (stats.subtotals && stats.subtotals[key]) || 0;
+          const cnt = (stats.counts && stats.counts[key]) || 0;
+          if (amt > 0) {
+            badge.textContent = `Rs. ${amt.toLocaleString()} (${cnt})`;
+            badge.classList.remove('opacity-60');
+            badge.classList.add('opacity-100');
+          } else {
+            badge.textContent = 'Rs. 0';
+            badge.classList.add('opacity-60');
+          }
+        }
+      });
     }
 
     function renderSubtotalsGrid(stats) {
@@ -2073,8 +2118,6 @@
       
       if (countTag) countTag.textContent = `${reversed.length} ریکارڈز`;
       if (page1Count) page1Count.textContent = `${reversed.length} انٹریز`;
-      const badge = document.getElementById('header-tx-badge');
-      if (badge) badge.textContent = `${reversed.length} سیلز`;
 
       // Show or hide Undo Last Entry button on Page 1
       if (undoBtn) {
@@ -2159,13 +2202,12 @@
       document.getElementById('header-stat-today-total').textContent = formattedTotal;
       document.getElementById('stat-top-category').textContent = stats.maxCat;
 
+      updateCategoryButtonBadges(stats);
       renderSubtotalsGrid(stats);
       renderRecentTransactions();
       renderFinancialCards();
     }
 
-    
-    
     // ========================================================
     // ⌨️ NUMPAD & AMOUNT CONTROLLER HELPERS
     // ========================================================

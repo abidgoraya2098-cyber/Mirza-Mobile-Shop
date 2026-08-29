@@ -1,5 +1,5 @@
-// Mirza Mobile & Diaper Shop PWA Service Worker (V4 - Cloud Sync & Full Offline)
-const CACHE_NAME = 'mirza-shop-v4';
+// Mirza Mobile & Diaper Shop PWA Service Worker (V5 - 100% Offline Engine & Background Cloud Sync)
+const CACHE_NAME = 'mirza-shop-v5';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -40,33 +40,44 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. HTML page navigations (Network first with cache fallback)
-  if (event.request.mode === 'navigate' || requestUrl.origin === location.origin && requestUrl.pathname === '/') {
+  // 2. HTML page navigations (Cache First with Background Network Update for Instant Offline Load)
+  if (event.request.mode === 'navigate' || (requestUrl.origin === location.origin && (requestUrl.pathname === '/' || requestUrl.pathname === '/index.html'))) {
     event.respondWith(
-      fetch(event.request).then((networkRes) => {
-        if (networkRes && networkRes.status === 200) {
-          const resClone = networkRes.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
-        }
-        return networkRes;
-      }).catch(() => {
-        return caches.match('/index.html') || caches.match('/');
+      caches.match('/index.html').then((cached) => {
+        const fetchPromise = fetch(event.request).then((networkRes) => {
+          if (networkRes && (networkRes.status === 200 || networkRes.type === 'opaque')) {
+            const resClone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
+          }
+          return networkRes;
+        }).catch(() => {
+          return cached || caches.match('/index.html');
+        });
+
+        return cached || fetchPromise;
       })
     );
     return;
   }
 
-  // 3. Static Assets / Images / Manifest
+  // 3. Static Assets, Images, Manifest & CDN Resources (Tailwind, Fonts, html2canvas)
   event.respondWith(
     caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       if (cachedResponse) return cachedResponse;
+
       return fetch(event.request).then((networkRes) => {
-        if (networkRes && networkRes.status === 200) {
+        if (networkRes && (networkRes.status === 200 || networkRes.type === 'opaque')) {
           const resClone = networkRes.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
         }
         return networkRes;
-      }).catch(() => caches.match('/index.html'));
+      }).catch(() => {
+        // Fallback for image requests
+        if (event.request.destination === 'image') {
+          return caches.match('/icon-192.png');
+        }
+        return caches.match('/index.html');
+      });
     })
   );
 });
