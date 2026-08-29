@@ -1423,11 +1423,37 @@
   <!-- JAVASCRIPT APPLICATION LOGIC -->
   <script>
     /**
-     * Mirza Mobile & Diaper Shop - Production Engine
+     * Mirza Mobile & Diaper Shop - Production Engine (100% Guaranteed Reliability)
      */
     // ========================================================
-    // 🌟 GLOBAL STATE VARIABLES (All declared at top of scope)
+    // 🌟 1. CATEGORIES DEFINITION (Always at top of script)
     // ========================================================
+    const CATEGORIES = {
+      diapers: { id: 'diapers', nameUr: 'پیمپر', nameEn: 'Diapers', icon: '👶', bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200', badge: 'bg-rose-100 text-rose-800', isSavings: false },
+      computer: { id: 'computer', nameUr: 'کمپیوٹر', nameEn: 'Computer', icon: '💻', bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-800', isSavings: false },
+      accessories: { id: 'accessories', nameUr: 'اسیسریز', nameEn: 'Accessories', icon: '🎧', bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800', isSavings: false },
+      devices: { id: 'devices', nameUr: 'ڈیوائسز', nameEn: 'Devices', icon: '📱', bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-800', isSavings: false },
+      jazzcash: { id: 'jazzcash', nameUr: 'بچت انکم', nameEn: 'Savings', icon: '💰', bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-300', badge: 'bg-amber-100 text-amber-900', isSavings: true },
+      easypaisa: { id: 'easypaisa', nameUr: 'ایزی پیسہ', nameEn: 'Easypaisa', icon: '💸', bg: 'bg-teal-50', text: 'text-teal-900', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-800', isSavings: false },
+      easyload: { id: 'easyload', nameUr: 'ایزی لوڈ', nameEn: 'Easyload', icon: '⚡', bg: 'bg-fuchsia-50', text: 'text-fuchsia-900', border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800', isSavings: false },
+      other: { id: 'other', nameUr: 'دیگر', nameEn: 'Other', icon: '⚙️', bg: 'bg-slate-100', text: 'text-slate-800', border: 'border-slate-200', badge: 'bg-slate-200 text-slate-800', isSavings: false }
+    };
+
+    // ========================================================
+    // 🌟 2. GLOBAL STATE VARIABLES (Declared & Initialized as empty arrays)
+    // ========================================================
+    var activeTransactions = [];
+    var activeExpenses = [];
+    var closingsList = [];
+    var selectedExpenseCategory = 'tea';
+    var isSoundEnabled = true;
+    var currentPageIndex = 0;
+    var page2ActiveSubtab = 'daily';
+    var pendingDeleteTxId = null;
+    var isCloudSyncing = false;
+    var lastCloudSyncTimestamp = 0;
+    var isLoggingSale = false;
+    var lastSaleTimestamp = 0;
     function safeListen(id, event, handler) {
       const el = document.getElementById(id);
       if (el) el.addEventListener(event, handler);
@@ -1442,31 +1468,83 @@
     }
     window.handleCategorySaleClick = handleCategorySaleClick;
 
-    // 💰 INDESTRUCTIBLE FINANCIAL ENGINE & EXPENSES TRACKER
     // ========================================================
+    // 📊 CORE CALCULATIONS & FINANCIAL SUMMARY
+    // ========================================================
+    function calculateSubtotals(transactions) {
+      const subtotals = {};
+      const counts = {};
+      let totalSales = 0; // Excludes Bachat Income
+      let savingsTotal = 0; // Bachat Income only
 
-    function calculateFinancialSummary() {
-      // 1. Total Sales from all sales categories
-      let salesTotal = 0;
-      activeTransactions.forEach(t => {
-        salesTotal += (Number(t.amount) || 0);
+      Object.keys(CATEGORIES).forEach(key => {
+        subtotals[key] = 0;
+        counts[key] = 0;
       });
 
-      // 2. Total Expenses
+      (transactions || []).forEach(t => {
+        const amt = Number(t.amount) || 0;
+        const cat = t.category || 'other';
+        subtotals[cat] = (subtotals[cat] || 0) + amt;
+        counts[cat] = (counts[cat] || 0) + 1;
+
+        if (cat === 'jazzcash') {
+          savingsTotal += amt;
+        } else {
+          totalSales += amt;
+        }
+      });
+
+      let maxCat = 'کوئی نہیں';
+      let maxAmt = 0;
+      Object.keys(subtotals).forEach(cat => {
+        if (cat !== 'jazzcash' && subtotals[cat] > maxAmt) {
+          maxAmt = subtotals[cat];
+          maxCat = `${CATEGORIES[cat].nameUr} (Rs. ${maxAmt.toLocaleString()})`;
+        }
+      });
+
+      return { subtotals, counts, total: totalSales, savingsTotal, maxCat };
+    }
+
+    function updateCategoryButtonBadges(stats) {
+      Object.keys(CATEGORIES).forEach(key => {
+        const badge = document.getElementById('cat-badge-' + key);
+        if (badge) {
+          const amt = (stats.subtotals && stats.subtotals[key]) || 0;
+          const cnt = (stats.counts && stats.counts[key]) || 0;
+          if (amt > 0) {
+            badge.textContent = `Rs. ${amt.toLocaleString()} (${cnt})`;
+            badge.classList.remove('opacity-60');
+            badge.classList.add('opacity-100');
+          } else {
+            badge.textContent = 'Rs. 0';
+            badge.classList.add('opacity-60');
+          }
+        }
+      });
+    }
+
+    function calculateFinancialSummary() {
+      const stats = calculateSubtotals(activeTransactions);
+      const salesTotal = stats.total;
+      const savingsTotal = stats.savingsTotal;
+
       let totalExpenses = 0;
-      activeExpenses.forEach(e => {
+      (activeExpenses || []).forEach(e => {
         totalExpenses += (Number(e.amount) || 0);
       });
 
-      // 3. Net Cash in Hand (سیلز - خرچہ)
       const netBalance = salesTotal - totalExpenses;
 
       return {
         salesTotal,
+        savingsTotal,
         totalExpenses,
         netBalance,
-        salesCount: activeTransactions.length,
-        expenseCount: activeExpenses.length
+        salesCount: (activeTransactions || []).filter(t => t.category !== 'jazzcash').length,
+        savingsCount: (stats.counts && stats.counts.jazzcash) || 0,
+        expenseCount: (activeExpenses || []).length
       };
     }
 
@@ -1476,12 +1554,14 @@
       const elTotalIncome = document.getElementById('card-total-income');
       const elTotalExpense = document.getElementById('card-total-expense');
       const elNetBalance = document.getElementById('card-net-balance');
+      const elTotalSavings = document.getElementById('card-total-savings');
       const elExpenseCount = document.getElementById('card-expense-count');
       const elNetStatus = document.getElementById('card-net-status');
 
       if (elTotalIncome) elTotalIncome.textContent = fin.salesTotal.toLocaleString();
       if (elTotalExpense) elTotalExpense.textContent = fin.totalExpenses.toLocaleString();
       if (elNetBalance) elNetBalance.textContent = fin.netBalance.toLocaleString();
+      if (elTotalSavings) elTotalSavings.textContent = fin.savingsTotal.toLocaleString();
       if (elExpenseCount) elExpenseCount.textContent = `${fin.expenseCount} اخراجات`;
       
       if (elNetStatus) {
@@ -1696,17 +1776,7 @@
     window.addExpensePreset = addExpensePreset;
     window.submitExpenseForm = submitExpenseForm;
 
-    // --- 1. CATEGORIES DEFINITION ---
-    const CATEGORIES = {
-      diapers: { id: 'diapers', nameUr: 'پیمپر', nameEn: 'Diapers', icon: '👶', bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200', badge: 'bg-rose-100 text-rose-800', isSavings: false },
-      computer: { id: 'computer', nameUr: 'کمپیوٹر', nameEn: 'Computer', icon: '💻', bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-800', isSavings: false },
-      accessories: { id: 'accessories', nameUr: 'اسیسریز', nameEn: 'Accessories', icon: '🎧', bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-200', badge: 'bg-emerald-100 text-emerald-800', isSavings: false },
-      devices: { id: 'devices', nameUr: 'ڈیوائسز', nameEn: 'Devices', icon: '📱', bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-800', isSavings: false },
-      jazzcash: { id: 'jazzcash', nameUr: 'بچت انکم', nameEn: 'Savings', icon: '💰', bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-300', badge: 'bg-amber-100 text-amber-900', isSavings: true },
-      easypaisa: { id: 'easypaisa', nameUr: 'ایزی پیسہ', nameEn: 'Easypaisa', icon: '💸', bg: 'bg-teal-50', text: 'text-teal-900', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-800', isSavings: false },
-      easyload: { id: 'easyload', nameUr: 'ایزی لوڈ', nameEn: 'Easyload', icon: '⚡', bg: 'bg-fuchsia-50', text: 'text-fuchsia-900', border: 'border-fuchsia-200', badge: 'bg-fuchsia-100 text-fuchsia-800', isSavings: false },
-      other: { id: 'other', nameUr: 'دیگر', nameEn: 'Other', icon: '⚙️', bg: 'bg-slate-100', text: 'text-slate-800', border: 'border-slate-200', badge: 'bg-slate-200 text-slate-800', isSavings: false }
-    };
+    // (CATEGORIES declared at top of script)
 
     // --- 2. INDEXED DB & PERSISTENT DUAL-LAYER STORAGE ENGINE ---
     const DB_NAME = 'MirzaShop_DB';
@@ -2135,60 +2205,7 @@
       });
     }
 
-    // --- 7. CALCULATIONS & DASHBOARD ---
-    function calculateSubtotals(transactions) {
-      const subtotals = {};
-      const counts = {};
-      let totalSales = 0; // Excludes Bachat Income
-      let savingsTotal = 0; // Bachat Income only
-
-      Object.keys(CATEGORIES).forEach(key => {
-        subtotals[key] = 0;
-        counts[key] = 0;
-      });
-
-      transactions.forEach(t => {
-        const amt = Number(t.amount) || 0;
-        const cat = t.category || 'other';
-        subtotals[cat] = (subtotals[cat] || 0) + amt;
-        counts[cat] = (counts[cat] || 0) + 1;
-
-        if (cat === 'jazzcash') {
-          savingsTotal += amt;
-        } else {
-          totalSales += amt;
-        }
-      });
-
-      let maxCat = 'کوئی نہیں';
-      let maxAmt = 0;
-      Object.keys(subtotals).forEach(cat => {
-        if (cat !== 'jazzcash' && subtotals[cat] > maxAmt) {
-          maxAmt = subtotals[cat];
-          maxCat = `${CATEGORIES[cat].nameUr} (Rs. ${maxAmt.toLocaleString()})`;
-        }
-      });
-
-      return { subtotals, counts, total: totalSales, savingsTotal, maxCat };
-    }
-
-    function updateCategoryButtonBadges(stats) {
-      Object.keys(CATEGORIES).forEach(key => {
-        const badge = document.getElementById('cat-badge-' + key);
-        if (badge) {
-          const amt = (stats.subtotals && stats.subtotals[key]) || 0;
-          const cnt = (stats.counts && stats.counts[key]) || 0;
-          if (amt > 0) {
-            badge.textContent = `Rs. ${amt.toLocaleString()} (${cnt})`;
-            badge.classList.remove('opacity-60');
-            badge.classList.add('opacity-100');
-          } else {
-            badge.textContent = 'Rs. 0';
-            badge.classList.add('opacity-60');
-          }
-        }
-      });
-    }
+    // (calculateSubtotals declared at top of script)
 
     function renderSubtotalsGrid(stats) {
       const grid = document.getElementById('subtotals-grid');
