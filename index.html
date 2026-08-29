@@ -1951,9 +1951,9 @@
     }
 
     // --- 3. STATE ---
-    let isSoundEnabled = localStorage.getItem('mirza_sound') !== 'false';
-    let currentPageIndex = 0; // 0 = Page 1, 1 = Page 2
-    let page2ActiveSubtab = 'daily'; // 'daily', 'monthly', 'yearly'
+    isSoundEnabled = localStorage.getItem('mirza_sound') !== 'false';
+    currentPageIndex = 0;
+    page2ActiveSubtab = 'daily';
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(type = 'click') {
